@@ -14,7 +14,7 @@
           <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>Laporan kerja harian </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="pages-account-settings-notifications.html"><i class="bx bx-bell me-1"></i> Penilaian kerja harian</a>
+          <a class="nav-link" href="#"><i class="bx bx-bell me-1"></i> Penilaian kerja harian</a>
         </li>
       </ul>
     </div>
@@ -123,8 +123,20 @@
                 <td>{{ getPicById($row->pic_id) ?? '' }}</td>
                 <td>{{ $row->mulai ?? '' }}</td>
                 <td>{{ $row->selesai ?? '' }}</td>
-                <td>{{ ucfirst($row->status_kegiatan) ?? '' }}</td>
-                <td>{{ ucfirst($row->status_akhir) ?? '' }}</td>
+                <td>
+                  @if(strtolower($row->status_kegiatan) == 'selesai')
+                  <span class="badge bg-label-success">Selesai</span>
+                  @else
+                  <span class="badge bg-label-warning">Tidak selesai</span>
+                  @endif
+                </td>
+                <td>
+                  @if(strtolower($row->status_akhir) == 'sesuai')
+                  <span class="badge bg-label-success">Sesuai</span>
+                  @else
+                  <span class="badge bg-label-warning">Tidak sesuai</span>
+                  @endif
+                </td>
                 <td>{{ getTanggalIndo($row->deadline) ?? '' }}</td>
               </tr>
               @endforeach

@@ -53,6 +53,7 @@ function getTanggalIndo($tanggal)
 function getKegiatanTerpopuler($kegiatan_harian)
 {
 	$kategori = array();
+	$data = array();
 
 	foreach ($kegiatan_harian as $row) {
 
@@ -76,6 +77,8 @@ function getKegiatanTerpopuler($kegiatan_harian)
 if (!function_exists('totalKegiatanHarian')) {
 	function totalKegiatanHarian($data)
 	{
+		$total_kategori = array();
+
 		if (count($data) >= 5) {
 			$count = 5;
 		} else {
@@ -95,6 +98,8 @@ if (!function_exists('totalKegiatanHarian')) {
 if (!function_exists('daftarNamaKategoriKegiatan')) {
 	function daftarNamaKategoriKegiatan($data)
 	{
+		$kategori = array();
+
 		if (count($data) >= 5) {
 			$count = 5;
 		} else {
@@ -114,6 +119,7 @@ if (!function_exists('daftarNamaKategoriKegiatan')) {
 function getJenisKegiatanTerpopuler($kegiatan_harian)
 {
 	$jenis_kegiatan = array();
+	$data = array();
 
 	foreach ($kegiatan_harian as $row) {
 
@@ -137,6 +143,8 @@ function getJenisKegiatanTerpopuler($kegiatan_harian)
 if (!function_exists('totalJenisKegiatan')) {
 	function totalJenisKegiatan($data)
 	{
+		$total_jenis_kegiatan = array();
+
 		if (count($data) >= 5) {
 			$count = 5;
 		} else {
@@ -156,6 +164,8 @@ if (!function_exists('totalJenisKegiatan')) {
 if (!function_exists('daftarNamaJenisKegiatan')) {
 	function daftarNamaJenisKegiatan($data)
 	{
+		$jenis_kegiatan = array();
+
 		if (count($data) >= 5) {
 			$count = 5;
 		} else {

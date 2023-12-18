@@ -133,10 +133,6 @@ class KegiatanHarianController extends Controller
         try {
             DB::beginTransaction();
 
-            if (Auth::user()->jabatan == 'SPV') {
-                $status_spv = 'Diterima';
-            }
-
             $data_absensi = Absensi::create([
                 'user_id' => Auth::user()->id,
                 'tanggal' => $request->tanggal,
@@ -144,7 +140,6 @@ class KegiatanHarianController extends Controller
                 'jam_istirahat' => $request->jam_istirahat,
                 'jam_kembali_istirahat' => $request->jam_kembali_istirahat,
                 'jam_pulang' => $request->jam_pulang_kerja,
-                'status_spv' => $status_spv ?? '',
             ]);
 
             $kegiatan = $request['kegiatan'];
@@ -208,7 +203,7 @@ class KegiatanHarianController extends Controller
 
         foreach ($data_kegiatan as $val) {
             $berkas = BerkasPendukung::where('kegiatan_harian_id', $val->id)->first();
-            if(isset($berkas->nama_file)){
+            if (isset($berkas->nama_file)) {
                 File::delete($berkas->nama_file);
             }
         }

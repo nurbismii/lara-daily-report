@@ -47,7 +47,7 @@
 
   <ul class="menu-inner py-1">
     <!-- Dashboard -->
-    <li class="menu-item active">
+    <li class="menu-item {{ Request::segment(1) === 'dashboard' ? 'active' : null }}">
       <a href="/dashboard" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div data-i18n="Analytics">Dashboard</div>
@@ -57,7 +57,7 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Main menu</span>
     </li>
-    <li class="menu-item">
+    <li class="menu-item {{ Request::segment(1) === 'pengguna' ? 'active' : null }}">
       @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-user-check"></i>
@@ -72,7 +72,7 @@
         </li>
       </ul>
     </li>
-    <li class="menu-item">
+    <li class="menu-item {{ Request::segment(1) === 'kegiatan-harian' ? 'active' : null }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-stats"></i>
         <div data-i18n="Account Settings">Kegiatan</div>
@@ -93,7 +93,7 @@
       </ul>
     </li>
     @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')
-    <li class="menu-item">
+    <li class="menu-item {{ Request::segment(1) === 'organisir-tim' ? 'active' : null }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-cube-alt"></i>
         <div data-i18n="Misc">Organisir tim</div>
@@ -111,7 +111,7 @@
     @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')
     <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
     <!-- Konfigurasi -->
-    <li class="menu-item">
+    <li class="menu-item {{ Request::segment(1) === 'pengaturan' ? 'active' : null }}">
       <a href="javascript:void(0)" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-cog"></i>
         <div data-i18n="User interface">Konfigurasi</div>

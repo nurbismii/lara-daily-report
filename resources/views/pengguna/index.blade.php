@@ -31,7 +31,11 @@
                 <td>
                   <div class="flex-shrink-0 me-3">
                     <div class="avatar avatar-online">
-                      <img src="{{ asset('foto-profil/' . $data->nik . '/' . $data->foto ) ??  }}" alt class="w-px-40 h-auto rounded-circle" />
+                      @if($data->foto != '1.png')
+                      <img src="{{  asset('foto-profil/' . $data->nik . '/' . $data->foto ) }}" alt class="w-px-40 h-auto rounded-circle" />
+                      @else
+                      <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                      @endif
                     </div>
                   </div>
                 </td>

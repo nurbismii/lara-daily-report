@@ -13,7 +13,11 @@
         <!-- Account -->
         <div class="card-body">
           <div class="d-flex align-items-start align-items-sm-center gap-4">
+            @if(Auth::user()->foto != '1.png')
             <img src="{{ asset('foto-profil/' . Auth::user()->nik . '/' . Auth::user()->foto ) }}" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+            @else
+            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+            @endif
             <form action="{{ route('update.fotoProfil') }}" method="post" enctype="multipart/form-data">
               @csrf
               <div class="button-wrapper">

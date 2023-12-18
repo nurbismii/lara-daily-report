@@ -44,12 +44,12 @@
                                     </g>
                                 </svg>
                             </span>
-                            <span class="app-brand-text demo text-body fw-bolder">Laporan hariam</span>
+                            <span class="app-brand-text demo text-body fw-bolder">Laporan Harian</span>
                         </a>
                     </div>
                     <!-- /Logo -->
                     <h4 class="mb-2">Selamat datang! 👋</h4>
-                    <span class="text-muted">Masukan email atau NIK kamu</span>
+                    <span class="text-muted">Silahkan masuk ke akun dan mulai catat kegiatan harian kamu</span>
                     <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-3">

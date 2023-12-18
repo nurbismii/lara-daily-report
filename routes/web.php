@@ -22,12 +22,12 @@ Route::group(['middleware' => 'auth'], function () {
         route::get('/', [PenggunaController::class, 'profile']);
     });
 
-    Route::group(['middleware' => 'check.access', 'prefix' => 'pengguna'], function () {
+    Route::group(['prefix' => 'pengguna'], function () {
 
         route::get('/', [PenggunaController::class, 'index']);
-        route::post('/store', [PenggunaController::class, 'store'])->name('store.pengguna');
-        route::patch('/update/{id}', [PenggunaController::class, 'update'])->name('update.pengguna');
-        route::delete('/delete/{id}', [PenggunaController::class, 'destroy'])->name('delete.pengguna');
+        route::post('/store', [PenggunaController::class, 'store'])->middleware('check.access')->name('store.pengguna');
+        route::patch('/update/{id}', [PenggunaController::class, 'update'])->middleware('check.access')->name('update.pengguna');
+        route::delete('/delete/{id}', [PenggunaController::class, 'destroy'])->middleware('check.access')->name('delete.pengguna');
         route::post('/update/foto/', [PenggunaController::class, 'fotoProfil'])->name('update.fotoProfil');
     });
 

@@ -329,7 +329,6 @@
         }
     });
 
-
     const inputValue2 = document.querySelector(".time-slicer").value;
     inputValue2.addEventListener("keyup", function(e) {
         alert("Please enter");

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensi;
+use App\Models\AgendaKerjaEsok;
 use App\Models\BerkasPendukung;
 use App\Models\KategoriKegiatan;
 use App\Models\Kegiatan;
@@ -11,11 +12,11 @@ use App\Models\PenilaianKerja;
 use App\Models\PIC;
 use App\Models\Tim;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\File;
 
 class KegiatanHarianController extends Controller
 {
@@ -99,7 +100,7 @@ class KegiatanHarianController extends Controller
         $jenis_kegiatan = Kegiatan::all();
         $kategori_kegiatan = KategoriKegiatan::all();
         $pic = PIC::all();
-        $data_kegiatan = Absensi::with('kegiatanHarian')
+        $data_kegiatan = Absensi::with('kegiatanHarian', 'agendaEsok')
             ->join('users', 'users.id', '=', 'absensi.user_id')
             ->where('users.nik', Auth::user()->nik)->orderBy('tanggal', 'desc')
             ->select('absensi.*')
@@ -177,7 +178,9 @@ class KegiatanHarianController extends Controller
                     'kuantitas' => $kuantitas[$i],
                 ];
             }
+
             KegiatanHarian::insert($data_kegiatan_harian);
+
             DB::commit();
 
             return back()->with('success', 'Yuhuuu, Kegiatan harian berhasil ditambahkan');
@@ -201,7 +204,15 @@ class KegiatanHarianController extends Controller
     public function destroy($id)
     {
         $data = Absensi::where('id', $id)->first();
-        KegiatanHarian::where('absensi_id', $data->id)->delete();
+        $data_kegiatan = KegiatanHarian::where('absensi_id', $data->id)->get();
+
+        foreach ($data_kegiatan as $val) {
+            $berkas = BerkasPendukung::where('kegiatan_harian_id', $val->id)->first();
+            if(isset($berkas->nama_file)){
+                File::delete($berkas->nama_file);
+            }
+        }
+
         $data->delete();
         return back()->with('success', 'Oh yeah, Kehadiran & kegiatan harian berhasil dihapus');
     }
@@ -358,5 +369,27 @@ class KegiatanHarianController extends Controller
         ]);
 
         return back()->with('success', 'Berkas pendukung berhasil di unggah');
+    }
+
+    public function storeAgendaKerja(Request $request)
+    {
+        $kegiatan = $request['kegiatan'];
+        $uraian_kegiatan = $request['uraian_kegiatan'];
+        $persentase_penyelesaian = $request['persentase_penyelesaian'];
+
+        $jumlah_kegiatan = count($kegiatan);
+
+        for ($i = 0; $i < $jumlah_kegiatan; $i++) {
+            $input[] = [
+                'absensi_id' => $request->id,
+                'kegiatan' => $kegiatan[$i],
+                'uraian_kegiatan' => $uraian_kegiatan[$i],
+                'persentase' => $persentase_penyelesaian[$i]
+            ];
+
+            AgendaKerjaEsok::insert($input);
+        }
+
+        return back()->with('success', 'Agenda kerja esok hari berhasil ditambahkan');
     }
 }

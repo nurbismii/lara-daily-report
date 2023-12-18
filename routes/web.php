@@ -28,6 +28,7 @@ Route::group(['middleware' => 'auth'], function () {
         route::post('/store', [PenggunaController::class, 'store'])->name('store.pengguna');
         route::patch('/update/{id}', [PenggunaController::class, 'update'])->name('update.pengguna');
         route::delete('/delete/{id}', [PenggunaController::class, 'destroy'])->name('delete.pengguna');
+        route::post('/update/foto/', [PenggunaController::class, 'fotoProfil'])->name('update.fotoProfil');
     });
 
     Route::group(['prefix' => 'kegiatan-harian'], function () {
@@ -35,7 +36,7 @@ Route::group(['middleware' => 'auth'], function () {
         route::get('/', [KegiatanHarianController::class, 'index'])->middleware('check.access')->name('kegiatanharian');
         route::get('/create', [KegiatanHarianController::class, 'create']);
         route::get('/staff-dan-spv', [KegiatanHarianController::class, 'createKegiatan']);
-        route::post('store', [KegiatanHarianController::class, 'store'])->name('staff.store');
+        route::post('/store', [KegiatanHarianController::class, 'store'])->name('staff.store');
         route::get('/detail/{id}', [KegiatanHarianController::class, 'show'])->name('kegiatan-harian.show');
         route::patch('/update/{id}', [KegiatanHarianController::class, 'update'])->name('update.kegiatanharian');
         route::delete('/destroy/{id}', [KegiatanHarianController::class, 'destroy'])->name('delete.absensi-kegiatan');
@@ -46,11 +47,13 @@ Route::group(['middleware' => 'auth'], function () {
         route::delete('/destroy/kegiatan/{id}', [KegiatanHarianController::class, 'destroyKegiatan'])->name('destroy.kegiatanharian');
 
         route::post('/unggah/berkas/{id}', [KegiatanHarianController::class, 'unggahBerkas'])->name('store.unggahBerkas');
+        
     });
 
     Route::patch('/update/status-kegiatan/{id}', [KegiatanHarianController::class, 'updateStatusKegiatan'])->name('update.statusKegiatan');
     Route::post('/store/penilaian-kerja', [KegiatanHarianController::class, 'penilaianKerjaHarian'])->name('store.penilaian-kerja');
     Route::post('/update/penilaian-kerja', [KegiatanHarianController::class, 'updatePenilaianKerjaHarian'])->name('update.penilaian-kerja');
+    route::post('/store/agenda-kerja-esok/', [KegiatanHarianController::class, 'storeAgendaKerja'])->name('store.agendaKerjaEsokHari');
 
     Route::group(['middleware' => 'check.access'], function () {
 

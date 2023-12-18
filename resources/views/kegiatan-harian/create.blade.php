@@ -9,11 +9,9 @@
             @include('message')
         </div>
         <div class="col-md-6 col-lg-12">
-            <div class="card text-center mb-2">
+            <div class="card mb-2">
                 <div class="card-body">
-                    <h5 class="card-title">Kegiatan harian staff dan supervisor</h5>
-                    <p class="card-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                    <a href="/kegiatan-harian/staff-dan-spv" class="btn btn-primary">Tambah kegiatan</a>
+                    <a href="/kegiatan-harian/staff-dan-spv" class="btn btn-primary float-end">Tambah kegiatan</a>
                 </div>
             </div>
         </div>
@@ -25,6 +23,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Agenda esok</th>
                                 <th>Nama</th>
                                 <th>Kehadiran</th>
                                 <th>Status SPV</th>
@@ -41,6 +40,9 @@
                                         <span class="tf-icons bx bx-show-alt"></span>
                                     </button>
                                 </th>
+                                <td>
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-agenda{{$data->id}}"> Lihat</button>
+                                </td>
                                 <td>
                                     {{ $data->getAnggota->name ?? '' }} <br>
                                     <small class="text-light fw-semibold">{{ $data->getAnggota->nik ?? '' }}</small> |
@@ -74,7 +76,8 @@
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-tambah-kegiatan{{$data->id}}"><i class="bx bx-plus me-1"></i> Kegiatan</a>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-absensi{{$data->id}}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-agenda-esok{{$data->id}}"><i class="bx bx-plus me-1"></i> Agenda esok</a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-absensi{{$data->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kehadiran</a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-semua{{$data->id}}"><i class="bx bx-trash me-1"></i> Hapus</a>
                                         </div>
                                     </div>
@@ -117,8 +120,8 @@
                                                             <i class="bx bx-dots-horizontal-rounded"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-unggah-berkas{{$row->id}}"><i class="bx bx-plus me-1"></i> Data pendukung </a>
+                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-kegiatan{{$row->id}}"><i class="bx bx-trash me-1"></i> Hapus</a>
                                                         </div>
                                                     </div>
@@ -140,6 +143,135 @@
         </div>
     </div>
 </div>
+
+<!-- Tambah agenda esok -->
+@foreach($data_kegiatan as $data)
+<div class="modal fade" id="modal-agenda-esok{{$data->id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel4">Form agenda esok hari</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('store.agendaKerjaEsokHari') }}" method="post">
+                @csrf
+                <div class="modal-body control-group after-add-more-agenda">
+                    <div class="row">
+                        <div class="col mb-3">
+                            <input type="text" class="form-control" name="id" value="{{$data->id}}" readonly></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nik">Kegiatan</label>
+                            <input class="form-control" name="kegiatan[]" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nik">Uraian Kegiatan</label>
+                            <textarea class="form-control" name="uraian_kegiatan[]" cols="30" rows="5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col mb-3">
+                            <label for="nik">Persentase penyelesaian</label>
+                            <input class="form-control" name="persentase_penyelesaian[]" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" href="#form-agenda" class="btn btn-success float-end mx-2 add-more-agenda">
+                        <span class="tf-icons bx bx-plus"></span>
+                        Form agenda
+                    </a>
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        Tutup
+                    </button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="copy invisible">
+            <div id="form-agenda" class="modal-body control-group count">
+                <div class="row">
+                    <div class="col mb-3">
+                        <input type="hidden" class="form-control" name="id" value="{{$data->absensi_id}}" readonly></input>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nik">Kegiatan</label>
+                        <input class="form-control" name="kegiatan[]" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nik">Uraian Kegiatan</label>
+                        <textarea class="form-control" name="uraian_kegiatan[]" cols="30" rows="5" required></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-3">
+                        <label for="nik">Persentase penyelesaian</label>
+                        <input class="form-control" name="persentase_penyelesaian[]" required>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-danger remove btn-sm">
+                    <span class="tf-icons bx bx-trash"></span>
+                    Hapus form agenda
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@endforeach
+<!-- Tambah agenda esok end -->
+
+
+<!-- Small Modal -->
+@foreach($data_kegiatan as $data)
+<div class="modal fade" id="modal-agenda{{$data->id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Agenda esok hari</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-borderless border-bottom">
+                        <thead>
+                            <tr>
+                                <th class="text-nowrap">Kegiatan</th>
+                                <th class="text-nowrap text-center">Uraian Kegiatan</th>
+                                <th class="text-nowrap text-center">% Persentase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($data->agendaEsok as $val)
+                            <tr>
+                                <td class="text-nowrap">{{ $val->kegiatan }}</td>
+                                <td class="text-nowrap">{{ $val->uraian_kegiatan }}</td>
+                                <td class="text-nowrap">{{ $val->persentase }}%</td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 
 <!-- Tambah kegiatan -->
 @foreach($data_kegiatan as $data)
@@ -252,6 +384,7 @@
 </div>
 @endforeach
 <!-- Tambah kegiatan ends -->
+
 
 <!-- Edit kegiatan -->
 @foreach($data_kegiatan as $data)
@@ -435,7 +568,7 @@
 @foreach($data_kegiatan as $data)
 <div class="modal modal-top fade" id="modal-hapus-semua{{$data->id}}" tabindex="-1">
     <div class="modal-dialog">
-        <form action="{{route('destroy.kegiatanharian', $data->id)}}" method="post" class="modal-content">
+        <form action="{{route('delete.absensi-kegiatan', $data->id)}}" method="post" class="modal-content">
             @csrf
             {{method_field('delete')}}
             <div class="modal-header">
@@ -517,5 +650,20 @@
 </div>
 @endforeach
 @endforeach
+
+<script>
+    $(document).ready(function() {
+        $(".add-more-agenda").click(function() {
+            var count = $(".count").length;
+            var html = $(".copy").html();
+            $(".after-add-more-agenda").after(html);
+        });
+
+        // saat tombol remove dklik control group akan dihapus 
+        $("body").on("click", ".remove", function() {
+            $(this).parents(".control-group").remove();
+        });
+    });
+</script>
 
 @endsection

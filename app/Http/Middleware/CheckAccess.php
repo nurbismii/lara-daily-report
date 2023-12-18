@@ -18,9 +18,9 @@ class CheckAccess
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->jabatan != 'ASMEN' || Auth::user()->jabatan != 'SPV') {
-            return redirect('dashboard');
+        if (Auth::user()->jabatan == 'ASMEN' || Auth::user()->jabatan == 'SPV') {
+            return $next($request);
         }
-        return $next($request);
+        return redirect('dashboard');
     }
 }

@@ -13,16 +13,19 @@
         <!-- Account -->
         <div class="card-body">
           <div class="d-flex align-items-start align-items-sm-center gap-4">
-            <img src="../assets/img/avatars/1.png" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
-            <div class="button-wrapper">
-              <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                <span class="d-none d-sm-block">Unggah foto baru</span>
-                <i class="bx bx-upload d-block d-sm-none"></i>
-                <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpeg">
-              </label>
-
-              <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 10MB</p>
-            </div>
+            <img src="{{ asset('foto-profil/' . Auth::user()->nik . '/' . Auth::user()->foto ) }}" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+            <form action="{{ route('update.fotoProfil') }}" method="post" enctype="multipart/form-data">
+              @csrf
+              <div class="button-wrapper">
+                <label for="upload" tabindex="0">
+                  <span class="d-none d-sm-block mb-2">Unggah foto baru</span>
+                  <i class="bx bx-upload d-block d-sm-none"></i>
+                  <input type="file" id="upload" name="foto" class="account-file-input" accept="image/png, image/jpeg">
+                  <button type="submit" class="btn btn-primary">Simpan foto</button>
+                </label>
+                <p class="text-muted mb-0 mt-2">Allowed JPG, GIF or PNG. Max size of 10MB</p>
+              </div>
+            </form>
           </div>
         </div>
         <hr class="my-0">

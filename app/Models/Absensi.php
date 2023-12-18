@@ -14,6 +14,11 @@ class Absensi extends Model
     return $this->hasMany(KegiatanHarian::class);
   }
 
+  public function agendaEsok()
+  {
+    return $this->hasMany(AgendaKerjaEsok::class);
+  }
+
   public function getAnggota()
   {
     return $this->hasOne(User::class, 'id', 'user_id');

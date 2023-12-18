@@ -97,4 +97,27 @@ class PenggunaController extends Controller
         $data = User::find(Auth::user()->id);
         return view('pengguna.profil', compact('data'));
     }
+
+    public function fotoProfil(Request $request)
+    {
+        $data = User::where('id', Auth::user()->id)->first();
+
+        $file = $request->file('foto');
+
+        $nama_file = $file->getClientOriginalName();
+
+        $path = public_path('/foto-profil/' . Auth::user()->nik . '/');
+
+        if (file_exists($path . $data->foto)) {
+            unlink($path . $data->foto);
+        }
+
+        $file->move($path, $nama_file);
+
+        User::where('id', Auth::user()->id)->update([
+            'foto' => $nama_file
+        ]);
+
+        return back()->with('success', 'Foto berhasil diperbarui');
+    }
 }

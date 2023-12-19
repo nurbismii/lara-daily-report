@@ -13,4 +13,9 @@ class KegiatanHarian extends Model
   {
     return $this->belongsTo(Absensi::class);
   }
+
+  public function dataPendukung()
+  {
+    return $this->hasMany(BerkasPendukung::class);
+  }
 }

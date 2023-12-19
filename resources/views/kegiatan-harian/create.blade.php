@@ -36,12 +36,14 @@
                             @foreach($data_kegiatan as $data)
                             <tr>
                                 <th scope="row" data-bs-toggle="collapse" data-bs-target="#accordion-{{$data->id}}">
-                                    <button type="button" class="btn btn-sm btn-icon btn-outline-secondary">
+                                    <button type="button" class="btn rounded-pill btn-sm btn-icon btn-outline-success">
                                         <span class="tf-icons bx bx-show-alt"></span>
                                     </button>
                                 </th>
                                 <td>
-                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modal-agenda{{$data->id}}"> Lihat</button>
+                                    <button type="button" class="btn btn-sm rounded-pill btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-agenda{{$data->id}}">
+                                        <span class="tf-icons bx bx-bell"></span>&nbsp; Agenda
+                                    </button>
                                 </td>
                                 <td>
                                     {{ $data->getAnggota->name ?? '' }} <br>
@@ -78,7 +80,7 @@
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-tambah-kegiatan{{$data->id}}"><i class="bx bx-plus me-1"></i> Kegiatan</a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-agenda-esok{{$data->id}}"><i class="bx bx-plus me-1"></i> Agenda esok</a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-absensi{{$data->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kehadiran</a>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-semua{{$data->id}}"><i class="bx bx-trash me-1"></i> Hapus</a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-semua{{$data->id}}"><i class="bx bx-trash me-1"></i> Hapus kehadiran & kegiatan</a>
                                         </div>
                                     </div>
                                 </td>
@@ -98,6 +100,7 @@
                                                 <th>Status kegiatan</th>
                                                 <th>Status akhir</th>
                                                 <th>Deadline</th>
+                                                <th>Data pendukung</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -111,9 +114,26 @@
                                                 <td>{{ getPicById($row->pic_id) ?? '' }}</td>
                                                 <td>{{ $row->mulai ?? '' }}</td>
                                                 <td>{{ $row->selesai ?? '' }}</td>
-                                                <td>{{ ucfirst($row->status_kegiatan) ?? '' }}</td>
-                                                <td>{{ ucfirst($row->status_akhir) ?? '' }}</td>
+                                                <td>
+                                                    @if(strtolower($row->status_kegiatan) == 'selesai')
+                                                    <span class="badge bg-label-success">Selesai</span>
+                                                    @else
+                                                    <span class="badge bg-label-primary">Tidak selesai</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if(strtolower($row->status_akhir) == 'sesuai')
+                                                    <span class="badge bg-label-success">Sesuai</span>
+                                                    @else
+                                                    <span class="badge bg-label-primary">Tidak sesuai</span>
+                                                    @endif
+                                                </td>
                                                 <td>{{ getTanggalIndo($row->deadline) ?? '' }}</td>
+                                                <td>
+                                                    @foreach($row->dataPendukung as $berkas)
+                                                    <a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"> {{ $berkas->nama_file }}</a> <br>
+                                                    @endforeach
+                                                </td>
                                                 <td>
                                                     <div class="dropdown">
                                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -121,8 +141,8 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-unggah-berkas{{$row->id}}"><i class="bx bx-plus me-1"></i> Data pendukung </a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-kegiatan{{$row->id}}"><i class="bx bx-trash me-1"></i> Hapus</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kegiatan</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-kegiatan{{$row->id}}"><i class="bx bx-trash me-1"></i> Hapus kegiatan</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -158,7 +178,7 @@
                 <div class="modal-body control-group after-add-more-agenda">
                     <div class="row">
                         <div class="col mb-3">
-                            <input type="text" class="form-control" name="id" value="{{$data->id}}" readonly></input>
+                            <input type="hidden" class="form-control" name="id" value="{{$data->id}}" readonly></input>
                         </div>
                     </div>
                     <div class="row">

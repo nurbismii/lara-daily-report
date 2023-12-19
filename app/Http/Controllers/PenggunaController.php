@@ -16,7 +16,7 @@ class PenggunaController extends Controller
     public function index()
     {
         //
-        $pengguna = User::orderBy('nik', 'desc')->get();
+        $pengguna = User::orderBy('nik', 'asc')->where('nik', '>', '15000000')->paginate(10);
         return view('pengguna.index', compact('pengguna'))->with('no');
     }
 

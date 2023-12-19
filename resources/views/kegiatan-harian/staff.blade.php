@@ -7,28 +7,29 @@
             <div class="col-xl-12">
                 @include('message')
             </div>
-            <div class="col-md-3 col-lg-4">
+            <div class="col-md-3 col-lg-12">
                 <div class="card mb-3">
+                    <h5 class="card-header">Form kerja harian
+                        <a href="/kegiatan-harian/create" class="text-white btn btn-danger btn-sm float-end">
+                            <span class="tf-icons bx bx-back"></span>&nbsp; Tutup
+                        </a>
+                    </h5>
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="nama">Nama</label>
                                 <input type="text" name="nama" value="{{ Auth::user()->name }}" class="form-control" required readonly>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col mb-2">
                                 <label for="email">NIK</label>
                                 <input type="text" name="nik" value="{{ Auth::user()->nik }}" class="form-control" required readonly>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="kata-sandi">Divisi</label>
                                 <input type="text" name="tim_id" value="1" class="form-control" required readonly>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col mb-2">
                                 <label for="email">Posisi</label>
                                 <input type="text" name="posisi" value="Contoh Pengembangan" class="form-control" required readonly>
@@ -40,25 +41,21 @@
                                 <input type="date" name="tanggal" class="form-control" required>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="nama">Jam masuk kerja</label>
                                 <input type="text" id="jamMasuk" maxlength="5" name="jam_masuk_kerja" class="form-control" required>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col mb-2">
                                 <label for="email">Jam istirahat</label>
                                 <input type="text" id="jamIstirahat" maxlength="5" name="jam_istirahat" class="form-control">
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="kata-sandi">Jam kembali istirahat</label>
                                 <input type="text" id="jamKembaliIstirahat" maxlength="5" name="jam_kembali_istirahat" class="form-control">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col mb-2">
                                 <label for="email">Jam pulang kerja</label>
                                 <input type="text" id="jamPulang" maxlength="5" name="jam_pulang_kerja" class="form-control">
@@ -67,18 +64,13 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="card mb-3">
-                    <h5 class="card-header">Form kerja harian
-                        <a href="/kegiatan-harian/create" class="text-white btn btn-danger btn-sm float-end">
-                            <span class="tf-icons bx bx-back"></span>&nbsp; Tutup
-                        </a>
-                    </h5>
                     <div class="card-body ">
                         @csrf
                         <div class="card-body control-group after-add-more">
                             <div class="divider divider-success">
-                                <div class="divider-text fw-bold">#1. Pekerjaan Harian</div>
+                                <div class="divider-text fw-bold mb-0">#1. Pekerjaan Harian</div>
                             </div>
                             <div class="row">
                                 <div class="col mb-2">

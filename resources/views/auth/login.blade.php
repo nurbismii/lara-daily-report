@@ -5,6 +5,7 @@
     <div class="authentication-wrapper authentication-basic container-p-y">
         <div class="authentication-inner">
             <!-- Register -->
+            @include('message')
             <div class="card">
                 <div class="card-body">
                     <!-- Logo -->

@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth'], function () {
         route::delete('/destroy/kegiatan/{id}', [KegiatanHarianController::class, 'destroyKegiatan'])->name('destroy.kegiatanharian');
 
         route::post('/unggah/berkas/{id}', [KegiatanHarianController::class, 'unggahBerkas'])->name('store.unggahBerkas');
+        route::get('/unduh/berkas/{id}/{nik}', [KegiatanHarianController::class, 'unduhBerkas'])->name('get.unduhBerkas');
         
     });
 

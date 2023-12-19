@@ -8,4 +8,9 @@ class BerkasPendukung extends Model
 {
   protected $table = 'berkas_pendukung';
   protected $guarded = [];
+
+  public function kegiatanHarian()
+  {
+    return $this->belongsTo(KegiatanHarian::class);
+  }
 }

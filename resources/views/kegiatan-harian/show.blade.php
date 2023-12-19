@@ -11,10 +11,10 @@
     <div class="col-md-12">
       <ul class="nav nav-pills flex-column flex-md-row mb-3">
         <li class="nav-item">
-          <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i>Laporan kerja harian </a>
+          <a class="nav-link active" href="{{ route('kegiatan-harian.show', $data->id) }}"><i class="bx bxs-report me-1"></i>Laporan kerja harian </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#"><i class="bx bx-bell me-1"></i> Penilaian kerja harian</a>
+          <a class="nav-link" href="#"><i class="bx bx-stats me-1"></i> Penilaian kerja harian</a>
         </li>
       </ul>
     </div>
@@ -58,21 +58,19 @@
     </div>
     <div class="col-md-4">
       <div class="row">
-        <div class="card mb-3">
-          <h5 class="card-header">Persetujuan SPV dan Asmen</h5>
+        <div class="card mb-2">
+          <h6 class="card-header">Persetujuan SPV dan Asmen</h6>
           <form action="{{route('update.statusKegiatan', $data->id)}}" method="post">
             @csrf
             {{method_field('patch')}}
             <div class="card-body">
-              <div class="row">
-                <div class="col-md-12">
-                  <label for="firstName" class="form-label">Status laporan kegiatan</label>
-                  <select name="" class="form-select" id="" required>
-                    <option value="" selected disabled>- Pilih status laporan -</option>
-                    <option value="">Disetujui</option>
-                    <option value="">Tidak disetujui</option>
-                  </select>
-                </div>
+              <div class="col-md-12">
+                <label for="firstName" class="form-label">Status laporan kegiatan</label>
+                <select name="" class="form-select" id="" required>
+                  <option value="" selected disabled>- Pilih status laporan -</option>
+                  <option value="">Disetujui</option>
+                  <option value="">Tidak disetujui</option>
+                </select>
               </div>
             </div>
             <div class="modal-footer">
@@ -111,6 +109,7 @@
                 <th>Status kegiatan</th>
                 <th>Status akhir</th>
                 <th>Deadline</th>
+                <th>Data Pendukung</th>
               </tr>
             </thead>
             <tbody>
@@ -138,10 +137,18 @@
                   @endif
                 </td>
                 <td>{{ getTanggalIndo($row->deadline) ?? '' }}</td>
+                <td>
+                  @foreach($row->dataPendukung as $berkas)
+                  <a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}" > {{ $berkas->nama_file }}</a>
+                  @endforeach
+                </td>
               </tr>
               @endforeach
             </tbody>
           </table>
+          <div class="d-flex justify-content-end mt-2 mx-3">
+            {!! $data_kegiatan->links() !!}
+          </div>
         </div>
       </div>
     </div>

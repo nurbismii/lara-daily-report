@@ -123,7 +123,7 @@ class KegiatanHarianController extends Controller
 
         $data_penilaian = PenilaianKerja::where('absensi_id', $id)->get();
 
-        $data_kegiatan = KegiatanHarian::where('absensi_id', $data->id)->paginate(10);
+        $data_kegiatan = KegiatanHarian::with('dataPendukung')->where('absensi_id', $data->id)->paginate(10);
 
         return view('kegiatan-harian.show', compact('data', 'data_kegiatan', 'data_penilaian'))->with('no');
     }
@@ -349,7 +349,7 @@ class KegiatanHarianController extends Controller
 
         $nama_file = Auth::user()->name . ' (' . strtoupper($jenis_kegiatan) . ') ' . ' - ' . $file->getClientOriginalName();
 
-        $path = public_path('/data-pendukung/' . Auth::user()->nik . $jenis_kegiatan . '/');
+        $path = public_path('/data-pendukung/' . Auth::user()->nik . '/' . $jenis_kegiatan . '/');
 
         if (file_exists($path . $nama_file)) {
             unlink($path . $nama_file);
@@ -386,5 +386,16 @@ class KegiatanHarianController extends Controller
         }
 
         return back()->with('success', 'Agenda kerja esok hari berhasil ditambahkan');
+    }
+
+    public function unduhBerkas($id, $nik)
+    {
+        $request_file = BerkasPendukung::where('id', $id)->first();
+
+        $kegiatan = KegiatanHarian::where('id', $request_file->kegiatan_harian_id)->first();
+
+        $request_file = public_path('/data-pendukung/' . $nik . '/' . $kegiatan->kegiatan . '/' . $request_file->nama_file);
+
+        return response()->download($request_file);
     }
 }

@@ -398,4 +398,15 @@ class KegiatanHarianController extends Controller
 
         return response()->download($request_file);
     }
+
+    public function showPenilaianKerja($id)
+    {
+        $data = Absensi::with('getAnggota')->where('id', $id)->first();
+
+        $penilaian = PenilaianKerja::where('absensi_id', $id)->get();
+
+        $data_penilaian = PenilaianKerja::where('absensi_id', $id)->get();
+
+        return view('kegiatan-harian.penilaian-kerja', compact('penilaian', 'data', 'data_penilaian'));
+    }
 }

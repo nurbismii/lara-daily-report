@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
         route::get('/staff-dan-spv', [KegiatanHarianController::class, 'createKegiatan']);
         route::post('/store', [KegiatanHarianController::class, 'store'])->name('staff.store');
         route::get('/detail/{id}', [KegiatanHarianController::class, 'show'])->name('kegiatan-harian.show');
+        route::get('/detail/penilaian/{id}', [KegiatanHarianController::class, 'showPenilaianKerja'])->name('kegiatan-harian.show.penilaian');
         route::patch('/update/{id}', [KegiatanHarianController::class, 'update'])->name('update.kegiatanharian');
         route::delete('/destroy/{id}', [KegiatanHarianController::class, 'destroy'])->name('delete.absensi-kegiatan');
 

@@ -32,7 +32,7 @@
                             </div>
                             <div class="col mb-2">
                                 <label for="email">Posisi</label>
-                                <input type="text" name="posisi" value="Contoh Pengembangan" class="form-control" required readonly>
+                                <input type="text" name="posisi" value="{{ Auth::user()->posisi }}" class="form-control" required readonly>
                             </div>
                         </div>
                         <div class="row">
@@ -164,98 +164,98 @@
             </div>
         </div>
     </form>
+</div>
 
-    <div class="copy invisible">
-        <div id="form-kegiatan" class="card-body control-group count">
-            <div class="divider divider-success">
-                <div class="divider-text fw-bold">#1. Pekerjaan Harian</div>
-            </div>
-            <div class="row">
-                <div class="col mb-2">
-                    <label for="kegiatan">Kegiatan</label>
-                    <textarea class="form-control" name="kegiatan[]" cols="30" rows="5"></textarea>
-                </div>
-            </div>
-            <div class="row mb-3 g-2">
-                <div class="col mb-2">
-                    <label for="email">Jenis Kegiatan</label>
-                    <select name="jenis_kegiatan_id[]" class="form-select" required>
-                        <option value="" disabled selected>-- Pilih jenis kegiatan --</option>
-                        @foreach($jenis_kegiatan as $row)
-                        <option value="{{$row->id}}">{{$row->jenis_kegiatan}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="row mb-3 g-2">
-                <div class="col mb-2">
-                    <label for="kata-sandi">Kategori kegiatan</label>
-                    <select name="kategori_kegiatan_id[]" class="form-select" id="">
-                        <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
-                        @foreach($kategori_kegiatan as $row)
-                        <option value="{{$row->id}}">{{$row->kategori_kegiatan}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col mb-2">
-                    <label for="email">PIC</label>
-                    <select name="pic_id[]" class="form-select" id="">
-                        <option value="" disabled selected>-- Pilih PIC --</option>
-                        @foreach($pic as $row)
-                        <option value="{{$row->id}}">{{$row->pic}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col mb-3">
-                    <label for="kendala">Kendala/Masalah</label>
-                    <textarea name="kendala[]" class="form-control" id="" cols="30" rows="5 "></textarea>
-                </div>
-            </div>
-            <div class="row mb-3 g-2">
-                <div class="col mb-2">
-                    <label for="nama">Mulai</label>
-                    <input type="text" placeholder="12:00" maxlength="5" name="mulai[]" class="form-control time-slicer" required>
-                </div>
-                <div class="col mb-2">
-                    <label for="email">Selesai</label>
-                    <input type="text" placeholder="12:00" maxlength="5" name="selesai[]" class="form-control time-slice" required>
-                </div>
-            </div>
-            <div class="row mb-3 g-2">
-                <div class="col mb-2">
-                    <label for="nama">Status Kegiatan</label>
-                    <select name="status_kegiatan[]" class="form-select" id="">
-                        <option value="" disabled selected>-- Pilih status kegiatan --</option>
-                        <option value="selesai">Selesai</option>
-                        <option value="tidak selesai">Tidak selesai</option>
-                    </select>
-                </div>
-                <div class="col mb-2">
-                    <label for="deadline">Deadline penyelesaian</label>
-                    <input type="date" name="deadline[]" class="form-control">
-                </div>
-            </div>
-            <div class="row mb-3 g-2">
-                <div class="col mb-2">
-                    <label for="nama">Status akhir</label>
-                    <select name="status_akhir[]" class="form-select" id="">
-                        <option value="" disabled selected>-- Pilih status akhir --</option>
-                        <option value="sesuai">Sesuai</option>
-                        <option value="tidak sesuai">Tidak sesuai</option>
-                    </select>
-                </div>
-                <div class="col mb-2">
-                    <label for="kuantitas">Kuantitas</label>
-                    <input type="number" name="kuantitas[]" class="form-control">
-                </div>
-            </div>
-            <button type="button" class="btn btn-danger remove btn-sm">
-                <span class="tf-icons bx bx-trash"></span>
-                Hapus form kegiatan
-            </button>
+<div class="copy" style="display: none;">
+    <div id="form-kegiatan" class="card-body control-group count">
+        <div class="divider divider-success">
+            <div class="divider-text fw-bold">#1. Pekerjaan Harian</div>
         </div>
+        <div class="row">
+            <div class="col mb-2">
+                <label for="kegiatan">Kegiatan</label>
+                <textarea class="form-control" name="kegiatan[]" cols="30" rows="5"></textarea>
+            </div>
+        </div>
+        <div class="row mb-3 g-2">
+            <div class="col mb-2">
+                <label for="email">Jenis Kegiatan</label>
+                <select name="jenis_kegiatan_id[]" class="form-select" required>
+                    <option value="" disabled selected>-- Pilih jenis kegiatan --</option>
+                    @foreach($jenis_kegiatan as $row)
+                    <option value="{{$row->id}}">{{$row->jenis_kegiatan}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3 g-2">
+            <div class="col mb-2">
+                <label for="kata-sandi">Kategori kegiatan</label>
+                <select name="kategori_kegiatan_id[]" class="form-select" id="">
+                    <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
+                    @foreach($kategori_kegiatan as $row)
+                    <option value="{{$row->id}}">{{$row->kategori_kegiatan}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col mb-2">
+                <label for="email">PIC</label>
+                <select name="pic_id[]" class="form-select" id="">
+                    <option value="" disabled selected>-- Pilih PIC --</option>
+                    @foreach($pic as $row)
+                    <option value="{{$row->id}}">{{$row->pic}}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col mb-3">
+                <label for="kendala">Kendala/Masalah</label>
+                <textarea name="kendala[]" class="form-control" id="" cols="30" rows="5 "></textarea>
+            </div>
+        </div>
+        <div class="row mb-3 g-2">
+            <div class="col mb-2">
+                <label for="nama">Mulai</label>
+                <input type="text" placeholder="12:00" maxlength="5" name="mulai[]" class="form-control time-slicer" required>
+            </div>
+            <div class="col mb-2">
+                <label for="email">Selesai</label>
+                <input type="text" placeholder="12:00" maxlength="5" name="selesai[]" class="form-control time-slice" required>
+            </div>
+        </div>
+        <div class="row mb-3 g-2">
+            <div class="col mb-2">
+                <label for="nama">Status Kegiatan</label>
+                <select name="status_kegiatan[]" class="form-select" id="">
+                    <option value="" disabled selected>-- Pilih status kegiatan --</option>
+                    <option value="selesai">Selesai</option>
+                    <option value="tidak selesai">Tidak selesai</option>
+                </select>
+            </div>
+            <div class="col mb-2">
+                <label for="deadline">Deadline penyelesaian</label>
+                <input type="date" name="deadline[]" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3 g-2">
+            <div class="col mb-2">
+                <label for="nama">Status akhir</label>
+                <select name="status_akhir[]" class="form-select" id="">
+                    <option value="" disabled selected>-- Pilih status akhir --</option>
+                    <option value="sesuai">Sesuai</option>
+                    <option value="tidak sesuai">Tidak sesuai</option>
+                </select>
+            </div>
+            <div class="col mb-2">
+                <label for="kuantitas">Kuantitas</label>
+                <input type="number" name="kuantitas[]" class="form-control">
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger remove btn-sm">
+            <span class="tf-icons bx bx-trash"></span>
+            Hapus form kegiatan
+        </button>
     </div>
 </div>
 

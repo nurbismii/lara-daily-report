@@ -3,164 +3,68 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="row">
-    <h4 class="fw-bold py-2 mb-2">Kegiatan harian</h4>
-    <!-- Basic Bootstrap Table -->
-    <div class="col-lg-12">
+    <h4 class="fw-bold py-2 mb-2"><span class="text-muted fw-light">Kegiatan harian /</span> penilaian kerja harian</h4>
+    <div class="col-xl-12">
       @include('message')
     </div>
     <div class="col-md-12">
       <ul class="nav nav-pills flex-column flex-md-row mb-3">
         <li class="nav-item">
-          <a class="nav-link active" href="{{ route('kegiatan-harian.show', $data->id) }}"><i class="bx bxs-report me-1"></i>Laporan kerja harian </a>
+          <a class="nav-link {{ Request::segment(2) == 'detail' && Request::segment(3) == $data->id ? 'active' : ''}}" href="{{ route('kegiatan-harian.show', $data->id) }}"><i class="bx bxs-report me-1"></i>Laporan kerja harian </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ route('kegiatan-harian.show.penilaian', $data->id) }}"><i class="bx bx-stats me-1"></i> Penilaian kerja harian</a>
+          <a class="nav-link {{ Request::segment(2) == 'detail' && Request::segment(3) == 'penilaian' ? 'active' : ''}}" href="{{ route('kegiatan-harian.show.penilaian', $data->id) }}"><i class="bx bx-stats me-1"></i> Penilaian kerja harian</a>
         </li>
       </ul>
     </div>
-    <div class="col-md-8">
-
-      <div class="card mb-3">
-        <h5 class="card-header">Tabel kehadiran</h5>
+    <div class="col-md-3 col-lg-8">
+      <div class="card mb-2">
+        <h5 class="card-header">Penilaian Kerja Harian SPV</h5>
         <div class="card-body">
-          <div class="row">
-            <div class="mb-3 col-md-6">
-              <label for="firstName" class="form-label">Nama</label>
-              <input class="form-control" type="text" name="name" value="{{ $data->getAnggota->name }}" readonly>
+          @foreach($penilaian as $row)
+          <div class="row g-2">
+            <div class="col mb-2">
+              <label for="nama">{{ $row->jenis_penilaian }}</label>
+              <input type="text" name="nilai_spv[]" value="{{ $row->nilai_spv }}" class="form-control" required>
             </div>
-            <div class="mb-3 col-md-6">
-              <label for="lastName" class="form-label">NIK</label>
-              <input class="form-control" type="text" name="nik" value="{{ $data->getAnggota->nik}}" readonly>
-            </div>
-            <div class="mb-3 col-md-6">
-              <label for="email" class="form-label">Masuk</label>
-              <input class="form-control" type="text" value="{{ $data->jam_masuk }}" readonly>
-            </div>
-            <div class="mb-3 col-md-6">
-              <label for="organization" class="form-label">Istirahat</label>
-              <input type="text" class="form-control" name="organization" value="{{ $data->jam_istirahat }}" readonly>
-            </div>
-            <div class="mb-3 col-md-6">
-              <label for="email" class="form-label">Kembali istirahat</label>
-              <input class="form-control" type="text" value="{{ $data->jam_kembali_istirahat }}" readonly>
-            </div>
-            <div class="mb-3 col-md-6">
-              <label for="organization" class="form-label">Pulang</label>
-              <input type="text" class="form-control" name="organization" value="{{ $data->jam_pulang }}" readonly>
-            </div>
-            <div class="mb-3 col-md-12">
-              <label for="organization" class="form-label">Tanggal</label>
-              <input type="text" class="form-control" name="organization" value="{{ getTanggalIndo($data->tanggal) }}" readonly>
+            <div class="col mb-2">
+              <label for="email">Catatan {{ $row->jenis_penilaian }}</label>
+              <input type="text" name="catatan_spv[]" value="{{ $row->catatan_spv }}" class="form-control">
             </div>
           </div>
+          @endforeach
         </div>
       </div>
     </div>
     <div class="col-md-4">
       <div class="row">
-        <div class="card mb-2">
-          <h6 class="card-header">Persetujuan SPV dan Asmen</h6>
-          <form action="{{route('update.statusKegiatan', $data->id)}}" method="post">
-            @csrf
-            {{method_field('patch')}}
-            <div class="card-body">
-              <div class="row">
-                <div class="mb-3 col-md-6">
-                  <label for="email" class="form-label">Supervisor</label> <br>
-                  @if(strtolower($data->status_spv) == 'diterima')
-                  <span class="badge bg-label-success">Diterima</span>
-                  @else
-                  <span class="badge bg-label-warning">menunggu</span>
-                  @endif
-                  </td>
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="organization" class="form-label">Asmen</label> <br>
-                  @if(strtolower($data->status_asmen) == 'diterima')
-                  <span class="badge bg-label-success">Diterima</span>
-                  @else
-                  <span class="badge bg-label-warning">Menunggu</span>
-                  @endif
-                </div>
-                <div class="divider text-end">
-                  <div class="divider-text">
-                    <i class="bx bx-cut bx-rotate-180"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12">
-                <label for="firstName" class="form-label">Status laporan kegiatan</label>
-                <select name="" class="form-select" id="" required>
-                  <option value="" selected disabled>- Pilih status laporan -</option>
-                  <option value="">Disetujui</option>
-                  <option value="">Tidak disetujui</option>
-                </select>
-              </div>
+        <div class="card mb-3">
+          <h5 class="card-header">Penilaian kerja harian</h5>
+          <div class="card-body">
+            <div class="d-grid gap-2 col-lg-12 mx-auto">
+              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-penilaian-spv{{$data->id}}" class="btn btn-primary">Penilaian SPV</a>
+              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-penilaian-asmen{{$data->id}}" class="btn btn-primary">Penilaian Asmen</a>
             </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-lg-12">
-      <div class="card">
-        <h5 class="card-header">Tabel kegiatan</h5>
-        <div class="table-responsive text-nowrap">
-          <table class="table table-condensed table-striped" style="width: 100%;">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Kegiatan</th>
-                <th>Jenis Kegiatan</th>
-                <th>Kategori kegiatan</th>
-                <th>PIC</th>
-                <th>Jam </th>
-                <th>Selesai</th>
-                <th>Status kegiatan</th>
-                <th>Status akhir</th>
-                <th>Deadline</th>
-                <th>Data Pendukung</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($data_kegiatan as $row)
-              <tr>
-                <td>{{ ++$no }}</td>
-                <td>{{ $row->kegiatan ?? '' }}</td>
-                <td>{{ getJenisKegiatanById($row->jenis_kegiatan_id) ?? '' }}</a></td>
-                <td>{{ getKategoriKegiatanById($row->kategori_kegiatan_id) ?? '' }}</td>
-                <td>{{ getPicById($row->pic_id) ?? '' }}</td>
-                <td>{{ $row->mulai ?? '' }}</td>
-                <td>{{ $row->selesai ?? '' }}</td>
-                <td>
-                  @if(strtolower($row->status_kegiatan) == 'selesai')
-                  <span class="badge bg-label-success">Selesai</span>
-                  @else
-                  <span class="badge bg-label-warning">Tidak selesai</span>
-                  @endif
-                </td>
-                <td>
-                  @if(strtolower($row->status_akhir) == 'sesuai')
-                  <span class="badge bg-label-success">Sesuai</span>
-                  @else
-                  <span class="badge bg-label-warning">Tidak sesuai</span>
-                  @endif
-                </td>
-                <td>{{ getTanggalIndo($row->deadline) ?? '' }}</td>
-                <td>
-                  @foreach($row->dataPendukung as $berkas)
-                  <a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"> {{ $berkas->nama_file }}</a> <br>
-                  @endforeach
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-          <div class="d-flex justify-content-end mt-2 mx-3">
-            {!! $data_kegiatan->links() !!}
+    <div class="col-md-3 col-lg-8">
+      <div class="card mb-2">
+        <h5 class="card-header">Penilaian Kerja Harian Asmen</h5>
+        <div class="card-body">
+          @foreach($penilaian as $row)
+          <div class="row g-2">
+            <div class="col mb-2">
+              <label for="nama">{{ $row->jenis_penilaian }}</label>
+              <input type="text" name="nilai_asmen[]" value="{{ $row->nilai_asmen }}" class="form-control" required>
+            </div>
+            <div class="col mb-2">
+              <label for="email">Catatan {{ $row->jenis_penilaian }}</label>
+              <input type="text" name="catatan_asmen[]" value="{{ $row->catatan_asmen }}" class="form-control">
+            </div>
           </div>
+          @endforeach
         </div>
       </div>
     </div>
@@ -736,29 +640,5 @@
     </div>
   </div>
 </div>
-
-@foreach($data_kegiatan as $data)
-<div class="modal modal-top fade" id="modal-hapus-semua{{$data->id}}" tabindex="-1">
-  <div class="modal-dialog">
-    <form action="{{route('destroy.kegiatanharian', $data->id)}}" method="post" class="modal-content">
-      @csrf
-      {{method_field('delete')}}
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalTopTitle">Konfirmasi permintaan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Kamu yakin ingin menghapus kehadiran ini [ {{getTanggalIndo($data->tanggal)}} ], jika menghapus data ini, data kegiatan harian pada tanggal {{getTanggalIndo($data->tanggal)}} akan terhapus
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Tutup
-        </button>
-        <button type="submit" class="btn btn-primary">Hapus</button>
-      </div>
-    </form>
-  </div>
-</div>
-@endforeach
 
 @endsection

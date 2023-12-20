@@ -2,8 +2,12 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-
   <div class="row">
+    <h4 class="fw-bold py-2 mb-2"><span class="text-muted fw-light">Kegiatan harian /</span> penilaian kerja harian</h4>
+    <!-- Basic Bootstrap Table -->
+    <div class="col-lg-12">
+      @include('message')
+    </div>
     <div class="col-md-12">
       <ul class="nav nav-pills flex-column flex-md-row mb-3">
         <li class="nav-item">

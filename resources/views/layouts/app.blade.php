@@ -107,11 +107,10 @@
 
   <!-- Page JS -->
   <script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>
-  <script src="{{asset('sw.js')}}"></script>
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  
+
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
@@ -120,11 +119,14 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- Daterangepicker -->
 
+  <!-- Progressive website aplication -->
+  <script src="{{asset('/sw.js')}}"></script>
+
   <script>
     if ("serviceWorker" in navigator) {
       // Register a service worker hosted at the root of the
       // site using the default scope.
-      navigator.serviceWorker.register("sw.js").then(
+      navigator.serviceWorker.register("/sw.js").then(
         (registration) => {
           console.log("Service worker registration succeeded:", registration);
         },

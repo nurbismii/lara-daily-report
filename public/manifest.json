@@ -1,9 +1,9 @@
 {
-    "name": "Laporan Harian VDNI",
+    "name": "Laporan Harian HR SITE VDNI",
     "short_name": "LPT",
     "start_url": "/index.php",
     "background_color": "#6777ef",
-    "description": "Laporan Harian VDNI",
+    "description": "Laporan Harian",
     "display": "fullscreen",
     "theme_color": "#6777ef",
     "icons": [

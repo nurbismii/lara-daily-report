@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Tim::class, 'supervisor_id', 'id');
     }
+
+    public function anggotaTim()
+    {
+        return $this->hasOne(AnggotaTim::class, 'user_id', 'user_id');
+    }
 }

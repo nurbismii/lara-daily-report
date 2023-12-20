@@ -2,11 +2,8 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
+
   <div class="row">
-    <h4 class="fw-bold py-2 mb-2"><span class="text-muted fw-light">Kegiatan harian /</span> penilaian kerja harian</h4>
-    <div class="col-xl-12">
-      @include('message')
-    </div>
     <div class="col-md-12">
       <ul class="nav nav-pills flex-column flex-md-row mb-3">
         <li class="nav-item">
@@ -17,54 +14,62 @@
         </li>
       </ul>
     </div>
-    <div class="col-md-3 col-lg-8">
-      <div class="card mb-2">
-        <h5 class="card-header">Penilaian Kerja Harian SPV</h5>
-        <div class="card-body">
-          @foreach($penilaian as $row)
-          <div class="row g-2">
-            <div class="col mb-2">
-              <label for="nama">{{ $row->jenis_penilaian }}</label>
-              <input type="text" name="nilai_spv[]" value="{{ $row->nilai_spv }}" class="form-control" required>
-            </div>
-            <div class="col mb-2">
-              <label for="email">Catatan {{ $row->jenis_penilaian }}</label>
-              <input type="text" name="catatan_spv[]" value="{{ $row->catatan_spv }}" class="form-control">
-            </div>
-          </div>
-          @endforeach
-        </div>
-      </div>
-    </div>
     <div class="col-md-4">
-      <div class="row">
-        <div class="card mb-3">
-          <h5 class="card-header">Penilaian kerja harian</h5>
-          <div class="card-body">
-            <div class="d-grid gap-2 col-lg-12 mx-auto">
-              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-penilaian-spv{{$data->id}}" class="btn btn-primary">Penilaian SPV</a>
-              <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-penilaian-asmen{{$data->id}}" class="btn btn-primary">Penilaian Asmen</a>
-            </div>
+      <div class="card mb-2">
+        <h5 class="card-header">Penilaian kerja harian</h5>
+        <div class="card-body">
+          <div class="d-grid gap-2 col-lg-12 mx-auto">
+            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-penilaian-spv{{$data->id}}" class="btn btn-primary">Penilaian SPV</a>
+            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#modal-penilaian-asmen{{$data->id}}" class="btn btn-primary">Penilaian Asmen</a>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-md-3 col-lg-8">
-      <div class="card mb-2">
-        <h5 class="card-header">Penilaian Kerja Harian Asmen</h5>
-        <div class="card-body">
-          @foreach($penilaian as $row)
-          <div class="row g-2">
-            <div class="col mb-2">
-              <label for="nama">{{ $row->jenis_penilaian }}</label>
-              <input type="text" name="nilai_asmen[]" value="{{ $row->nilai_asmen }}" class="form-control" required>
-            </div>
-            <div class="col mb-2">
-              <label for="email">Catatan {{ $row->jenis_penilaian }}</label>
-              <input type="text" name="catatan_asmen[]" value="{{ $row->catatan_asmen }}" class="form-control">
+
+    <div class="col-md-8">
+      <!-- Segmented buttons -->
+      <div class="row">
+        <div class="col-md-3 col-lg-12">
+          <div class="card mb-2">
+            <h5 class="card-header">Penilaian Kerja Harian SPV</h5>
+            <div class="card-body">
+              @foreach($penilaian as $row)
+              <div class="row g-2">
+                <div class="col mb-2">
+                  <label for="nama">{{ $row->jenis_penilaian }}</label>
+                  <input type="text" name="nilai_spv[]" value="{{ $row->nilai_spv }}" class="form-control" required>
+                </div>
+                <div class="col mb-2">
+                  <label for="email">Catatan {{ $row->jenis_penilaian }}</label>
+                  <input type="text" name="catatan_spv[]" value="{{ $row->catatan_spv }}" class="form-control">
+                </div>
+              </div>
+              @endforeach
             </div>
           </div>
-          @endforeach
+        </div>
+      </div>
+
+      <!-- Custom select -->
+      <div class="row">
+        <div class="col-md-3 col-lg-12">
+          <div class="card mb-2">
+            <h5 class="card-header">Penilaian Kerja Harian Asmen</h5>
+            <div class="card-body">
+              @foreach($penilaian as $row)
+              <div class="row g-2">
+                <div class="col mb-2">
+                  <label for="nama">{{ $row->jenis_penilaian }}</label>
+                  <input type="text" name="nilai_asmen[]" value="{{ $row->nilai_asmen }}" class="form-control" required>
+                </div>
+                <div class="col mb-2">
+                  <label for="email">Catatan {{ $row->jenis_penilaian }}</label>
+                  <input type="text" name="catatan_asmen[]" value="{{ $row->catatan_asmen }}" class="form-control">
+                </div>
+              </div>
+              @endforeach
+            </div>
+          </div>
         </div>
       </div>
     </div>

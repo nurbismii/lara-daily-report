@@ -58,7 +58,7 @@
       <span class="menu-header-text">Main menu</span>
     </li>
     <li class="menu-item {{ Request::segment(1) === 'pengguna' ? 'active' : null }}">
-      @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')
+      @if(Auth::user()->jabatan == 'ADMIN')
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-user-check"></i>
         <div data-i18n="Account Settings">Pengguna</div>
@@ -108,7 +108,7 @@
     </li>
     @endif
     <!-- Pengaturan -->
-    @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')
+    @if(Auth::user()->jabatan == 'ADMIN')
     <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
     <!-- Konfigurasi -->
     <li class="menu-item {{ Request::segment(1) === 'pengaturan' ? 'active' : null }}">

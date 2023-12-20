@@ -29,68 +29,71 @@ class KegiatanHarianController extends Controller
         $jabatan = Auth::user()->jabatan;
 
         if ($jabatan == 'ASMEN') {
-            $data_tim = Tim::with('getKetua', 'getSpv', 'anggotaTim')->where('ketua_tim_id', Auth::user()->id)->get();
+            $data_tim = Tim::with('getKetua', 'getSpv', 'anggotaTim')->where('ketua_tim_id', Auth::user()->id)->first();
         }
 
         if ($jabatan == 'SPV') {
-            $data_tim = Tim::with('getKetua', 'getSpv', 'anggotaTim')->where('supervisor_id', Auth::user()->id)->get();
+            $data_tim = Tim::with('getKetua', 'getSpv', 'anggotaTim')->where('supervisor_id', Auth::user()->id)->first();
         }
 
-        foreach ($data_tim as $tim) {
+        /* Menyimpan data anggota tim kedalam array */
+        foreach ($data_tim->anggotaTim as $row) {
 
-            $datas = Absensi::all();
+            $tim_id[] = $row->user_id;
+        }
 
-            if ($jabatan == 'ASMEN') {
+        $datas = Absensi::all();
 
-                foreach ($datas as $row) {
+        if ($jabatan == 'ASMEN') {
 
-                    $data_spv[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
-                        ->where('absensi.id', $row->id)->where('absensi.user_id', $tim->supervisor_id)
-                        ->select('users.name', 'users.nik', 'absensi.*')->first();
-                }
+            foreach ($datas as $val) {
+
+                $data_spv[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
+                    ->where('absensi.id', $val->id)
+                    ->select('users.name', 'users.nik', 'absensi.*')->first();
+            }
+        }
+
+        if ($jabatan == 'SPV') {
+
+            foreach ($datas as $val) {
+
+                $data_absensi[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
+                    ->where('absensi.id', $val->id)->whereIn('absensi.user_id', $tim_id)
+                    ->select('users.name', 'users.nik', 'absensi.*')->first();
+            }
+        }
+
+        $merge = array_merge($data_spv, $data_absensi);
+
+        $data = array_values(array_filter($merge));
+
+        if ($request->ajax()) {
+
+            $data = collect($data);
+
+            if ($request->filled('from_date') && $request->filled('to_date')) {
+                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
             }
 
-            foreach ($tim->anggotaTim as $row) {
-
-                foreach ($datas as $val) {
-
-                    $data_absensi[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
-                        ->where('absensi.id', $val->id)->where('absensi.user_id', $row->user_id)
-                        ->select('users.name', 'users.nik', 'absensi.*')->first();
-                }
-
-                $merge = array_merge($data_spv, $data_absensi);
-
-                $data = array_values(array_filter($merge));
-
-                if ($request->ajax()) {
-
-                    $data = collect($data);
-
-                    if ($request->filled('from_date') && $request->filled('to_date')) {
-                        $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('aksi', function ($data) {
+                    return view('kegiatan-harian._aksi', [
+                        'data' => $data,
+                        'url_detil_kegiatan' => route('kegiatan-harian.show', $data->id),
+                        'url_hapus' => route('delete.absensi-kegiatan-delete', $data->id)
+                    ]);
+                })->filter(function ($instance) use ($request) {
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function ($w) use ($request) {
+                            $search = $request->get('search');
+                            $w->where('name', 'LIKE', "%$search%");
+                        });
                     }
-
-                    return DataTables::of($data)
-                        ->addIndexColumn()
-                        ->addColumn('aksi', function ($data) {
-                            return view('kegiatan-harian._aksi', [
-                                'data' => $data,
-                                'url_detil_kegiatan' => route('kegiatan-harian.show', $data->id),
-                                'url_hapus' => route('delete.absensi-kegiatan-delete', $data->id)
-                            ]);
-                        })->filter(function ($instance) use ($request) {
-                            if (!empty($request->get('search'))) {
-                                $instance->where(function ($w) use ($request) {
-                                    $search = $request->get('search');
-                                    $w->where('name', 'LIKE', "%$search%");
-                                });
-                            }
-                        })
-                        ->rawColumns(['aksi'])
-                        ->make(true);
-                }
-            }
+                })
+                ->rawColumns(['aksi'])
+                ->make(true);
         }
         return view('kegiatan-harian.index');
     }

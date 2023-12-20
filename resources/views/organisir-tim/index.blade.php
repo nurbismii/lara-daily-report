@@ -85,9 +85,7 @@
               <label for="ketua-tim">Asisten Manager</label>
               <select name="ketua_tim_id" class="form-select" required>
                 <option value="" selected>-- Pilih ketua tim --</option>
-                @foreach($pengguna as $row)
-                <option value="{{ $row->id }}">{{$row->name}} | {{$row->nik}}</option>
-                @endforeach
+                <option value="{{ $asmen->id }}">{{$asmen->name}} | {{$asmen->nik}}</option>
                 <option value="1101">Tidak ada asisten manager</option>
               </select>
             </div>
@@ -95,7 +93,7 @@
               <label for="spv">Supervisor (SPV)</label>
               <select name="supervisor_id" class="form-select" required>
                 <option value="" selected>-- Pilih supervisor --</option>
-                @foreach($pengguna as $row)
+                @foreach($spv as $row)
                 <option value="{{ $row->id }}">{{$row->name}} | {{$row->nik}}</option>
                 @endforeach
                 <option value="1101">Tidak ada supervisor</option>
@@ -134,7 +132,7 @@
               <label for="spv">Anggota Tim</label>
               <select name="user_id" class="form-select" required>
                 <option value="" selected>-- Pilih anggota tim --</option>
-                @foreach($pengguna as $row)
+                @foreach($staff as $row)
                 <option value="{{ $row->id }}">{{$row->name}} | {{$row->nik}}</option>
                 @endforeach
               </select>
@@ -173,11 +171,9 @@
                 <div class="input-group">
                   <select name="ketua_tim_id" class="form-select">
                     <option value="{{$data->ketua_tim_id}}">{{$data->getKetua->name}}</option>
-                    @foreach($pengguna as $row)
-                    @if($row->id != $data->ketua_tim_id ?? '')
-                    <option value="{{$row->id}}">{{$row->name}}</option>
+                    @if($asmen->id != $data->ketua_tim_id ?? '')
+                    <option value="{{$asmen->id}}">{{$asmen->name}}</option>
                     @endif
-                    @endforeach
                   </select>
                   <button class="btn btn-outline-primary" type="submit">Simpan perubahan</button>
                 </div>
@@ -193,7 +189,7 @@
                 <div class="input-group">
                   <select name="supervisor_id" class="form-select">
                     <option value="{{$data->supervisor_id}}">{{$data->getSpv->name}}</option>
-                    @foreach($pengguna as $row)
+                    @foreach($spv as $row)
                     @if($row->id != $data->supervisor_id)
                     <option value="{{$row->id}}">{{$row->name}}</option>
                     @endif
@@ -219,7 +215,7 @@
                   <div class="input-group">
                     <select name="user_id" class="form-select">
                       <option value="{{$anggota->user_id}}">{{$anggota->getAnggota->name}}</option>
-                      @foreach($pengguna as $row)
+                      @foreach($staff as $row)
                       @if($row->id != $anggota->user_id)
                       <option value="{{$row->id}}">{{$row->name}}</option>
                       @endif

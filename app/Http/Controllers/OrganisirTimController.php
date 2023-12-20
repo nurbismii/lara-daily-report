@@ -18,8 +18,10 @@ class OrganisirTimController extends Controller
     {
         //
         $organisir_tim = Tim::with('anggotaTim', 'getKetua', 'getSpv')->get();
-        $pengguna = User::all();
-        return view('organisir-tim.index', compact('organisir_tim', 'pengguna'));
+        $asmen = User::where('jabatan', 'ASMEN')->first();
+        $spv = User::where('jabatan', 'SPV')->get();
+        $staff = User::where('jabatan', 'STAFF')->get();
+        return view('organisir-tim.index', compact('organisir_tim', 'asmen', 'spv', 'staff'));
     }
 
     /**

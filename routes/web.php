@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KegiatanHarianController;
+use App\Http\Controllers\KegiatanMingguanController;
 use App\Http\Controllers\OrganisirTimController;
 use App\Http\Controllers\Pengaturan\KategoriKegiatanController;
 use App\Http\Controllers\Pengaturan\KegiatanController;
@@ -49,7 +50,13 @@ Route::group(['middleware' => 'auth'], function () {
 
         route::post('/unggah/berkas/{id}', [KegiatanHarianController::class, 'unggahBerkas'])->name('store.unggahBerkas');
         route::get('/unduh/berkas/{id}/{nik}', [KegiatanHarianController::class, 'unduhBerkas'])->name('get.unduhBerkas');
-        
+    });
+
+    Route::group(['prefix' => 'kegiatan-mingguan'], function () {
+        route::get('/', [KegiatanMingguanController::class, 'index']);
+        route::get('/create', [KegiatanMingguanController::class, 'create']);
+        route::get('/show/{id}', [KegiatanMingguanController::class, 'show'])->name('show.kegiatanMingguan');
+        route::post('/update/{id}', [KegiatanMingguanController::class, 'update'])->name('update.kegiatanMingguan');
     });
 
     Route::patch('/update/status-kegiatan/{id}', [KegiatanHarianController::class, 'updateStatusKegiatan'])->name('update.statusKegiatan');

@@ -87,7 +87,12 @@
         @endif
         <li class="menu-item">
           <a href="/kegiatan-harian/create" class="menu-link">
-            <div data-i18n="Account">Buat kegiatan</div>
+            <div data-i18n="Account">Kegiatan harian</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/kegiatan-mingguan" class="menu-link">
+            <div data-i18n="Account">Kegiatan mingguan</div>
           </a>
         </li>
       </ul>

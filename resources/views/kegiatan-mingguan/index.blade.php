@@ -102,14 +102,12 @@
           name: 'persen',
           render: function(data, type, row) {
             badge = '';
-            switch (data) {
-              case null:
-                badge = '<span class="badge bg-primary">' + '0%' + '</span>';
-                break;
-              case !null:
-                badge = '<span class="badge bg-primary">' + $data + '%' + '</span>';
-                break;
+            if (data == null) {
+              badge = '<span class="badge bg-primary">' + '0%' + '</span>';
+            } else if (data != null) {
+              badge = '<span class="badge bg-primary">' + data + '%' + '</span>';
             }
+
             return badge;
           }
         },

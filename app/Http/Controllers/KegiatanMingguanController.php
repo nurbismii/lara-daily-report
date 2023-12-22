@@ -67,6 +67,7 @@ class KegiatanMingguanController extends Controller
      */
     public function create(Request $request)
     {
+
         //
         $tgl_awal = $request->tgl_awal;
         $tgl_akhir = $request->tgl_akhir;
@@ -74,12 +75,15 @@ class KegiatanMingguanController extends Controller
 
         if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
 
-            $datas = Absensi::with('kegiatanHarian', 'agendaEsok')
-                ->join('users', 'users.id', '=', 'absensi.user_id')
-                ->where('users.nik', Auth::user()->nik)
-                ->whereBetween('absensi.tanggal', [$tgl_awal, $tgl_akhir])
-                ->orderBy('tanggal', 'asc')
-                ->select('absensi.*')->get();
+            $tipe = $request->tipe == '1' ? NULL : $request->tipe;
+
+            $datas = KegiatanHarian::join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
+                ->where('tipe', $tipe)
+                ->where('status_duplikat', null)
+                ->where('absensi.user_id', Auth::user()->id)
+                ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+                ->select('kegiatan_harian.*', 'absensi.tanggal')
+                ->get();
 
             return view('kegiatan-mingguan.create', compact('datas', 'tgl_awal', 'tgl_akhir'));
         }

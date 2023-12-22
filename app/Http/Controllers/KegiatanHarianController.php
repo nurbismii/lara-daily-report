@@ -157,9 +157,15 @@ class KegiatanHarianController extends Controller
             $status_akhir = $request['status_akhir'];
             $kuantitas = $request['kuantitas'];
 
+            
+
             $jumlah_kegiatan = count($kegiatan);
 
             for ($i = 0; $i < $jumlah_kegiatan; $i++) {
+
+                KegiatanHarian::where('kegiatan', $kegiatan[$i])->update([
+                    'status_duplikat' => '1'
+                ]);
 
                 $data_kegiatan_harian[] = [
                     'absensi_id' => $data_absensi->id,

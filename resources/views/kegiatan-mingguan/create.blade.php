@@ -21,6 +21,15 @@
                 <input type="date" name="tgl_akhir" class="form-control" required>
               </div>
             </div>
+            <div class="row">
+              <label for="html5-text-input" class="col-md-4 col-form-label">Tipe laporan</label>
+              <div class="col-md-8 mb-2">
+                <select name="tipe" class="form-select" required>
+                  <option value="1">Harian</option>
+                  <option value="2">Mingguan</option>
+                </select>
+              </div>
+            </div>
             <button type="submit" class="btn btn-primary float-end  mx-2">Cari kegiatan</button>
             <a href="/kegiatan-mingguan/create" class="btn btn-danger float-end">Hapus filter</a>
           </form>
@@ -31,7 +40,7 @@
     <div class="col-md-12">
       <!-- Segmented buttons -->
       <div class="row">
-        
+
         @if($tgl_awal)
         <div class="col-md-12 text-center">
           <div class="alert alert-primary" role="alert">
@@ -42,49 +51,48 @@
         @endif
 
         @foreach($datas as $data)
-        @foreach($data->kegiatanHarian as $row)
-        @if($row->uraian_kegiatan == 'NULL')
+        @if($data->tipe != '2')
         <div class="col-md-3 col-lg-12">
           <div class="card mb-3">
             <div class="card-body">
-              <form action="{{ route('update.kegiatanMingguan', $row->id) }}" enctype="multipart/form-data" method="post">
+              <form action="{{ route('update.kegiatanMingguan', $data->id) }}" enctype="multipart/form-data" method="post">
                 @csrf
                 <div class="row g-2">
                   <div class="col-md-6 mb-2">
                     <label for="nama">Kegiatan</label>
-                    <input type="text" name="kegiatan" value="{{ $row->kegiatan }}" class="form-control" readonly>
+                    <input type="text" name="kegiatan" value="{{ $data->kegiatan }}" class="form-control" readonly>
                   </div>
                   <div class="col-md-6 mb-2">
                     <label for="jenis_kegiatan">Jenis Kegiatan</label>
-                    <input type="text" value="{{ getJenisKegiatanById($row->jenis_kegiatan_id) }}" class="form-control" readonly>
+                    <input type="text" value="{{ getJenisKegiatanById($data->jenis_kegiatan_id) }}" class="form-control" readonly>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-2">
                     <label for="kategori_kegiatan">Kategori Kegiatan</label>
-                    <input type="text" value="{{ getKategoriKegiatanById($row->kategori_kegiatan_id) }}" class="form-control" readonly>
+                    <input type="text" value="{{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}" class="form-control" readonly>
                   </div>
                   <div class="col-md-6 mb-2">
                     <label for="persentase">Persentase penyelesaian pekerjaan</label>
-                    <input type="number" name="persen" value="{{ getKategoriKegiatanById($row->kategori_kegiatan_id) }}" class="form-control">
+                    <input type="number" name="persen" value="{{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}" class="form-control">
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 mb-2">
                     <label for="uraian_kegiatan">Uraian kegiatan</label>
-                    <textarea name="uraian_kegiatan" class="form-control" cols="30" rows="3">{{ $row->uraian_kegiatan }}</textarea>
+                    <textarea name="uraian_kegiatan" class="form-control" cols="30" rows="3">{{ $data->uraian_kegiatan }}</textarea>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 mb-2">
                     <label for="kendala_kerja">Kendala kerja</label>
-                    <textarea name="kendala" class="form-control" cols="30" rows="3">{{ $row->kendala }}</textarea>
+                    <textarea name="kendala" class="form-control" cols="30" rows="3">{{ $data->kendala }}</textarea>
                   </div>
                 </div>
                 <div class="row g-2">
                   <div class="col-md-6 mb-2">
                     <label for="deadline">Deadline penyelesaian</label>
-                    <input type="date" value="{{ $row->deadline }}" class="form-control" readonly>
+                    <input type="date" value="{{ $data->deadline }}" class="form-control" readonly>
                   </div>
                   <div class="col-md-6 mb-2">
                     <label for="lampiran">Lampiran</label>
@@ -98,7 +106,6 @@
         </div>
       </div>
       @endif
-      @endforeach
       @endforeach
     </div>
   </div>

@@ -15,23 +15,36 @@
             <div class="row g-2 mb-2">
               <label for="html5-text-input" class="col-md-4 col-form-label">Periode kegiatan harian</label>
               <div class="col-md-4 mb-2">
-                <input type="date" name="tgl_awal" class="form-control" required>
+                <input type="date" name="tgl_awal" value="{{ $tgl_awal ?? '' }}" class="form-control" required>
               </div>
               <div class="col-md-4 mb-2">
-                <input type="date" name="tgl_akhir" class="form-control" required>
+                <input type="date" name="tgl_akhir" value="{{ $tgl_akhir ?? '' }}" class="form-control" required>
               </div>
             </div>
             <div class="row">
               <label for="html5-text-input" class="col-md-4 col-form-label">Tipe laporan</label>
               <div class="col-md-8 mb-2">
                 <select name="tipe" class="form-select" required>
+                  @if($tipe == null)
                   <option value="1">Harian</option>
                   <option value="2">Mingguan</option>
+                  @endif
+                  @if($tipe == '1')
+                  <option value="{{$tipe ?? ''}}" selected>Harian</option>
+                  <option value="2">Mingguan</option>
+                  @endif
+                  @if($tipe == '2')
+                  <option value="{{$tipe ?? ''}}" selected>Mingguan</option>
+                  <option value="1">Harian</option>
+                  @endif
                 </select>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary float-end  mx-2">Cari kegiatan</button>
-            <a href="/kegiatan-mingguan/create" class="btn btn-danger float-end">Hapus filter</a>
+            <button type="submit" class="btn btn-sm btn-primary float-end  mx-2">Cari kegiatan</button>
+            @if($tipe != ''))
+            <a href="{{ route('cetakPdf', ['tgl_awal' => $tgl_awal, 'tgl_akhir' => $tgl_akhir, 'tipe' => $tipe]) }}" class="btn btn-sm btn-primary float-end  mx-2">Cetak</a>
+            @endif
+            <a href="/kegiatan-mingguan/create" class="btn btn-sm btn-danger float-end">Hapus filter</a>
           </form>
         </div>
       </div>
@@ -51,7 +64,6 @@
         @endif
 
         @foreach($datas as $data)
-        @if($data->tipe != '2')
         <div class="col-md-3 col-lg-12">
           <div class="card mb-3">
             <div class="card-body">
@@ -67,7 +79,7 @@
                     <input type="text" value="{{ getJenisKegiatanById($data->jenis_kegiatan_id) }}" class="form-control" readonly>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row g-2">
                   <div class="col-md-6 mb-2">
                     <label for="kategori_kegiatan">Kategori Kegiatan</label>
                     <input type="text" value="{{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}" class="form-control" readonly>
@@ -105,7 +117,6 @@
           </div>
         </div>
       </div>
-      @endif
       @endforeach
     </div>
   </div>

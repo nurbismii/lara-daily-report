@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
+use PDF;
 
 class KegiatanMingguanController extends Controller
 {
@@ -72,6 +73,7 @@ class KegiatanMingguanController extends Controller
         $tgl_awal = $request->tgl_awal;
         $tgl_akhir = $request->tgl_akhir;
         $datas = array();
+        $tipe = '';
 
         if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
 
@@ -85,10 +87,10 @@ class KegiatanMingguanController extends Controller
                 ->select('kegiatan_harian.*', 'absensi.tanggal')
                 ->get();
 
-            return view('kegiatan-mingguan.create', compact('datas', 'tgl_awal', 'tgl_akhir'));
+            return view('kegiatan-mingguan.create', compact('datas', 'tgl_awal', 'tgl_akhir', 'tipe'));
         }
 
-        return view('kegiatan-mingguan.create', compact('datas', 'tgl_awal', 'tgl_akhir'));
+        return view('kegiatan-mingguan.create', compact('datas', 'tgl_awal', 'tgl_akhir', 'tipe'));
     }
 
     /**
@@ -199,5 +201,19 @@ class KegiatanMingguanController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function cetakPdf($tgl_awal, $tgl_akhir, $tipe)
+    {
+        $datas = KegiatanHarian::join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
+            ->where('tipe', $tipe)
+            ->where('status_duplikat', null)
+            ->where('absensi.user_id', Auth::user()->id)
+            ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+            ->select('kegiatan_harian.*', 'absensi.tanggal')
+            ->get();
+
+        $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas]);
+        return $pdf->stream();
     }
 }

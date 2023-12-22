@@ -1,6 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    ul.timeline {
+        list-style-type: none;
+        position: relative;
+    }
+
+    ul.timeline:before {
+        content: ' ';
+        background: #d4d9df;
+        display: inline-block;
+        position: absolute;
+        left: 29px;
+        width: 2px;
+        height: 100%;
+        z-index: 400;
+    }
+
+    ul.timeline>li {
+        margin: 20px 0;
+        padding-left: 20px;
+    }
+
+    ul.timeline>li:before {
+        content: ' ';
+        background: white;
+        display: inline-block;
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid #696cff;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        z-index: 400;
+    }
+</style>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <h4 class="fw-bold py-2 mb-2">Kegiatan harian</h4>
     <!-- Basic Bootstrap Table -->
@@ -22,7 +58,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>Kegiatan</th>
                                 <th>Agenda esok</th>
                                 <th>Nama</th>
                                 <th>Kehadiran</th>
@@ -35,9 +71,9 @@
                         <tbody class="table-border-bottom-0">
                             @foreach($data_kegiatan as $data)
                             <tr>
-                                <th scope="row" data-bs-toggle="collapse" data-bs-target="#accordion-{{$data->id}}">
-                                    <button type="button" class="btn rounded-pill btn-sm btn-icon btn-outline-success">
-                                        <span class="tf-icons bx bx-show-alt"></span>
+                                <th scope="row">
+                                    <button type="button" class="btn btn-sm rounded-pill btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-daftar-kegiatan{{$data->id}}">
+                                        <span class="tf-icons bx bx-list-ol"></span>&nbsp; Data
                                     </button>
                                 </th>
                                 <td>
@@ -85,73 +121,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class="collapse accordion-collapse" id="accordion-{{$data->id}}" data-bs-parent=".table">
-                                <td colspan="12">
-                                    <table class="table table-condensed table-striped" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>Kegiatan</th>
-                                                <th>Jenis Kegiatan</th>
-                                                <th>Kategori kegiatan</th>
-                                                <th>PIC</th>
-                                                <th>Jam </th>
-                                                <th>Selesai</th>
-                                                <th>Status kegiatan</th>
-                                                <th>Status akhir</th>
-                                                <th>Deadline</th>
-                                                <th>Data pendukung</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($data->kegiatanHarian as $key => $row)
-                                            <tr>
-                                                <td>{{ $key += 1; }}</td>
-                                                <td>{{ $row->kegiatan ?? '' }}</td>
-                                                <td>{{ getJenisKegiatanById($row->jenis_kegiatan_id) ?? '' }}</a></td>
-                                                <td>{{ getKategoriKegiatanById($row->kategori_kegiatan_id) ?? '' }}</td>
-                                                <td>{{ getPicById($row->pic_id) ?? '' }}</td>
-                                                <td>{{ $row->mulai ?? '' }}</td>
-                                                <td>{{ $row->selesai ?? '' }}</td>
-                                                <td>
-                                                    @if(strtolower($row->status_kegiatan) == 'selesai')
-                                                    <span class="badge bg-label-success">Selesai</span>
-                                                    @else
-                                                    <span class="badge bg-label-primary">Tidak selesai</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(strtolower($row->status_akhir) == 'sesuai')
-                                                    <span class="badge bg-label-success">Sesuai</span>
-                                                    @else
-                                                    <span class="badge bg-label-primary">Tidak sesuai</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ getTanggalIndo($row->deadline) ?? '' }}</td>
-                                                <td>
-                                                    @foreach($row->dataPendukung as $berkas)
-                                                    <a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"> {{ $berkas->nama_file }}</a> <br>
-                                                    @endforeach
-                                                </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                                            <i class="bx bx-dots-horizontal-rounded"></i>
-                                                        </button>
-                                                        <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-unggah-berkas{{$row->id}}"><i class="bx bx-plus me-1"></i> Data pendukung </a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kegiatan</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-kegiatan{{$row->id}}"><i class="bx bx-trash me-1"></i> Hapus kegiatan</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -163,6 +132,76 @@
         </div>
     </div>
 </div>
+
+<!-- Modal daftar kegiatan -->
+@foreach($data_kegiatan as $data)
+<div class="modal fade" id="modal-daftar-kegiatan{{$data->id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8 offset-md-1">
+                        <h5>Timeline kegiatan</h5>
+                        <ul class="timeline">
+                            @foreach($data->kegiatanHarian as $key => $row)
+                            <li>
+                                <div class="d-flex justify-content-between">
+                                    <a href="javascript:void(0)" class="lead mb-2">{{ getJenisKegiatanById($row->jenis_kegiatan_id) }}</a>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow text-end" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-horizontal-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-unggah-berkas{{$row->id}}"><i class="bx bx-plus me-1"></i> Data pendukung </a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kegiatan</a>
+                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-kegiatan{{$row->id}}"><i class="bx bx-trash me-1"></i> Hapus kegiatan</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">{{ getJenisKegiatanById($row->jenis_kegiatan_id) }}</p>
+                                    <p class="mb-2">{{ substr($row->mulai, 0, 5) }} - {{ substr($row->selesai, 0, 5) }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <a href="javascript:void(0)" class="text-muted mb-2">{{ getKategoriKegiatanById($row->kategori_kegiatan_id) }} </a>
+                                    <a href="javascript:void(0)" class="text-muted mb-2"> - ({{ getPicById($row->pic_id) }})</a>
+                                </div>
+                                <div>
+                                    <p>{{ $row->kegiatan }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Kendala</p>
+                                    <a data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true" title="" data-bs-original-title="<i class='bx bx-bug-alt bx-xs' ></i> <span>{{ $row->kendala }}</span>">{{ substr($row->kendala, 0, 25)}}...</a>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Status kegiatan</p>
+                                    <p>{{ ucfirst($row->status_kegiatan) }}</p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Status akhir</p>
+                                    <p>{{ ucfirst($row->status_akhir) }}</p>
+                                </div>
+
+                                @foreach($row->dataPendukung as $berkas)
+                                <a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"> {{ $berkas->nama_file }}</a> <br>
+                                @endforeach
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+<!-- Modal daftar kegiatan end -->
 
 <!-- Tambah agenda esok -->
 @foreach($data_kegiatan as $data)
@@ -244,14 +283,12 @@
                 </button>
             </div>
         </div>
-
     </div>
 </div>
 @endforeach
 <!-- Tambah agenda esok end -->
 
-
-<!-- Small Modal -->
+<!-- Modal daftar agenda -->
 @foreach($data_kegiatan as $data)
 <div class="modal fade" id="modal-agenda{{$data->id}}" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -292,6 +329,7 @@
     </div>
 </div>
 @endforeach
+<!-- Modal daftar agenda end -->
 
 <!-- Tambah kegiatan -->
 @foreach($data_kegiatan as $data)

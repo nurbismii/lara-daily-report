@@ -1,6 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+  ul.timeline {
+    list-style-type: none;
+    position: relative;
+  }
+
+  ul.timeline:before {
+    content: ' ';
+    background: #d4d9df;
+    display: inline-block;
+    position: absolute;
+    left: 29px;
+    width: 2px;
+    height: 100%;
+    z-index: 400;
+  }
+
+  ul.timeline>li {
+    margin: 20px 0;
+    padding-left: 20px;
+  }
+
+  ul.timeline>li:before {
+    content: ' ';
+    background: white;
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    border: 3px solid #696cff;
+    left: 20px;
+    width: 20px;
+    height: 20px;
+    z-index: 400;
+  }
+</style>
+
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="row">
     <h4 class="fw-bold py-2 mb-2">Kegiatan harian</h4>
@@ -57,109 +93,93 @@
       </div>
     </div>
     <div class="col-md-4">
-      <div class="row">
-        <div class="card mb-2">
-          <h6 class="card-header">Persetujuan SPV dan Asmen</h6>
-          <form action="{{route('update.statusKegiatan', $data->id)}}" method="post">
-            @csrf
-            {{method_field('patch')}}
-            <div class="card-body">
-              <div class="row">
-                <div class="mb-3 col-md-6">
-                  <label for="email" class="form-label">Supervisor</label> <br>
-                  @if(strtolower($data->status_spv) == 'diterima')
-                  <span class="badge bg-label-success">Diterima</span>
-                  @else
-                  <span class="badge bg-label-warning">menunggu</span>
-                  @endif
-                  </td>
-                </div>
-                <div class="mb-3 col-md-6">
-                  <label for="organization" class="form-label">Asmen</label> <br>
-                  @if(strtolower($data->status_asmen) == 'diterima')
-                  <span class="badge bg-label-success">Diterima</span>
-                  @else
-                  <span class="badge bg-label-warning">Menunggu</span>
-                  @endif
-                </div>
-                <div class="divider text-end">
-                  <div class="divider-text">
-                    <i class="bx bx-cut bx-rotate-180"></i>
-                  </div>
+      <div class="card mb-2">
+        <h6 class="card-header">Persetujuan SPV dan Asmen</h6>
+        <form action="{{route('update.statusKegiatan', $data->id)}}" method="post">
+          @csrf
+          {{method_field('patch')}}
+          <div class="card-body">
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="email" class="form-label">Supervisor</label> <br>
+                @if(strtolower($data->status_spv) == 'diterima')
+                <span class="badge bg-label-success">Diterima</span>
+                @else
+                <span class="badge bg-label-warning">menunggu</span>
+                @endif
+                </td>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="organization" class="form-label">Asmen</label> <br>
+                @if(strtolower($data->status_asmen) == 'diterima')
+                <span class="badge bg-label-success">Diterima</span>
+                @else
+                <span class="badge bg-label-warning">Menunggu</span>
+                @endif
+              </div>
+              <div class="divider text-end">
+                <div class="divider-text">
+                  <i class="bx bx-cut bx-rotate-180"></i>
                 </div>
               </div>
-              <div class="col-md-12">
-                <label for="firstName" class="form-label">Status laporan kegiatan</label>
-                <select name="" class="form-select" id="" required>
-                  <option value="" selected disabled>- Pilih status laporan -</option>
-                  <option value="">Disetujui</option>
-                  <option value="">Tidak disetujui</option>
-                </select>
-              </div>
             </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Simpan</button>
+            <div class="col-md-12">
+              <label for="firstName" class="form-label">Status laporan kegiatan</label>
+              <select name="" class="form-select" id="" required>
+                <option value="" selected disabled>- Pilih status laporan -</option>
+                <option value="">Disetujui</option>
+                <option value="">Tidak disetujui</option>
+              </select>
             </div>
-          </form>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
       </div>
     </div>
     <div class="col-lg-12">
       <div class="card">
-        <h5 class="card-header">Tabel kegiatan</h5>
-        <div class="table-responsive text-nowrap">
-          <table class="table table-condensed table-striped" style="width: 100%;">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Kegiatan</th>
-                <th>Jenis Kegiatan</th>
-                <th>Kategori kegiatan</th>
-                <th>PIC</th>
-                <th>Jam </th>
-                <th>Selesai</th>
-                <th>Status kegiatan</th>
-                <th>Status akhir</th>
-                <th>Deadline</th>
-                <th>Data Pendukung</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($data_kegiatan as $row)
-              <tr>
-                <td>{{ ++$no }}</td>
-                <td>{{ $row->kegiatan ?? '' }}</td>
-                <td>{{ getJenisKegiatanById($row->jenis_kegiatan_id) ?? '' }}</a></td>
-                <td>{{ getKategoriKegiatanById($row->kategori_kegiatan_id) ?? '' }}</td>
-                <td>{{ getPicById($row->pic_id) ?? '' }}</td>
-                <td>{{ $row->mulai ?? '' }}</td>
-                <td>{{ $row->selesai ?? '' }}</td>
-                <td>
-                  @if(strtolower($row->status_kegiatan) == 'selesai')
-                  <span class="badge bg-label-success">Selesai</span>
-                  @else
-                  <span class="badge bg-label-warning">Tidak selesai</span>
-                  @endif
-                </td>
-                <td>
-                  @if(strtolower($row->status_akhir) == 'sesuai')
-                  <span class="badge bg-label-success">Sesuai</span>
-                  @else
-                  <span class="badge bg-label-warning">Tidak sesuai</span>
-                  @endif
-                </td>
-                <td>{{ getTanggalIndo($row->deadline) ?? '' }}</td>
-                <td>
-                  @foreach($row->dataPendukung as $berkas)
-                  <a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"> {{ $berkas->nama_file }}</a> <br>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-8 offset-md-0">
+              <h4>Timeline kegiatan</h4>
+              <ul class="timeline">
+                @foreach($data->kegiatanHarian as $key => $row)
+                <li>
+                  <div class="d-flex justify-content-between">
+                    <p class="fw-bold mb-2">{{ getJenisKegiatanById($row->jenis_kegiatan_id) }}</p>
+                    <p class="fw-bold mb-2">{{ substr($row->mulai, 0, 5) }} - {{ substr($row->selesai, 0, 5) }}</p>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <a href="javascript:void(0)" class="text-muted mb-2">{{ getKategoriKegiatanById($row->kategori_kegiatan_id) }} </a>
+                    <a href="javascript:void(0)" class="text-muted mb-2">({{ getPicById($row->pic_id) }})</a>
+                  </div>
+                  <div>
+                    <p class="text-primary">{{ $row->kegiatan }}</p>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p>Kendala</p>
+                    <a data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true" title="" data-bs-original-title="<i class='bx bx-bug-alt bx-xs' ></i> <span>{{ $row->kendala }}</span>">{{ substr($row->kendala, 0, 25)}}...</a>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p>Status kegiatan</p>
+                    <p>{{ ucfirst($row->status_kegiatan) }}</p>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <p>Status akhir</p>
+                    <p>{{ ucfirst($row->status_akhir) }}</p>
+                  </div>
+                  @foreach($row->dataPendukung as $key => $berkas)
+                  <div class="d-flex justify-content-between">
+                    <p>Data pendukung {{ ++$key }}</p>
+                    <a class="mx-2" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="right" data-bs-html="true" title="" data-bs-original-title="<i class='bx bx-file bx-xs' ></i> <span>{{ $berkas->nama_file }}</span>" href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"> Unduh </a>
+                  </div>
                   @endforeach
-                </td>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-          <div class="d-flex justify-content-end mt-2 mx-3">
-            {!! $data_kegiatan->links() !!}
+                </li>
+                @endforeach
+              </ul>
+            </div>
           </div>
         </div>
       </div>

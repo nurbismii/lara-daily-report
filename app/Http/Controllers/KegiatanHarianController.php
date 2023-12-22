@@ -157,17 +157,16 @@ class KegiatanHarianController extends Controller
             $status_akhir = $request['status_akhir'];
             $kuantitas = $request['kuantitas'];
 
-            
-
             $jumlah_kegiatan = count($kegiatan);
 
             for ($i = 0; $i < $jumlah_kegiatan; $i++) {
 
-                KegiatanHarian::where('kegiatan', $kegiatan[$i])->update([
+                KegiatanHarian::where('kegiatan', $kegiatan[$i])->where('nik', Auth::user()->id)->update([
                     'status_duplikat' => '1'
                 ]);
 
                 $data_kegiatan_harian[] = [
+                    'nik' => Auth::user()->nik,
                     'absensi_id' => $data_absensi->id,
                     'kegiatan' => $kegiatan[$i],
                     'jenis_kegiatan_id' => $jenis_kegiatan_id[$i],
@@ -223,8 +222,13 @@ class KegiatanHarianController extends Controller
 
     public function storeTambahKegiatan(Request $request, $id)
     {
+        KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->update([
+            'status_duplikat' => '1'
+        ]);
+
         KegiatanHarian::create([
             'absensi_id' => $id,
+            'nik' => Auth::user()->nik,
             'kegiatan' => $request->kegiatan,
             'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
             'kategori_kegiatan_id' => $request->kategori_kegiatan_id,

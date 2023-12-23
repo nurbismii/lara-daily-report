@@ -41,7 +41,7 @@
               </div>
             </div>
             <button type="submit" class="btn btn-sm btn-primary float-end  mx-2">Cari kegiatan</button>
-            @if($tipe != ''))
+            @if($tipe != '' && $tipe == '2')
             <a href="{{ route('cetakPdf', ['tgl_awal' => $tgl_awal, 'tgl_akhir' => $tgl_akhir, 'tipe' => $tipe]) }}" class="btn btn-sm btn-primary float-end  mx-2">Cetak</a>
             @endif
             <a href="/kegiatan-mingguan/create" class="btn btn-sm btn-danger float-end">Hapus filter</a>

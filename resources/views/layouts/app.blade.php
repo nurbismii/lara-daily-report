@@ -120,7 +120,7 @@
   <!-- Daterangepicker -->
 
   <!-- Progressive website aplication -->
-  <script src="{{asset('/sw.js')}}"></script>
+  <!-- <script src="{{asset('/sw.js')}}"></script>
 
   <script>
     if ("serviceWorker" in navigator) {
@@ -137,7 +137,7 @@
     } else {
       console.error("Service workers are not supported.");
     }
-  </script>
+  </script> -->
 
 </body>
 

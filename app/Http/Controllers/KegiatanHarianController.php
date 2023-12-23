@@ -334,6 +334,12 @@ class KegiatanHarianController extends Controller
 
     public function updatePenilaianKerjaHarian(Request $request)
     {
+        $jabatan = Auth::user()->jabatan;
+
+        if ($jabatan == 'SPV') {
+            return back()->with('warning', 'Oopss form penilaian ini hanya bisa digunakan oleh asmen');
+        }
+
         $penilaian_id = $request['penilaian_id'];
         $nilai_asmen = $request['nilai_asmen'];
         $catatan_asmen = $request['catatan_asmen'];

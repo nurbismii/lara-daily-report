@@ -51,7 +51,7 @@
                     <!-- /Logo -->
                     <h4 class="mb-2">Selamat datang! 👋</h4>
                     <span class="text-muted">Silahkan masuk ke akun dan mulai catat kegiatan harian kamu</span>
-                    <form id="formAuthentication" class="mb-3" action="{{ route('login') }}" method="POST">
+                    <form class="mb-3" action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
@@ -59,22 +59,37 @@
                         </div>
                         <div class="mb-3 form-password-toggle">
                             <div class="d-flex justify-content-between">
-                                <label class="form-label" for="password">kata Sandi</label>
+                                <label class="form-label">Kata sandi</label>
                             </div>
                             <div class="input-group input-group-merge">
-                                <input type="password" id="password" class="form-control" name="password" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" />
-                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                <input id="password-field" type="password" class="form-control" name="password">
+                                <span toggle="#password-field" class="input-group-text cursor-pointer bx bx-hide toggle-password"></span>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
-                        </div>
-                    </form>
+
                 </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
+                </div>
+                </form>
             </div>
-            <!-- /Register -->
         </div>
+        <!-- /Register -->
     </div>
 </div>
+</div>
+
+<script>
+    $(".toggle-password").click(function() {
+
+        $(this).toggleClass("bx-hide bx-happy-heart-eyes");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") == "password") {
+            input.attr("type", "text");
+        } else {
+            input.attr("type", "password");
+        }
+    });
+</script>
 
 @endsection

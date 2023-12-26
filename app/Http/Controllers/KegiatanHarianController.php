@@ -12,6 +12,7 @@ use App\Models\PenilaianKerja;
 use App\Models\PIC;
 use App\Models\Tim;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -133,6 +134,12 @@ class KegiatanHarianController extends Controller
 
     public function store(Request $request)
     {
+        $cek_absen = Absensi::where('user_id', Auth::user()->id)->where('tanggal', $request->tanggal)->first();
+
+        if ($cek_absen) {
+            return redirect('/kegiatan-harian/create')->with('info', 'Kamu telah absen hari ini, silahkan lanjut aktifitas di menu aksi pada tabel kegiatan');
+        }
+
         try {
             DB::beginTransaction();
 
@@ -213,10 +220,12 @@ class KegiatanHarianController extends Controller
             $berkas = BerkasPendukung::where('kegiatan_harian_id', $val->id)->first();
             if (isset($berkas->nama_file)) {
                 File::delete($berkas->nama_file);
+                $berkas->delete();
             }
+            $val->delete();
         }
-
         $data->delete();
+
         return back()->with('success', 'Oh yeah, Kehadiran & kegiatan harian berhasil dihapus');
     }
 

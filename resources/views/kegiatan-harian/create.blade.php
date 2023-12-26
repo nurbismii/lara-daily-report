@@ -114,8 +114,6 @@
                                             <i class="bx bx-dots-horizontal-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-tambah-kegiatan{{$data->id}}"><i class="bx bx-plus me-1"></i> Kegiatan</a>
-                                            <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-agenda-esok{{$data->id}}"><i class="bx bx-plus me-1"></i> Agenda esok</a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-absensi{{$data->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kehadiran</a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-semua{{$data->id}}"><i class="bx bx-trash me-1"></i> Hapus kehadiran & kegiatan</a>
                                         </div>
@@ -195,8 +193,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    Close
+                    Tutup
                 </button>
+                <a href="javascript:void(0);" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-tambah-kegiatan{{$data->id}}"><i class="bx bx-plus me-1"></i> Kegiatan</a>
             </div>
         </div>
     </div>
@@ -323,8 +322,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-                    Close
+                    Tutup
                 </button>
+                <a class="btn btn-primary" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-agenda-esok{{$data->id}}"><i class="bx bx-plus me-1"></i> Agenda esok</a>
             </div>
         </div>
     </div>
@@ -351,13 +351,13 @@
                     </div>
                     <div class="row">
                         <div class="col mb-3">
-                            <label for="nik">Kegiatan</label>
+                            <label for="kegiatan">Kegiatan</label>
                             <textarea class="form-control" name="kegiatan" id="" cols="30" rows="5" required></textarea>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col mb-2">
-                            <label for="email">Jenis Kegiatan</label>
+                            <label for="jenis-kegiatan">Jenis Kegiatan</label>
                             <select name="jenis_kegiatan_id" class="form-select" required>
                                 <option value="" selected>-- Pilih jenis kegiatan --</option>
                                 @foreach($jenis_kegiatan as $row)
@@ -377,7 +377,7 @@
                             </select>
                         </div>
                         <div class="col mb-2">
-                            <label for="email">PIC</label>
+                            <label for="pic">PIC</label>
                             <select name="pic_id" class="form-select" required>
                                 <option value="" disabled selected>-- Pilih PIC --</option>
                                 @foreach($pic as $row)
@@ -394,17 +394,17 @@
                     </div>
                     <div class="row g-2">
                         <div class="col mb-2">
-                            <label for="nama">Mulai mengerjakan</label>
-                            <input type="text" maxlength="5" name="mulai" class="form-control" required>
+                            <label for="mulai-mengerjakan">Mulai mengerjakan</label>
+                            <input type="text" id="mulaiMengerjakanKegiatan" maxlength="5" name="mulai" class="form-control" required>
                         </div>
                         <div class="col mb-2">
-                            <label for="email">Selesai mengerjakan</label>
-                            <input type="text" maxlength="5" name="selesai" class="form-control" required>
+                            <label for="selesai-mengerjakan">Selesai mengerjakan</label>
+                            <input type="text" id="selesaiMengerjakanKegiatan" maxlength="5" name="selesai" class="form-control" required>
                         </div>
                     </div>
                     <div class="row g-2">
                         <div class="col mb-2">
-                            <label for="nama">Status Kegiatan</label>
+                            <label for="status-kegiatan">Status Kegiatan</label>
                             <select name="status_kegiatan" class="form-select" required>
                                 <option value="" disabled selected>-- Pilih status kegiatan --</option>
                                 <option value="selesai">Selesai</option>
@@ -412,13 +412,13 @@
                             </select>
                         </div>
                         <div class="col mb-2">
-                            <label for="email">Deadline penyelesaian</label>
+                            <label for="deadline">Deadline penyelesaian</label>
                             <input type="date" name="deadline" class="form-control">
                         </div>
                     </div>
                     <div class="row g-2">
                         <div class="col mb-2">
-                            <label for="nama">Status akhir</label>
+                            <label for="status_akhir">Status akhir</label>
                             <select name="status_akhir" class="form-select" required>
                                 <option value="" disabled selected>-- Pilih status akhir</option>
                                 <option value="sesuai">Sesuai</option>
@@ -723,6 +723,24 @@
             $(this).parents(".control-group").remove();
         });
     });
+
+    const mulaiMengerjakanKegiatan = document.getElementById("mulaiMengerjakanKegiatan");
+    mulaiMengerjakanKegiatan.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
+
+    const selesaiMengerjakanKegiatan = document.getElementById("selesaiMengerjakanKegiatan");
+    selesaiMengerjakanKegiatan.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
 </script>
+
+
 
 @endsection

@@ -109,6 +109,9 @@
                   <div class="col-md-6 mb-2">
                     <label for="lampiran">Lampiran</label>
                     <input type="file" name="lampiran" class="form-control">
+                    @foreach($data->dataPendukung as $berkas)
+                    <small><a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->nik]) }}"> {{ $berkas->nama_file }}</a> <br></small>
+                    @endforeach
                   </div>
                 </div>
                 <button type="submit" class="btn btn-primary float-end mt-1">Kirim</button>
@@ -120,6 +123,6 @@
       </div>
     </div>
   </div>
-</div>  
+</div>
 
 @endsection

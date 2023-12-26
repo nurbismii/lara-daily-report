@@ -79,7 +79,7 @@ class KegiatanMingguanController extends Controller
 
             $tipe = $request->tipe == '1' ? NULL : $request->tipe;
 
-            $datas = KegiatanHarian::join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
+            $datas = KegiatanHarian::with('dataPendukung')->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
                 ->where('tipe', $tipe)
                 ->where('status_duplikat', null)
                 ->where('absensi.user_id', Auth::user()->id)

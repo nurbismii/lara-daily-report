@@ -75,7 +75,7 @@
                             <div class="row">
                                 <div class="col mb-2">
                                     <label for="kata-sandi">Kegiatan</label>
-                                    <textarea name="kegiatan[]" class="form-control" id="" cols="30" rows="5"></textarea>
+                                    <textarea name="kegiatan[]" class="form-control" id="" cols="30" rows="5" required></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -92,7 +92,7 @@
                             <div class="row g-2">
                                 <div class="col mb-2">
                                     <label for="kata-sandi">Kategori kegiatan</label>
-                                    <select name="kategori_kegiatan_id[]" class="form-select" id="">
+                                    <select name="kategori_kegiatan_id[]" class="form-select" id="" required>
                                         <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
                                         @foreach($kategori_kegiatan as $row)
                                         <option value="{{$row->id}}">{{$row->kategori_kegiatan}}</option>
@@ -101,7 +101,7 @@
                                 </div>
                                 <div class="col mb-2">
                                     <label for="email">PIC</label>
-                                    <select name="pic_id[]" class="form-select" id="">
+                                    <select name="pic_id[]" class="form-select" id="" required>
                                         <option value="" disabled selected>-- Pilih PIC --</option>
                                         @foreach($pic as $row)
                                         <option value="{{$row->id}}">{{$row->pic}}</option>
@@ -128,7 +128,7 @@
                             <div class="row g-2">
                                 <div class="col mb-2">
                                     <label for="nama">Status Kegiatan</label>
-                                    <select name="status_kegiatan[]" class="form-select" id="">
+                                    <select name="status_kegiatan[]" class="form-select" id="" required>
                                         <option value="" disabled selected>-- Pilih status kegiatan --</option>
                                         <option value="selesai">Selesai</option>
                                         <option value="tidak selesai">Tidak selesai</option>
@@ -142,7 +142,7 @@
                             <div class="row g-2">
                                 <div class="col mb-2">
                                     <label for="status-akhir">Status akhir</label>
-                                    <select name="status_akhir[]" class="form-select" id="">
+                                    <select name="status_akhir[]" class="form-select" id="" required>
                                         <option value="" disabled selected>-- Pilih status akhir --</option>
                                         <option value="sesuai">Sesuai</option>
                                         <option value="tidak sesuai">Tidak sesuai</option>
@@ -174,7 +174,7 @@
         <div class="row">
             <div class="col mb-2">
                 <label for="kegiatan">Kegiatan</label>
-                <textarea class="form-control" name="kegiatan[]" cols="30" rows="5"></textarea>
+                <textarea class="form-control" name="kegiatan[]" cols="30" rows="5" required></textarea>
             </div>
         </div>
         <div class="row mb-3 g-2">
@@ -191,7 +191,7 @@
         <div class="row mb-3 g-2">
             <div class="col mb-2">
                 <label for="kata-sandi">Kategori kegiatan</label>
-                <select name="kategori_kegiatan_id[]" class="form-select" id="">
+                <select name="kategori_kegiatan_id[]" class="form-select" id="" required>
                     <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
                     @foreach($kategori_kegiatan as $row)
                     <option value="{{$row->id}}">{{$row->kategori_kegiatan}}</option>
@@ -200,7 +200,7 @@
             </div>
             <div class="col mb-2">
                 <label for="email">PIC</label>
-                <select name="pic_id[]" class="form-select" id="">
+                <select name="pic_id[]" class="form-select" id="" required>
                     <option value="" disabled selected>-- Pilih PIC --</option>
                     @foreach($pic as $row)
                     <option value="{{$row->id}}">{{$row->pic}}</option>
@@ -227,7 +227,7 @@
         <div class="row mb-3 g-2">
             <div class="col mb-2">
                 <label for="nama">Status Kegiatan</label>
-                <select name="status_kegiatan[]" class="form-select" id="">
+                <select name="status_kegiatan[]" class="form-select" id="" required>
                     <option value="" disabled selected>-- Pilih status kegiatan --</option>
                     <option value="selesai">Selesai</option>
                     <option value="tidak selesai">Tidak selesai</option>
@@ -241,7 +241,7 @@
         <div class="row mb-3 g-2">
             <div class="col mb-2">
                 <label for="nama">Status akhir</label>
-                <select name="status_akhir[]" class="form-select" id="">
+                <select name="status_akhir[]" class="form-select" id="" required>
                     <option value="" disabled selected>-- Pilih status akhir --</option>
                     <option value="sesuai">Sesuai</option>
                     <option value="tidak sesuai">Tidak sesuai</option>

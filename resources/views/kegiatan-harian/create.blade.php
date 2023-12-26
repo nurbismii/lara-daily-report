@@ -58,19 +58,20 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>Tanggal</th>
                                 <th>Kegiatan</th>
-                                <th>Agenda esok</th>
                                 <th>Nama</th>
                                 <th>Kehadiran</th>
                                 <th>Status SPV</th>
                                 <th>Status Asmen</th>
-                                <th>Tanggal</th>
+                                <th>Agenda esok</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="table-border-bottom-0">
                             @foreach($data_kegiatan as $data)
                             <tr>
+                                <th>{{ getTanggalIndo($data->tanggal) }}</th>
                                 <th scope="row">
                                     <button type="button" class="btn btn-sm rounded-pill btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modal-daftar-kegiatan{{$data->id}}">
                                         <span class="tf-icons bx bx-list-ol"></span>&nbsp; Data
@@ -94,19 +95,19 @@
                                 </td>
                                 <td>
                                     @if($data->status_spv != '')
-                                    <span class="badge bg-label-success">Disetujui</span>
+                                    <span class="badge bg-label-success">Diterima</span>
                                     @else
                                     <span class="badge bg-label-primary">Menunggu</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if($data->status_asmen != '')
-                                    <span class="badge bg-label-success">Disetujui</span>
+                                    <span class="badge bg-label-success">Diterima</span>
                                     @else
                                     <span class="badge bg-label-primary">Menunggu</span>
                                     @endif
                                 </td>
-                                <td>{{ getTanggalIndo($data->tanggal) }}</td>
+
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">

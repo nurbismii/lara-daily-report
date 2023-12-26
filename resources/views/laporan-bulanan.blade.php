@@ -61,7 +61,7 @@
         </div>
         <div class="d-flex justify-content-between mb-3">
           @foreach($data->dataPendukung as $value)
-          <img src="{{ public_path('data-pendukung/' . $data->nik . '/' . $data->kegiatan . '/' . $value->nama_file) }}" alt="Data Pendukung" width="300" height="300">
+          <img src="{{ asset('data-pendukung/' . $data->nik . '/' . $data->kegiatan . '/' . $value->nama_file) }}" alt="Data Pendukung" width="300" height="300">
           @endforeach
         </div>
         @endforeach

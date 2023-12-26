@@ -420,12 +420,40 @@ class KegiatanHarianController extends Controller
 
     public function showPenilaianKerja($id)
     {
-        $data = Absensi::with('getAnggota')->where('id', $id)->first();
+        $cek_penilaian_asmen = PenilaianKerja::where('absensi_id', $id)->where('nilai_asmen', '<>', NULL)->get();
 
         $penilaian = PenilaianKerja::where('absensi_id', $id)->get();
+
+        if (Auth::user()->jabatan == 'SPV' && $cek_penilaian_asmen) {
+            return back()->with('warning', 'Opps, penilaian kerja harian SPV hanya bisa di akses asmen');
+        }
+
+        $data = Absensi::with('getAnggota')->where('id', $id)->first();
 
         $data_penilaian = PenilaianKerja::where('absensi_id', $id)->get();
 
         return view('kegiatan-harian.penilaian-kerja', compact('penilaian', 'data', 'data_penilaian'));
+    }
+
+    public function penilaianKerjaHarianAsmen(Request $request)
+    {
+
+        $jenis_penilaian = $request['jenis_penilaian'];
+        $nilai_asmen = $request['nilai_asmen'];
+        $catatan_asmen = $request['catatan_asmen'];
+        $jumlah_penilaian = count($jenis_penilaian);
+
+        for ($i = 0; $i < $jumlah_penilaian; $i++) {
+
+            $input[] = [
+                'absensi_id' => $request->absensi_id,
+                'jenis_penilaian' => $jenis_penilaian[$i],
+                'nilai_asmen' => $nilai_asmen[$i],
+                'catatan_asmen' => $catatan_asmen[$i],
+            ];
+        }
+        PenilaianKerja::insert($input);
+
+        return back()->with('success', 'Berhasil melakukan penilaian kerja harian');
     }
 }

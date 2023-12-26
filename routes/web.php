@@ -63,7 +63,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::patch('/update/status-kegiatan/{id}', [KegiatanHarianController::class, 'updateStatusKegiatan'])->name('update.statusKegiatan');
     Route::post('/store/penilaian-kerja', [KegiatanHarianController::class, 'penilaianKerjaHarian'])->name('store.penilaian-kerja');
+    Route::post('/store/penilaian-kerja-asmen', [KegiatanHarianController::class, 'penilaianKerjaHarianAsmen'])->name('store.penilaian-kerja-asmen');
     Route::post('/update/penilaian-kerja', [KegiatanHarianController::class, 'updatePenilaianKerjaHarian'])->name('update.penilaian-kerja');
+    
     route::post('/store/agenda-kerja-esok/', [KegiatanHarianController::class, 'storeAgendaKerja'])->name('store.agendaKerjaEsokHari');
 
     Route::group(['middleware' => 'check.access'], function () {

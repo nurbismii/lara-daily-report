@@ -85,6 +85,8 @@
           </a>
         </li>
         @endif
+
+        @if(Auth::user()->jabatan != 'ASMEN')
         <li class="menu-item">
           <a href="/kegiatan-harian/create" class="menu-link">
             <div data-i18n="Account">Kegiatan harian</div>
@@ -95,6 +97,7 @@
             <div data-i18n="Account">Kegiatan mingguan</div>
           </a>
         </li>
+        @endif
       </ul>
     </li>
     @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')

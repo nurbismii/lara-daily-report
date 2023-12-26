@@ -51,7 +51,7 @@
                     <!-- /Logo -->
                     <h4 class="mb-2">Selamat datang! 👋</h4>
                     <span class="text-muted">Silahkan masuk ke akun dan mulai catat kegiatan harian kamu</span>
-                    <form class="mb-3" action="{{ route('login') }}" method="POST">
+                    <form class="mb-3 from-prevent-multiple-submits" action="{{ route('login') }}" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
@@ -69,7 +69,7 @@
 
                 </div>
                 <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
+                    <button class="btn btn-primary d-grid w-100 from-prevent-multiple-submits" type="submit">Masuk</button>
                 </div>
                 </form>
             </div>
@@ -90,6 +90,12 @@
             input.attr("type", "password");
         }
     });
+
+    (function() {
+        $('.from-prevent-multiple-submits').on('submit', function() {
+            $('.from-prevent-multiple-submits').attr('disabled', 'true');
+        })
+    })();
 </script>
 
 @endsection

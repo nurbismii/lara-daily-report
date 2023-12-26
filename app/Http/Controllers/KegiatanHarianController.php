@@ -140,6 +140,10 @@ class KegiatanHarianController extends Controller
             return redirect('/kegiatan-harian/create')->with('info', 'Kamu telah absen hari ini, silahkan lanjut aktifitas di tabel kegiatan >> kolom kegiatan');
         }
 
+        if (Auth::user()->jabatan == 'SPV') {
+            $status_spv = 'Diterima';
+        }
+
         try {
             DB::beginTransaction();
 
@@ -150,6 +154,7 @@ class KegiatanHarianController extends Controller
                 'jam_istirahat' => $request->jam_istirahat,
                 'jam_kembali_istirahat' => $request->jam_kembali_istirahat,
                 'jam_pulang' => $request->jam_pulang_kerja,
+                'status_spv' => $status_spv != '' ? $status_spv : NULL,
             ]);
 
             $kegiatan = $request['kegiatan'];
@@ -429,13 +434,7 @@ class KegiatanHarianController extends Controller
 
     public function showPenilaianKerja($id)
     {
-        $cek_penilaian_asmen = PenilaianKerja::where('absensi_id', $id)->where('nilai_asmen', '<>', NULL)->get();
-
         $penilaian = PenilaianKerja::where('absensi_id', $id)->get();
-
-        if (Auth::user()->jabatan == 'SPV' && $cek_penilaian_asmen) {
-            return back()->with('warning', 'Opps, penilaian kerja harian SPV hanya bisa di akses asmen');
-        }
 
         $data = Absensi::with('getAnggota')->where('id', $id)->first();
 

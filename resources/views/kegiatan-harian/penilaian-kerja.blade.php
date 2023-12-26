@@ -34,6 +34,7 @@
 
     <div class="col-md-8">
       <!-- Segmented buttons -->
+      @if($data->getAnggota->jabatan != 'SPV')
       <div class="row">
         <div class="col-md-3 col-lg-12">
           <div class="card mb-2">
@@ -55,6 +56,7 @@
           </div>
         </div>
       </div>
+      @endif
 
       <!-- Custom select -->
       <div class="row">

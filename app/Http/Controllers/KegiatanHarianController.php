@@ -136,6 +136,8 @@ class KegiatanHarianController extends Controller
     {
         $cek_absen = Absensi::where('user_id', Auth::user()->id)->where('tanggal', $request->tanggal)->first();
 
+        $status_spv = NULL;
+
         if ($cek_absen) {
             return redirect('/kegiatan-harian/create')->with('info', 'Kamu telah absen hari ini, silahkan lanjut aktifitas di tabel kegiatan >> kolom kegiatan');
         }

@@ -60,11 +60,11 @@
                             <tr>
                                 <th>Tanggal</th>
                                 <th>Kegiatan</th>
+                                <th>Agenda esok</th>
                                 <th>Nama</th>
                                 <th>Kehadiran</th>
                                 <th>Status SPV</th>
                                 <th>Status Asmen</th>
-                                <th>Agenda esok</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>

@@ -106,8 +106,8 @@
     var totalJenisKegiatan = JSON.parse('{!! json_encode($total_jenis_kegiatan) !!}');
     var daftarNamaJenisKegiatan = JSON.parse('{!! json_encode($daftar_nama_jenis_kegiatan) !!}');
 
-    var totalKegiatanHarian = JSON.parse('{!! json_encode($total_kegiatan_harian) !!}');
     var daftarKegiatanHarian = JSON.parse('{!! json_encode($daftar_kegiatan_harian) !!}');
+    var totalKegiatanHarian = JSON.parse('{!! json_encode($total_kegiatan_harian) !!}');
 </script>
 <!-- / Content -->
 @endsection

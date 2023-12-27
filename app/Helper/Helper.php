@@ -79,8 +79,8 @@ if (!function_exists('totalKegiatanHarian')) {
 	{
 		$total_kategori = array();
 
-		if (count($data) >= 5) {
-			$count = 5;
+		if (count($data) >= 4) {
+			$count = 4;
 		} else {
 			$count = count($data);
 		}
@@ -100,8 +100,8 @@ if (!function_exists('daftarNamaKategoriKegiatan')) {
 	{
 		$kategori = array();
 
-		if (count($data) >= 5) {
-			$count = 5;
+		if (count($data) >= 4) {
+			$count = 4;
 		} else {
 			$count = count($data);
 		}
@@ -145,8 +145,8 @@ if (!function_exists('totalJenisKegiatan')) {
 	{
 		$total_jenis_kegiatan = array();
 
-		if (count($data) >= 5) {
-			$count = 5;
+		if (count($data) >= 4) {
+			$count = 4;
 		} else {
 			$count = count($data);
 		}
@@ -166,8 +166,8 @@ if (!function_exists('daftarNamaJenisKegiatan')) {
 	{
 		$jenis_kegiatan = array();
 
-		if (count($data) >= 5) {
-			$count = 5;
+		if (count($data) >= 4) {
+			$count = 4;
 		} else {
 			$count = count($data);
 		}

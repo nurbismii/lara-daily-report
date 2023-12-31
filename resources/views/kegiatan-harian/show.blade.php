@@ -152,11 +152,29 @@
 										<p class="fw-bold mb-2">{{ substr($row->mulai, 0, 5) }} - {{ substr($row->selesai, 0, 5) }}</p>
 									</div>
 									<div class="d-flex justify-content-between">
+										@isset($row->selesai)
+										@php
+
+										$diff = strtotime($row->selesai) - strtotime($row->mulai);
+										$jam = floor($diff / (60 * 60));
+										$menit = $diff - ( $jam * (60 * 60) );
+										$menit = floor($menit/60);
+
+										@endphp
+										<p class="mb-2">Durasi</p>
+										@if($jam > 0)
+										<p class="mb-2">{{ $jam ?? '0' }} jam {{ $menit ?? '0' }} menit</p>
+										@else
+										<p class="mb-2">{{ $menit ?? '0' }} menit</p>
+										@endif
+										@endisset
+									</div>
+									<div class="d-flex justify-content-between">
 										<a href="javascript:void(0)" class="text-muted mb-2">{{ getKategoriKegiatanById($row->kategori_kegiatan_id) }} </a>
 										<a href="javascript:void(0)" class="text-muted mb-2">({{ getPicById($row->pic_id) }})</a>
 									</div>
 									<div>
-										<p class="text-primary">{{ $row->kegiatan }}</p>
+										<p><strong>{{ $row->kegiatan }}</strong></p>
 									</div>
 									<div class="d-flex justify-content-between">
 										<p>Kendala</p>

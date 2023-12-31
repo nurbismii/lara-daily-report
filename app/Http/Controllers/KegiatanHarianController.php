@@ -127,7 +127,7 @@ class KegiatanHarianController extends Controller
 
         $data_penilaian = PenilaianKerja::where('absensi_id', $id)->get();
 
-        $data_kegiatan = KegiatanHarian::with('dataPendukung')->where('absensi_id', $data->id)->paginate(10);
+        $data_kegiatan = KegiatanHarian::with('dataPendukung')->where('absensi_id', $data->id)->get();
 
         return view('kegiatan-harian.show', compact('data', 'data_kegiatan', 'data_penilaian'))->with('no');
     }
@@ -441,6 +441,12 @@ class KegiatanHarianController extends Controller
         $data = Absensi::with('getAnggota')->where('id', $id)->first();
 
         $data_penilaian = PenilaianKerja::where('absensi_id', $id)->get();
+
+        $cek_form = $data_penilaian->where('nilai_asmen', '!=', NULL);
+
+        if ($cek_form->count() > 0 && Auth::user()->jabatan == 'SPV') {
+            return back()->with('info', 'Form penilaian telah ditutup');
+        }
 
         return view('kegiatan-harian.penilaian-kerja', compact('penilaian', 'data', 'data_penilaian'));
     }

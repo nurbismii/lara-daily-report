@@ -200,7 +200,7 @@ class KegiatanHarianController extends Controller
 
             DB::commit();
 
-            return back()->with('success', 'Yuhuuu, Kegiatan harian berhasil ditambahkan');
+            return redirect('/kegiatan-harian/create')->with('success', 'Yuhuuu, Kegiatan harian berhasil ditambahkan');
         } catch (\Throwable $e) {
             return back()->with('error', 'Opps, terjadi kesalahan sistem');
         }

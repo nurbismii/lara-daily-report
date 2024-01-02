@@ -168,11 +168,11 @@
                                     $menit = floor($menit/60);
 
                                     @endphp
-                                    <p class="mb-2">Durasi</p>
+                                    <p class="mb-2 text-muted"><small>{{ substr($row->mulai, 0, 5) }} - {{ substr($row->selesai, 0, 5) }}</small></p>
                                     @if($jam > 0)
-                                    <p class="mb-2">{{ $jam ?? '0' }} jam {{ $menit ?? '0' }} menit</p>
+                                    <p class="mb-2 text-muted"><small>{{ $jam ?? '0' }} jam {{ $menit ?? '0' }} menit</small></p>
                                     @else
-                                    <p class="mb-2">{{ $menit ?? '0' }} menit</p>
+                                    <p class="mb-2 text-muted"><small>{{ $menit ?? '0' }} menit</small></p>
                                     @endif
                                     @endisset
                                 </div>
@@ -606,21 +606,21 @@
                     <div class="row mb-3 g-2">
                         <div class="col mb-2">
                             <label for="kata-sandi">Jam masuk</label>
-                            <input type="text" name="jam_masuk" value="{{substr($data->jam_masuk, 0, 5)}}" class="form-control" required>
+                            <input type="text" id="jamMasuk" maxlength="5" name="jam_masuk" value="{{substr($data->jam_masuk, 0, 5)}}" class="form-control" required>
                         </div>
                         <div class="col mb-2">
                             <label for="email">Jam istirahat</label>
-                            <input type="text" name="jam_istirahat" value="{{substr($data->jam_istirahat, 0, 5)}}" class="form-control">
+                            <input type="text" id="jamIstirahat" maxlength="5" name="jam_istirahat" value="{{substr($data->jam_istirahat, 0, 5)}}" class="form-control">
                         </div>
                     </div>
                     <div class="row mb-3 g-2">
                         <div class="col mb-2">
                             <label for="kata-sandi">Jam kembali istirahat</label>
-                            <input type="text" maxlength="5" name="jam_kembali_istirahat" value="{{substr($data->jam_kembali_istirahat, 0 ,5)}}" class="form-control">
+                            <input type="text" id="jamKembaliIstirahat" maxlength="5" name="jam_kembali_istirahat" value="{{substr($data->jam_kembali_istirahat, 0 ,5)}}" class="form-control">
                         </div>
                         <div class="col mb-2">
                             <label for="email">Jam pulang</label>
-                            <input type="text" name="jam_pulang" maxlength="5" value="{{substr($data->jam_pulang,0,5)}}" class="form-control">
+                            <input type="text" id="jamPulang" name="jam_pulang" maxlength="5" value="{{substr($data->jam_pulang,0,5)}}" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -735,6 +735,38 @@
         $("body").on("click", ".remove", function() {
             $(this).parents(".control-group").remove();
         });
+    });
+
+    const jamMasuk = document.getElementById("jamMasuk");
+    jamMasuk.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
+
+    const jamIstirahat = document.getElementById("jamIstirahat");
+    jamIstirahat.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
+
+    const jamKembaliIstirahat = document.getElementById("jamKembaliIstirahat");
+    jamKembaliIstirahat.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
+
+    const jamPulang = document.getElementById("jamPulang");
+    jamPulang.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
     });
 
     const mulaiMengerjakanKegiatan = document.getElementById("mulaiMengerjakanKegiatan");

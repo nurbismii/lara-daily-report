@@ -25,13 +25,9 @@
                                 <input type="text" name="nik" value="{{ Auth::user()->nik }}" class="form-control" required readonly>
                             </div>
                         </div>
-                        <div class="row g-2">
+                        <div class="row">
                             <div class="col mb-2">
-                                <label for="kata-sandi">Divisi</label>
-                                <input type="text" name="tim_id" value="1" class="form-control" required readonly>
-                            </div>
-                            <div class="col mb-2">
-                                <label for="email">Posisi</label>
+                                <label for="kendala">Posisi</label>
                                 <input type="text" name="posisi" value="{{ Auth::user()->posisi }}" class="form-control" required readonly>
                             </div>
                         </div>
@@ -155,10 +151,10 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
-                        <a type="button" href="#form-kegiatan" class="btn btn-success float-end mx-2 add-more">
+                        <!-- <a type="button" href="#form-kegiatan" class="btn btn-success float-end mx-2 add-more">
                             <span class="tf-icons bx bx-plus"></span>
                             Tambah kegiatan
-                        </a>
+                        </a> -->
                     </div>
                 </div>
             </div>

@@ -161,11 +161,11 @@
 										$menit = floor($menit/60);
 
 										@endphp
-										<p class="mb-2">Durasi</p>
+										<p class="mb-2 text-muted"><small>{{ substr($row->mulai, 0, 5) }} - {{ substr($row->selesai, 0, 5) }}</small></p>
 										@if($jam > 0)
-										<p class="mb-2">{{ $jam ?? '0' }} jam {{ $menit ?? '0' }} menit</p>
+										<p class="mb-2 text-muted"><small>{{ $jam ?? '0' }} jam {{ $menit ?? '0' }} menit</small></p>
 										@else
-										<p class="mb-2">{{ $menit ?? '0' }} menit</p>
+										<p class="mb-2 text-muted"><small>{{ $menit ?? '0' }} menit</small></p>
 										@endif
 										@endisset
 									</div>

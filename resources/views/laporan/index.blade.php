@@ -51,7 +51,7 @@
         <div class="col-lg-12">
           <div class="card">
             <h5 class="card-header">Hasil pencarian
-              <a class="btn btn-secondary float-end btn-sm" href="javascript:void(0);"><i class="bx bxs-report me-1"></i>PDF</a>
+              <a class="btn btn-secondary float-end btn-sm" target="_blank" href="{{ route('cetakPdf', ['tgl_awal' => $tgl_awal, 'tgl_akhir' => $tgl_akhir, 'tipe' => $LAPORAN_MINGGUAN]) }}"><i class="bx bxs-report me-1"></i>PDF</a>
             </h5>
             <div class="table-responsive text-nowrap">
               <table class="table table-hover">

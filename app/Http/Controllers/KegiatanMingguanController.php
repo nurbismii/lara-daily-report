@@ -211,8 +211,10 @@ class KegiatanMingguanController extends Controller
             ->where('absensi.user_id', Auth::user()->id)
             ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
             ->select('kegiatan_harian.*', 'absensi.tanggal')
-            ->get();
-
+            ->get()->groupBy(function ($data) {
+                return $data->jenis_kegiatan_id;
+            });
+        
         $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas]);
         return $pdf->stream();
     }
@@ -226,7 +228,6 @@ class KegiatanMingguanController extends Controller
         $LAPORAN_MINGGUAN = '2';
 
         if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
-
 
             $datas = KegiatanHarian::with('dataPendukung')->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
                 ->where('tipe', $LAPORAN_MINGGUAN)

@@ -31,39 +31,40 @@
         <div class="text-center">
           <h2 class="fw-bold">LAPORAN BULANAN</h2>
         </div>
-        @foreach($datas as $no => $data)
+        @php
+        $no = 1;
+        @endphp
+        @foreach($datas as $jenis_kegiatan => $data)
         <div class="d-flex justify-content-between">
-          <h6>{{ ++$no }}. {{ getJenisKegiatanById($data->jenis_kegiatan_id) }} / <small class="text-muted"> {{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}</small></h6>
+          <h6>{{ $sub_no = $no++ }}. {{ getJenisKegiatanById($jenis_kegiatan) }}</h6>
         </div>
-        <div class="d-flex justify-content-between">
-          Kegiatan :
+        @foreach($data as $key => $d)
+        <div class="px-4">
+          <div class="d-flex justify-content-between">
+            {{ $sub_no }}.{{ ++$key }} {{ $d->kegiatan }}
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
+            {{ $d->uraian_kegiatan }}
+          </div>
+          <div class="d-flex justify-content-between">
+            Kendala :
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
+            {{ $d->kendala }}
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            Persentase penyelesaian : {{ $d->persen == NULL ? 0 : $d->persen }}%
+          </div>
+          <div class="d-flex justify-content-between">
+            Data Pendukung :
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            @foreach($d->dataPendukung as $value)
+            <img src="{{ asset('data-pendukung/' . $d->nik . '/' . $d->kegiatan . '/' . $value->nama_file) }}" alt="Data Pendukung" width="300" height="300">
+            @endforeach
+          </div>
         </div>
-        <div class="d-flex justify-content-between mb-3" style="text-indent: 12px;">
-          {{ $data->kegiatan }}
-        </div>
-        <div class="d-flex justify-content-between">
-          Uraian kegiatan :
-        </div>
-        <div class="d-flex justify-content-between mb-3" style="text-indent: 12px;">
-          {{ $data->uraian_kegiatan }}
-        </div>
-        <div class="d-flex justify-content-between">
-          Kendala :
-        </div>
-        <div class="d-flex justify-content-between mb-3" style="text-indent: 12px;">
-          {{ $data->kendala }}
-        </div>
-        <div class="d-flex justify-content-between mb-3">
-          Persentase penyelesaian : {{ $data->persen == NULL ? 0 : $data->persen }}%
-        </div>
-        <div class="d-flex justify-content-between">
-          Data Pendukung :
-        </div>
-        <div class="d-flex justify-content-between mb-3">
-          @foreach($data->dataPendukung as $value)
-          <img src="{{ asset('data-pendukung/' . $data->nik . '/' . $data->kegiatan . '/' . $value->nama_file) }}" alt="Data Pendukung" width="300" height="300">
-          @endforeach
-        </div>
+        @endforeach
         @endforeach
     </main>
   </div>

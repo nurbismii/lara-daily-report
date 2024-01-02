@@ -458,7 +458,6 @@
 @endforeach
 <!-- Tambah kegiatan ends -->
 
-
 <!-- Edit kegiatan -->
 @foreach($data_kegiatan as $data)
 @foreach($data->kegiatanHarian as $harian)

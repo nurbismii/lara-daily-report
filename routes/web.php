@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function () {
         route::get('/show/{id}', [KegiatanMingguanController::class, 'show'])->name('show.kegiatanMingguan');
         route::post('/update/{id}', [KegiatanMingguanController::class, 'update'])->name('update.kegiatanMingguan');
 
+        route::get('/laporan-bulanan', [KegiatanMingguanController::class, 'laporan']);
         route::get('/cetak-laporan/{tgl_awal}/{tgl_akhir}/{tipe}', [KegiatanMingguanController::class, 'cetakPdf'])->name('cetakPdf');
     });
 
@@ -65,7 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/store/penilaian-kerja', [KegiatanHarianController::class, 'penilaianKerjaHarian'])->name('store.penilaian-kerja');
     Route::post('/store/penilaian-kerja-asmen', [KegiatanHarianController::class, 'penilaianKerjaHarianAsmen'])->name('store.penilaian-kerja-asmen');
     Route::post('/update/penilaian-kerja', [KegiatanHarianController::class, 'updatePenilaianKerjaHarian'])->name('update.penilaian-kerja');
-    
+
     route::post('/store/agenda-kerja-esok/', [KegiatanHarianController::class, 'storeAgendaKerja'])->name('store.agendaKerjaEsokHari');
 
     Route::group(['middleware' => 'check.access'], function () {

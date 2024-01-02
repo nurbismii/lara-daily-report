@@ -68,7 +68,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex flex-column align-items-center gap-1">
-                            <h2 class="mb-2">{{ $kegiatan_harian->count() }}</h2>
+                            <h2 class="mb-2">{{ count($total_jenis_kegiatan) }}</h2>
                             <span>Jenis kategori kegiatan digunakan</span>
                         </div>
                         <div id="jenisKegiatanChart"></div>
@@ -90,7 +90,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="d-flex flex-column align-items-center gap-1">
-                            <h2 class="mb-2">{{ $kegiatan_harian->count() }}</h2>
+                            <h2 class="mb-2">{{ count($total_kegiatan_harian) }}</h2>
                             <span>Kategori kegiatan digunakan</span>
                         </div>
                         <div id="kegiatanChart"></div>
@@ -103,8 +103,8 @@
 </div>
 
 <script>
-    var totalJenisKegiatan = JSON.parse('{!! json_encode($total_jenis_kegiatan) !!}');
     var daftarNamaJenisKegiatan = JSON.parse('{!! json_encode($daftar_nama_jenis_kegiatan) !!}');
+    var totalJenisKegiatan = JSON.parse('{!! json_encode($total_jenis_kegiatan) !!}');
 
     var daftarKegiatanHarian = JSON.parse('{!! json_encode($daftar_kegiatan_harian) !!}');
     var totalKegiatanHarian = JSON.parse('{!! json_encode($total_kegiatan_harian) !!}');

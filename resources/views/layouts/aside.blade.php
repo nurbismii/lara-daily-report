@@ -57,21 +57,15 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Main menu</span>
     </li>
+    @if(Auth::user()->jabatan == 'ADMIN')
     <li class="menu-item {{ Request::segment(1) === 'pengguna' ? 'active' : null }}">
-      @if(Auth::user()->jabatan == 'ADMIN')
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
+      <a href="/pengguna" class="menu-link">
         <i class="menu-icon tf-icons bx bx-user-check"></i>
-        <div data-i18n="Account Settings">Pengguna</div>
+        <div data-i18n="Basic">Pengguna</div>
       </a>
-      @endif
-      <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="/pengguna" class="menu-link">
-            <div data-i18n="Account">Data pengguna</div>
-          </a>
-        </li>
-      </ul>
     </li>
+    @endif
+    @if(Auth::user()->jabatan != 'ADMIN')
     <li class="menu-item {{ Request::segment(1) === 'kegiatan-harian' ? 'active' : null }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-stats"></i>
@@ -100,6 +94,17 @@
         @endif
       </ul>
     </li>
+    @endif
+
+    @if(Auth::user()->jabatan != 'ADMIN')
+    <li class="menu-item {{ Request::segment(1) === 'laporan-bulanan' ? 'active' : null }}">
+      <a href="/kegiatan-mingguan/laporan-bulanan" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-report"></i>
+        <div data-i18n="Basic">Laporan</div>
+      </a>
+    </li>
+    @endif
+
     @if(Auth::user()->jabatan == 'SPV' || Auth::user()->jabatan == 'ASMEN')
     <li class="menu-item {{ Request::segment(1) === 'organisir-tim' ? 'active' : null }}">
       <a href="javascript:void(0);" class="menu-link menu-toggle">

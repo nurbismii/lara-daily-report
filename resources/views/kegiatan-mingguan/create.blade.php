@@ -54,11 +54,17 @@
       <!-- Segmented buttons -->
       <div class="row">
 
-        @if($tgl_awal)
+        @if($tgl_awal != '' && $datas->count() > 0)
         <div class="col-md-12 text-center">
           <div class="alert alert-primary" role="alert">
             Periode kegiatan harian <br>
             {{ getTanggalIndo($tgl_awal) }} - {{ getTanggalIndo($tgl_akhir) }}
+          </div>
+        </div>
+        @else
+        <div class="col-md-12 text-center">
+          <div class="alert alert-danger" role="alert">
+            Oppss!! permintaan kamu tidak ditemukan ...
           </div>
         </div>
         @endif
@@ -69,14 +75,16 @@
             <div class="card-body">
               <form action="{{ route('update.kegiatanMingguan', $data->id) }}" enctype="multipart/form-data" method="post">
                 @csrf
-                <div class="row g-2">
-                  <div class="col-md-6 mb-2">
-                    <label for="nama">Kegiatan</label>
-                    <input type="text" name="kegiatan" value="{{ $data->kegiatan }}" class="form-control" readonly>
+                <div class="row">
+                  <div class="col-md-12 mb-2">
+                    <label for="uraian_kegiatan">Kegiatan</label>
+                    <textarea name="kegiatan" class="form-control" cols="30" rows="3">{{ $data->kegiatan }}</textarea>
                   </div>
-                  <div class="col-md-6 mb-2">
-                    <label for="jenis_kegiatan">Jenis Kegiatan</label>
-                    <input type="text" value="{{ getJenisKegiatanById($data->jenis_kegiatan_id) }}" class="form-control" readonly>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 mb-2">
+                    <label for="uraian_kegiatan">Jenis kegiatan</label>
+                    <input name="jenis_kegiatan_id" class="form-control" value="{{ getJenisKegiatanById($data->jenis_kegiatan_id) }}" readonly>
                   </div>
                 </div>
                 <div class="row g-2">
@@ -86,7 +94,7 @@
                   </div>
                   <div class="col-md-6 mb-2">
                     <label for="persentase">Persentase penyelesaian pekerjaan</label>
-                    <input type="number" name="persen" value="{{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}" class="form-control">
+                    <input type="number" name="persen" class="form-control">
                   </div>
                 </div>
                 <div class="row">
@@ -124,5 +132,4 @@
     </div>
   </div>
 </div>
-
 @endsection

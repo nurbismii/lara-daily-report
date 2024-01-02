@@ -216,4 +216,29 @@ class KegiatanMingguanController extends Controller
         $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas]);
         return $pdf->stream();
     }
+
+    public function laporan(Request $request)
+    {
+        //
+        $tgl_awal = $request->tgl_awal;
+        $tgl_akhir = $request->tgl_akhir;
+        $datas = array();
+        $LAPORAN_MINGGUAN = '2';
+
+        if ($request->filled('tgl_awal') && $request->filled('tgl_akhir')) {
+
+
+            $datas = KegiatanHarian::with('dataPendukung')->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
+                ->where('tipe', $LAPORAN_MINGGUAN)
+                ->where('status_duplikat', null)
+                ->where('absensi.user_id', Auth::user()->id)
+                ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
+                ->select('kegiatan_harian.*', 'absensi.tanggal')
+                ->paginate(10);
+
+            return view('laporan.index', compact('datas', 'tgl_awal', 'tgl_akhir', 'LAPORAN_MINGGUAN'));
+        }
+
+        return view('laporan.index', compact('datas', 'tgl_awal', 'tgl_akhir', 'LAPORAN_MINGGUAN'));
+    }
 }

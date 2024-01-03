@@ -104,7 +104,9 @@ class KegiatanHarianController extends Controller
         $jenis_kegiatan = Kegiatan::all();
         $kategori_kegiatan = KategoriKegiatan::all();
         $pic = PIC::all();
-        $data_kegiatan = Absensi::with('kegiatanHarian', 'agendaEsok')
+        $data_kegiatan = Absensi::with(['kegiatanHarian' => function ($q) {
+            $q->orderBy('mulai', 'asc');
+        }], 'agendaEsok')
             ->join('users', 'users.id', '=', 'absensi.user_id')
             ->where('users.nik', Auth::user()->nik)->orderBy('tanggal', 'desc')
             ->select('absensi.*')

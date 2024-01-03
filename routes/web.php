@@ -3,6 +3,7 @@
 use App\Http\Controllers\KegiatanHarianController;
 use App\Http\Controllers\KegiatanMingguanController;
 use App\Http\Controllers\OrganisirTimController;
+use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\Pengaturan\KategoriKegiatanController;
 use App\Http\Controllers\Pengaturan\KegiatanController;
 use App\Http\Controllers\Pengaturan\PICController;
@@ -21,6 +22,15 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'profile'], function () {
         route::get('/', [PenggunaController::class, 'profile']);
+    });
+
+    Route::group(['prefix' => 'pelayanan'], function () {
+        route::get('/', [PelayananController::class, 'index']);
+        route::post('/store', [PelayananController::class, 'store'])->name('pelayanan.store');
+        route::get('/hr', [PelayananController::class, 'hr']);
+
+        route::get('/cari-karyawan', [PelayananController::class, 'cariKaryawan']);
+        route::get('/detail/{id}', [PelayananController::class, 'detailKaryawan']);
     });
 
     Route::group(['prefix' => 'pengguna'], function () {
@@ -87,8 +97,21 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
+    Route::post('fetch/kategori-pelayanan', [PelayananController::class, 'getKategoriPelayanan']);
+    Route::post('fetch/sub-kategori-pelayanan', [PelayananController::class, 'getSubKategoriPelayanan']);
+
 
     Route::group(['middleware' => 'check.access', 'prefix' => 'pengaturan'], function () {
+
+        Route::group(['prefix' => 'pelayanan'], function () {
+            route::get('/', [PelayananController::class, 'pelayanan']);
+            route::post('/store/pelayanan', [PelayananController::class, 'pelayananStore'])->name('set.pelayanan.store');
+
+            route::get('/kategori', [PelayananController::class, 'kategoriPelayanan']);
+            route::post('/store/kategori', [PelayananController::class, 'kategoriPelayananStore'])->name('set.kategori.pelayanan.store');
+
+            route::post('/store/sub/kategori', [PelayananController::class, 'subKategoriPelayananStore'])->name('set.sub.kategori.pelayanan.store');
+        });
 
         Route::group(['prefix' => 'waktu-kerja'], function () {
 

@@ -96,6 +96,29 @@
     </li>
     @endif
 
+    <li class="menu-item {{ Request::segment(1) === 'pelayanan' ? 'active' : null }}">
+      <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class="menu-icon tf-icons bx bx-notepad"></i>
+        <div data-i18n="Account Settings">Pelayanan</div>
+      </a>
+
+      <ul class="menu-sub">
+
+        @if(Auth::user()->jabatan != 'ASMEN')
+        <li class="menu-item">
+          <a href="/kegiatan-mingguan" class="menu-link">
+            <div data-i18n="Account">Data pelayanan</div>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="/pelayanan" class="menu-link">
+            <div data-i18n="Account">Buat pelayanan</div>
+          </a>
+        </li>
+        @endif
+      </ul>
+    </li>
+
     @if(Auth::user()->jabatan != 'ADMIN')
     <li class="menu-item {{ Request::segment(1) === 'laporan-bulanan' ? 'active' : null }}">
       <a href="/kegiatan-mingguan/laporan-bulanan" class="menu-link">
@@ -130,6 +153,11 @@
         <div data-i18n="User interface">Konfigurasi</div>
       </a>
       <ul class="menu-sub">
+        <li class="menu-item">
+          <a href="/pengaturan/pelayanan" class="menu-link">
+            <div data-i18n="Accordion">Pelayanan</div>
+          </a>
+        </li>
         <li class="menu-item">
           <a href="/pengaturan/waktu-kerja" class="menu-link">
             <div data-i18n="Accordion">Waktu kerja</div>

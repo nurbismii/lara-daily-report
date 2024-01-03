@@ -518,11 +518,11 @@
                     <div class="row g-2">
                         <div class="col mb-2">
                             <label for="nama">Mulai mengerjakan</label>
-                            <input type="text" value="{{substr($harian->mulai,0,5)}}" maxlength="5" name="mulai" class="form-control" required>
+                            <input type="text" id="mulaiMengerjakanEditKegiatan" value="{{substr($harian->mulai,0,5)}}" maxlength="5" name="mulai" class="form-control" required>
                         </div>
                         <div class="col mb-2">
                             <label for="email">Selesai mengerjakan</label>
-                            <input type="text" value="{{substr($harian->selesai,0,5)}}" maxlength="5" name="selesai" class="form-control" required>
+                            <input type="text" id="selesaiMengerjakanEditKegiatan" value="{{substr($harian->selesai,0,5)}}" maxlength="5" name="selesai" class="form-control" required>
                         </div>
                     </div>
                     <div class="row g-2">
@@ -779,6 +779,22 @@
 
     const selesaiMengerjakanKegiatan = document.getElementById("selesaiMengerjakanKegiatan");
     selesaiMengerjakanKegiatan.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
+
+    const mulaiMengerjakanEditKegiatan = document.getElementById("mulaiMengerjakanEditKegiatan");
+    mulaiMengerjakanEditKegiatan.addEventListener("input", function() {
+        const value = this.value.replace(/[^0-9]/g, "");
+        if (value.length > 2) {
+            this.value = value.slice(0, 2) + ":" + value.slice(2);
+        }
+    });
+
+    const selesaiMengerjakanEditKegiatan = document.getElementById("selesaiMengerjakanEditKegiatan");
+    selesaiMengerjakanEditKegiatan.addEventListener("input", function() {
         const value = this.value.replace(/[^0-9]/g, "");
         if (value.length > 2) {
             this.value = value.slice(0, 2) + ":" + value.slice(2);

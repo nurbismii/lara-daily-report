@@ -120,7 +120,7 @@
       </ul>
     </li>
 
-    @if(Auth::user()->jabatan != 'ADMIN')
+    @if(Auth::user()->jabatan != 'ADMIN' && Auth::user()->jabatan != 'ASMEN')
     <li class="menu-item {{ Request::segment(1) === 'laporan-bulanan' ? 'active' : null }}">
       <a href="/kegiatan-mingguan/laporan-bulanan" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-report"></i>

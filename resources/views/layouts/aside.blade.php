@@ -104,12 +104,13 @@
 
       <ul class="menu-sub">
 
-        @if(Auth::user()->jabatan != 'ASMEN')
+
         <li class="menu-item">
           <a href="/pelayanan/hr" class="menu-link">
             <div data-i18n="Account">Data pelayanan</div>
           </a>
         </li>
+        @if(Auth::user()->jabatan != 'ASMEN')
         <li class="menu-item">
           <a href="/pelayanan" class="menu-link">
             <div data-i18n="Account">Buat pelayanan</div>

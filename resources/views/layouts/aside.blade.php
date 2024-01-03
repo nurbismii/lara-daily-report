@@ -57,7 +57,7 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Main menu</span>
     </li>
-    @if(Auth::user()->jabatan != 'STAFF')
+    @if(Auth::user()->jabatan == 'ADMIN')
     <li class="menu-item {{ Request::segment(1) === 'pengguna' ? 'active' : null }}">
       <a href="/pengguna" class="menu-link">
         <i class="menu-icon tf-icons bx bx-user-check"></i>

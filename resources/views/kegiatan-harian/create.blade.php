@@ -312,27 +312,39 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="table-responsive">
-                    <table class="table table-striped table-borderless border-bottom">
-                        <thead>
-                            <tr>
-                                <th class="text-nowrap">Kegiatan</th>
-                                <th class="text-nowrap text-center">Uraian Kegiatan</th>
-                                <th class="text-nowrap text-center">% Persentase</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($data->agendaEsok as $val)
-                            <tr>
-                                <td class="text-nowrap">{{ $val->kegiatan }}</td>
-                                <td class="text-nowrap">{{ $val->uraian_kegiatan }}</td>
-                                <td class="text-nowrap">{{ $val->persentase }}%</td>
-
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                @foreach($data->agendaEsok as $key => $val)
+                <div class="divider divider-dotted">
+                    <div class="divider-text">{{ ++$key }} - Agenda esok hari</div>
                 </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Agenda</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{$val->kegiatan}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Uraian kegiatan</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{$val->uraian_kegiatan}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0">Persentase</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{$val->persentase}}%
+                    </div>
+                </div>
+                <hr>
+
+                @endforeach
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">

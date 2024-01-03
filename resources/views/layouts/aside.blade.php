@@ -57,7 +57,7 @@
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">Main menu</span>
     </li>
-    @if(Auth::user()->jabatan == 'ADMIN')
+    @if(Auth::user()->jabatan != 'STAFF')
     <li class="menu-item {{ Request::segment(1) === 'pengguna' ? 'active' : null }}">
       <a href="/pengguna" class="menu-link">
         <i class="menu-icon tf-icons bx bx-user-check"></i>
@@ -144,7 +144,7 @@
     </li>
     @endif
     <!-- Pengaturan -->
-    @if(Auth::user()->jabatan == 'ADMIN')
+    @if(Auth::user()->jabatan != 'STAFF')
     <li class="menu-header small text-uppercase"><span class="menu-header-text">Pengaturan</span></li>
     <!-- Konfigurasi -->
     <li class="menu-item {{ Request::segment(1) === 'pengaturan' ? 'active' : null }}">

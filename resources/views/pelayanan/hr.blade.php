@@ -21,6 +21,7 @@
                 <th>Posisi</th>
                 <th>Kategori</th>
                 <th>Sub kategori</th>
+                <th>Tanggal</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0">
@@ -32,6 +33,7 @@
                 <td>{{ $data->posisi }}</td>
                 <td>{{ $data->MasterKategoriPelayanan->kategori_pelayanan ?? '' }}</td>
                 <td>{{ $data->MasterSubKategoriPelayanan->sub_kategori_pelayanan ?? 'Belum tersedia' }}</td>
+                <td>{{ getTanggalIndo($data->tanggal) }}</td>
               </tr>
               @endforeach
             </tbody>

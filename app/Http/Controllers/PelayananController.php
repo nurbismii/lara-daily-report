@@ -28,8 +28,9 @@ class PelayananController extends Controller
 
     public function hr()
     {
-        $datas = Pelayanan::orderBy('tanggal', 'desc')->get();
-        return view('pelayanan.index', compact('pelayanan'));
+        $datas = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->orderBy('tanggal', 'desc')->paginate(10);
+
+        return view('pelayanan.hr', compact('datas'));
     }
 
     /**

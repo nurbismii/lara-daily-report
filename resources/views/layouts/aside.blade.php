@@ -106,7 +106,7 @@
 
         @if(Auth::user()->jabatan != 'ASMEN')
         <li class="menu-item">
-          <a href="/kegiatan-mingguan" class="menu-link">
+          <a href="/pelayanan/hr" class="menu-link">
             <div data-i18n="Account">Data pelayanan</div>
           </a>
         </li>

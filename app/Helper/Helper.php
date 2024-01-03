@@ -3,6 +3,13 @@
 use App\Models\KategoriKegiatan;
 use App\Models\Kegiatan;
 use App\Models\PIC;
+use App\Models\User;
+
+function getNamaPic($id)
+{
+	$nama = User::where('nik', $id)->pluck('name')->implode("");
+	return $nama;
+}
 
 function getJenisKegiatanById($id)
 {

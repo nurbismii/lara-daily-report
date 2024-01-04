@@ -11,40 +11,41 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="row">
-    <h4 class="fw-bold py-2 mb-2">Form pelayanan</h4>
+    <h4 class="fw-bold py-2 mb-2">Form edit pelayanan</h4>
     <!-- Basic Bootstrap Table -->
     <div class="col-lg-12">
       @include('message')
     </div>
     <div class="col-lg-12">
-      <form action="{{ route('pelayanan.store') }}" method="post">
+      <form action="{{ route('pelayanan.update', $data->id) }}" method="post">
         @csrf
+        {{method_field('patch')}}
         <div class="card">
           <div class="card-body">
             <div class="row g-2">
               <div class="col mb-2">
                 <label for="nama">Nama</label>
-                <input type="text" id="nama_karyawan" name="nama_karyawan" class="form-control" required readonly>
+                <input type="text" value="{{$data->nama_karyawan}}" name="nama_karyawan" class="form-control" required readonly>
               </div>
               <div class="col mb-2">
                 <label for="nik">NIK</label>
-                <input type="text" name="nik_karyawan" class="form-control nik_karyawan" required readonly>
+                <input type="text" name="nik_karyawan" value="{{$data->nik_karyawan}}" class="form-control" required readonly>
               </div>
             </div>
             <div class="row g-2">
               <div class="col mb-2">
                 <label for="departemen">Departemen</label>
-                <input type="text" id="departemen" name="departemen" class="form-control" required readonly>
+                <input type="text" value="{{$data->departemen}}" name="departemen" class="form-control" required readonly>
               </div>
               <div class="col mb-2">
                 <label for="divisi">Divisi</label>
-                <input type="text" id="divisi" name="divisi" class="form-control nik_karyawan" required readonly>
+                <input type="text" value="{{$data->divisi}}" name="divisi" class="form-control nik_karyawan" required readonly>
               </div>
             </div>
             <div class="row">
               <div class="col mb-2">
                 <label for="posisi">Posisi</label>
-                <input type="text" id="posisi" name="posisi" class="form-control" required readonly>
+                <input type="text" value="{{$data->posisi}}" name="posisi" class="form-control" required readonly>
               </div>
             </div>
             <div class="row">
@@ -73,17 +74,18 @@
             <div class="row">
               <div class="col mb-2">
                 <label for="keperluan">Keperluan</label>
-                <textarea name="keperluan" cols="30" rows="5" class="form-control"></textarea>
+                <textarea name="keperluan" cols="30" rows="5" class="form-control">{{$data->keperluan}}</textarea>
               </div>
             </div>
             <div class="row">
               <div class="col mb-2">
                 <label for="pic">Person in Charge</label>
-                <input type="text" value="{{ Auth::user()->name }}" class="form-control" required readonly>
-                <input type="hidden" name="nik_pic" value="{{ Auth::user()->nik }}" class="form-control" required readonly>
+                <input type="text" value="{{ getNamaPic($data->nik_pic)}}" class="form-control" required readonly>
+                <input type="hidden" name="nik_pic" value="{{$data->nik_pic}}" class="form-control" required readonly>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary float-end">Simpan</button>
+            <button type="submit" class="mx-2 btn btn-primary float-end">Simpan</button>
+            <a href="javascript:void(0)" onclick="history.back()" class="btn btn-secondary float-end">Kembali</a>
           </div>
         </div>
       </form>
@@ -96,11 +98,6 @@
 <script>
   $(document).ready(function() {
 
-    /*------------------------------------------
-    --------------------------------------------
-    Country Dropdown Change Event
-    --------------------------------------------
-    --------------------------------------------*/
     $('#pelayanan-dropdown').on('change', function() {
       var idPelayanan = this.value;
       $("#kategori-dropdown").html('');
@@ -123,11 +120,6 @@
       });
     });
 
-    /*------------------------------------------
-    --------------------------------------------
-    State Dropdown Change Event
-    --------------------------------------------
-    --------------------------------------------*/
     $('#kategori-dropdown').on('change', function() {
       var kategori_id = this.value;
       $("#sub-kategori-dropdown").html('');

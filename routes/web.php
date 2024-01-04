@@ -26,10 +26,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'pelayanan'], function () {
         route::get('/', [PelayananController::class, 'index']);
+        route::get('/hr', [PelayananController::class, 'hr']);
         route::post('/store', [PelayananController::class, 'store'])->name('pelayanan.store');
         route::get('/edit/{id}', [PelayananController::class, 'edit'])->name('pelayanan.edit');
+        route::patch('/update/{id}', [PelayananController::class, 'update'])->name('pelayanan.update');
         route::get('/delete/{id}', [PelayananController::class, 'destroy'])->name('pelayanan.destroy');
-        route::get('/hr', [PelayananController::class, 'hr']);
 
         route::get('/cari-karyawan', [PelayananController::class, 'cariKaryawan']);
         route::get('/detail/{id}', [PelayananController::class, 'detailKaryawan']);

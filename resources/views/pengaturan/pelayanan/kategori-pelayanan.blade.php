@@ -63,6 +63,9 @@
               @endforeach
             </tbody>
           </table>
+          <div class="d-flex justify-content-end mt-2 mx-3">
+            {!! $datas->links() !!}
+          </div>
         </div>
       </div>
     </div>
@@ -127,7 +130,7 @@
               <select name="kategori_pelayanan_id" class="form-select" required>
                 <option value="" disabled selected>- Pilih kategori pelayanan -</option>
                 @foreach($datas as $row)
-                <option value="{{$row->id}}">{{$row->masterPelayanan->nama_layanan}} - {{$row->kategori_pelayanan}}</option>
+                <option value="{{$row->id}}">{{$row->kategori_pelayanan}} - {{$row->masterPelayanan->nama_layanan}}</option>
                 @endforeach
               </select>
             </div>

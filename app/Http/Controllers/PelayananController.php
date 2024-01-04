@@ -112,7 +112,8 @@ class PelayananController extends Controller
     {
         //
         $data = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->where('id', $id)->first();
-        return view('pelayanan.edit', compact('data'));
+        $pelayanan = MasterPelayanan::all();
+        return view('pelayanan.edit', compact('data', 'pelayanan'));
     }
 
     /**
@@ -125,6 +126,13 @@ class PelayananController extends Controller
     public function update(Request $request, $id)
     {
         //
+        Pelayanan::where('id', $id)->update([
+            'pelayanan_id' => $request->pelayanan_id,
+            'kategori_pelayanan_id' => $request->kategori_pelayanan_id,
+            'sub_kategori_pelayanan_id' => $request->sub_kategori_pelayanan_id,
+            'keperluan' => $request->keperluan,
+        ]);
+        return redirect('/pelayanan/hr')->with('success', 'Data pelayanan berhasil diperbarui');
     }
 
     /**
@@ -136,6 +144,8 @@ class PelayananController extends Controller
     public function destroy($id)
     {
         //
+        Pelayanan::where('id', $id)->delete();
+        return back()->with('success', 'Data pelayanan berhasil dihapus');
     }
 
     public function cariKaryawan(Request $request)
@@ -208,7 +218,7 @@ class PelayananController extends Controller
 
     public function kategoriPelayanan()
     {
-        $datas = MasterKategoriPelayanan::with('masterPelayanan', 'subKategoriPelayanan')->get();
+        $datas = MasterKategoriPelayanan::with('masterPelayanan', 'subKategoriPelayanan')->paginate(10);
         $pelayanan = MasterPelayanan::all();
         return view('pengaturan.pelayanan.kategori-pelayanan', compact('datas', 'pelayanan'));
     }

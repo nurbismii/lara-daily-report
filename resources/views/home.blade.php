@@ -99,12 +99,12 @@
                 <div class="card-header d-flex align-items-center justify-content-between pb-0">
                     <div class="card-title mb-0">
                         <h5 class="m-0 me-2">Pelayanan terbaru</h5>
-                        <small class="text-muted">{{ $jumlah_pengguna }} Total pelayanan</small>
+                        <small class="text-muted">{{ $pelayanan->count() }} Total pelayanan</small>
                     </div>
                 </div>
                 <div class="card-body">
                     <ul class="timeline">
-                        @foreach($pelayanan as $key => $row)
+                        @forelse($pelayanan as $key => $row)
                         <li>
                             <div class="d-flex justify-content-between">
                                 <a href="javascript:void(0)" class="mb-0">{{ $row->MasterPelayanan->nama_layanan }}</a>
@@ -116,7 +116,11 @@
                                 <small class="text-muted">{{ $row->created_at->diffForHumans() }}</small>
                             </div>
                         </li>
-                        @endforeach
+                        @empty
+                        <div class="text-center">
+                            Data pelayanan belum tersedia
+                        </div>
+                        @endforelse
                     </ul>
                 </div>
             </div>

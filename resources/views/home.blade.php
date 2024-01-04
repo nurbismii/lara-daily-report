@@ -110,7 +110,7 @@
                                 <a href="javascript:void(0)" class="mb-0">{{ $row->MasterPelayanan->nama_layanan }}</a>
                             </div>
                             <div class="d-flex justify-content-between">
-                                {{ getNamaPic($row->nik_pic) }} telah melakukan pelayanan {{ $row->MasterKategoriPelayanan->kategori_pelayanan }} {{ strtolower($row->MasterSubKategoriPelayanan->sub_kategori_pelayanan) }}
+                                {{ getNamaPic($row->nik_pic) ?? '' }} telah melakukan pelayanan {{ $row->MasterKategoriPelayanan->kategori_pelayanan }} {{ strtolower($row->MasterSubKategoriPelayanan->sub_kategori_pelayanan) }}
                             </div>
                             <div class="d-flex justify-content-between">
                                 <small class="text-muted">{{ $row->created_at->diffForHumans() }}</small>

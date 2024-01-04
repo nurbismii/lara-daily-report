@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\KategoriKegiatan;
 use App\Models\KegiatanHarian;
+use App\Models\Pelayanan;
 use App\Models\Tim;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -44,6 +45,8 @@ class HomeController extends Controller
         $total_kegiatan_harian = totalKegiatanHarian($kategori_kegiatan_terpopuler);
         $daftar_kegiatan_harian = daftarNamaKategoriKegiatan($kategori_kegiatan_terpopuler);
 
-        return view('home', compact('jumlah_kegiatan_harian', 'jumlah_tim', 'jumlah_pengguna', 'kegiatan_harian', 'total_kegiatan_harian', 'daftar_kegiatan_harian', 'total_jenis_kegiatan', 'daftar_nama_jenis_kegiatan'));
+        $pelayanan = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->orderBy('tanggal', 'desc')->limit(7)->get();
+
+        return view('home', compact('pelayanan', 'jumlah_kegiatan_harian', 'jumlah_tim', 'jumlah_pengguna', 'kegiatan_harian', 'total_kegiatan_harian', 'daftar_kegiatan_harian', 'total_jenis_kegiatan', 'daftar_nama_jenis_kegiatan'));
     }
 }

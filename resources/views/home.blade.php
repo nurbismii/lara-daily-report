@@ -1,6 +1,43 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+    ul.timeline {
+        list-style-type: none;
+        position: relative;
+    }
+
+    ul.timeline:before {
+        content: ' ';
+        background: #d4d9df;
+        display: inline-block;
+        position: absolute;
+        left: 29px;
+        width: 2px;
+        height: 100%;
+        z-index: 400;
+    }
+
+    ul.timeline>li {
+        margin: 20px 0;
+        padding-left: 20px;
+    }
+
+    ul.timeline>li:before {
+        content: ' ';
+        background: white;
+        display: inline-block;
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid #696cff;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        z-index: 400;
+    }
+</style>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
         <div class="col-lg-8 mb-4 order-0">
@@ -56,6 +93,34 @@
         </div>
     </div>
     <div class="row">
+
+        <div class="col-lg-12 order-0 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center justify-content-between pb-0">
+                    <div class="card-title mb-0">
+                        <h5 class="m-0 me-2">Pelayanan terbaru</h5>
+                        <small class="text-muted">{{ $jumlah_pengguna }} Total pelayanan</small>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="timeline">
+                        @foreach($pelayanan as $key => $row)
+                        <li>
+                            <div class="d-flex justify-content-between">
+                                <a href="javascript:void(0)" class="mb-0">{{ $row->MasterPelayanan->nama_layanan }}</a>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                {{ getNamaPic($row->nik_pic) }} telah melakukan pelayanan {{ $row->MasterKategoriPelayanan->kategori_pelayanan }} {{ strtolower($row->MasterSubKategoriPelayanan->sub_kategori_pelayanan) }}
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">{{ $row->created_at->diffForHumans() }}</small>
+                            </div>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
         <!-- Order Statistics -->
         <div class="col-lg-6 order-0 mb-4">
             <div class="card h-100">

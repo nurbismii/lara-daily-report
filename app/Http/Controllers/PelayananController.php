@@ -10,6 +10,7 @@ use App\Models\Pelayanan;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class PelayananController extends Controller
 {
@@ -26,11 +27,43 @@ class PelayananController extends Controller
         return view('pelayanan.index', compact('pelayanan'));
     }
 
-    public function hr()
+    public function hr(Request $request)
     {
-        $datas = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->orderBy('tanggal', 'desc')->paginate(10);
+        if ($request->ajax()) {
 
-        return view('pelayanan.hr', compact('datas'));
+            $data = Pelayanan::join('users', 'users.nik', '=', 'pelayanan.nik_pic')
+                ->leftjoin('master_pelayanan', 'master_pelayanan.id', '=', 'pelayanan.pelayanan_id')
+                ->leftjoin('master_kategori_pelayanan', 'master_kategori_pelayanan.id', '=', 'pelayanan.kategori_pelayanan_id')
+                ->leftjoin('master_sub_kategori_pelayanan', 'master_sub_kategori_pelayanan.id', '=', 'pelayanan.sub_kategori_pelayanan_id')
+                ->orderBy('tanggal', 'desc')
+                ->select('pelayanan.*', 'users.name', 'master_pelayanan.nama_layanan', 'master_kategori_pelayanan.kategori_pelayanan', 'master_sub_kategori_pelayanan.sub_kategori_pelayanan');
+
+            if ($request->filled('from_date') && $request->filled('to_date')) {
+                $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
+            }
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('aksi', function ($data) {
+                    return view('pelayanan._aksi', [
+                        'data' => $data,
+                        'url_edit' => route('pelayanan.edit', $data->id),
+                        'url_hapus' => route('pelayanan.destroy', $data->id)
+                    ]);
+                })->filter(function ($instance) use ($request) {
+                    if (!empty($request->get('search'))) {
+                        $instance->where(function ($w) use ($request) {
+                            $search = $request->get('search');
+                            $w->where('name', 'LIKE', "%$search%");
+                            $w->orWhere('nik_karyawan', 'LIKE', "%$search%");
+                            $w->orWhere('nama_karyawan', 'LIKE', "%$search%");
+                        });
+                    }
+                })
+                ->rawColumns(['aksi'])
+                ->make(true);
+        }
+        return view('pelayanan.hr');
     }
 
     /**
@@ -70,17 +103,6 @@ class PelayananController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
@@ -89,6 +111,8 @@ class PelayananController extends Controller
     public function edit($id)
     {
         //
+        $data = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->where('id', $id)->first();
+        return view('pelayanan.edit', compact('data'));
     }
 
     /**

@@ -106,11 +106,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => 'pelayanan'], function () {
             route::get('/', [PelayananController::class, 'pelayanan']);
             route::post('/store/pelayanan', [PelayananController::class, 'pelayananStore'])->name('set.pelayanan.store');
+            route::patch('/update/{id}', [PelayananController::class, 'pelayananUpdate'])->name('set.pelayanan.update');
+            route::delete('/delete/{id}', [PelayananController::class, 'pelayananDestroy'])->name('set.pelayanan.destroy');
 
             route::get('/kategori', [PelayananController::class, 'kategoriPelayanan']);
             route::post('/store/kategori', [PelayananController::class, 'kategoriPelayananStore'])->name('set.kategori.pelayanan.store');
+            route::patch('/update/kategori/{id}', [PelayananController::class, 'kategoriPelayananUpdate'])->name('set.kategori.pelayanan.update');
+            route::delete('/delete/kategori/{id}', [PelayananController::class, 'kategoriPelayananDestroy'])->name('set.kategori.pelayanan.destroy');
 
             route::post('/store/sub/kategori', [PelayananController::class, 'subKategoriPelayananStore'])->name('set.sub.kategori.pelayanan.store');
+            route::post('/update/sub/kategori', [PelayananController::class, 'subKategoriPelayananUpdate'])->name('set.sub.kategori.pelayanan.update');
+            route::get('/delete/sub/kategori/{id}', [PelayananController::class, 'subKategoriPelayananDestroy'])->name('set.sub.kategori.pelayanan.destroy');
         });
 
         Route::group(['prefix' => 'waktu-kerja'], function () {

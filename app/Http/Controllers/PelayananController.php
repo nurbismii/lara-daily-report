@@ -155,6 +155,33 @@ class PelayananController extends Controller
         return back()->with('success', 'Yeaai, pelayanan baru berhasil ditambahkan');
     }
 
+    public function pelayananUpdate(Request $request, $id)
+    {
+        MasterPelayanan::where('id', $id)->update([
+            'nama_layanan' => $request->nama_layanan
+        ]);
+
+        return back()->with('success', 'Yeaai, pelayanan baru berhasil diperbarui');
+    }
+
+    public function pelayananDestroy($id)
+    {
+        $pelayanan = MasterPelayanan::where('id', $id)->first();
+
+        $kategori_pelayanan = MasterKategoriPelayanan::where('master_pelayanan_id', $pelayanan->id)->get();
+
+        foreach ($kategori_pelayanan as $row) {
+
+            MasterSubKategoriPelayanan::where('master_kategori_pelayanan_id', $row->id)->delete();
+
+            $row->delete();
+        }
+
+        $pelayanan->delete();
+
+        return back()->with('success', 'Yeaai, pelayanan berhasil dihapus');
+    }
+
     public function kategoriPelayanan()
     {
         $datas = MasterKategoriPelayanan::with('masterPelayanan', 'subKategoriPelayanan')->get();
@@ -172,6 +199,26 @@ class PelayananController extends Controller
         return back()->with('success', 'Yeaai, kategori pelayanan baru berhasil ditambahkan');
     }
 
+    public function kategoriPelayananUpdate(Request $request, $id)
+    {
+        MasterKategoriPelayanan::where('id', $id)->update([
+            'kategori_pelayanan' => $request->kategori_pelayanan
+        ]);
+
+        return back()->with('success', 'Yeaai, kategori pelayanan baru berhasil diperbarui');
+    }
+
+    public function kategoriPelayananDestroy($id)
+    {
+        $kategori_pelayanan = MasterKategoriPelayanan::where('id', $id)->first();
+
+        MasterSubKategoriPelayanan::where('master_kategori_pelayanan_id', $id)->delete();
+
+        $kategori_pelayanan->delete();
+
+        return back()->with('success', 'Yeaai, kategori pelayanan berhasil dihapus');
+    }
+
     public function subKategoriPelayananStore(Request $request)
     {
         MasterSubKategoriPelayanan::create([
@@ -180,6 +227,22 @@ class PelayananController extends Controller
         ]);
 
         return back()->with('success', 'Yeaai, sub kategori pelayanan baru berhasil ditambahkan');
+    }
+
+    public function subKategoriPelayananUpdate(Request $request)
+    {
+        MasterSubKategoriPelayanan::where('id', $request->id)->update([
+            'sub_kategori_pelayanan' => $request->sub_kategori_pelayanan,
+        ]);
+
+        return back()->with('success', 'Yeaai, sub kategori pelayanan baru berhasil diperbarui');
+    }
+
+    public function subKategoriPelayananDestroy($id)
+    {
+        MasterSubKategoriPelayanan::where('id', $id)->delete();
+
+        return back()->with('success', 'Yeaai, sub kategori pelayanan berhasil dihapus');
     }
 
     public function getKategoriPelayanan(Request $request)

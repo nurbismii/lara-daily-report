@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\BerkasPendukung;
 use App\Models\KegiatanHarian;
+use App\Models\Pelayanan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -205,6 +206,8 @@ class KegiatanMingguanController extends Controller
 
     public function cetakPdf($tgl_awal, $tgl_akhir, $tipe)
     {
+        $data_pelayanan = array();
+
         $datas = KegiatanHarian::with('dataPendukung')->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
             ->where('tipe', $tipe)
             ->where('status_duplikat', null)
@@ -214,9 +217,17 @@ class KegiatanMingguanController extends Controller
             ->get()->groupBy(function ($data) {
                 return $data->jenis_kegiatan_id;
             });
-        
-        $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas]);
-        return $pdf->stream();
+
+        foreach ($datas as $data) {
+
+            foreach ($data as $d) {
+
+                $data_pelayanan = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->where('nik_pic', $d->nik)->where('tanggal', $d->tanggal)->get();
+            }
+            
+            $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas, 'pelayanan' => $data_pelayanan]);
+            return $pdf->stream();
+        }
     }
 
     public function laporan(Request $request)

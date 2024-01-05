@@ -23,4 +23,9 @@ class Pelayanan extends Model
   {
     return $this->hasOne(MasterSubKategoriPelayanan::class, 'id', 'sub_kategori_pelayanan_id');
   }
+
+  public function KegiatanHarian()
+  {
+    return $this->belongsTo(KegiatanHarian::class);
+  }
 }

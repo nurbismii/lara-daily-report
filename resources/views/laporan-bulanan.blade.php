@@ -20,6 +20,24 @@
     .justify {
       text-align: justify;
     }
+
+    .table-line {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-line th {
+      background: #85CB90;
+      color: #FFFFFF;
+      padding: 0.3em;
+      text-align: left;
+    }
+
+    .table-line td {
+      border-bottom: 1px solid #DDDDDD;
+      color: #666666;
+      padding: 0.5em;
+    }
   </style>
 </head>
 
@@ -31,9 +49,13 @@
         <div class="text-center">
           <h2 class="fw-bold">LAPORAN BULANAN</h2>
         </div>
+
         @php
+
         $no = 1;
+
         @endphp
+
         @foreach($datas as $jenis_kegiatan => $data)
         <div class="d-flex justify-content-between">
           <h6>{{ $sub_no = $no++ }}. {{ getJenisKegiatanById($jenis_kegiatan) }}</h6>
@@ -55,6 +77,50 @@
           <div class="d-flex justify-content-between mb-3">
             Persentase penyelesaian : {{ $d->persen == NULL ? 0 : $d->persen }}%
           </div>
+
+          @php
+
+          $no_layanan = 1;
+
+          @endphp
+
+          <div class="d-flex justify-content-between">
+            Daftar Pelayanan tanggal {{ getTanggalIndo($d->tanggal) }} :
+          </div>
+          <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
+            <table class="table-line">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Layanan</th>
+                  <th>Kategori Layanan</th>
+                  <th>Sub Kategori</th>
+                  <th>Nama Karyawan</th>
+                  <th>Keperluan</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($pelayanan as $val)
+                  @if($val->tanggal == $d->tanggal)
+                  <tr>
+                    <td>{{$no_layanan++}}</td>
+                    <td>{{$val->MasterPelayanan->nama_layanan ?? '-'}}</td>
+                    <td>{{$val->MasterKategoriPelayanan->kategori_pelayanan ?? '-'}}</td>
+                    <td>{{$val->MasterSubKategoriPelayanan->sub_kategori_pelayanan ?? '-'}}</td>
+                    <td>{{getNamaPic($val->nik_pic)}}</td>
+                    <td>{{$val->keperluan ?? '-'}}</td>
+                  </tr>
+                  @endif
+                  @if($val->tanggal != $d->tanggal)
+                    <tr>
+                       <td colspan="6" style="text-align: center;">Tidak ada layanan</td>
+                    </tr>
+                    @break
+                  @endif
+                @endforeach
+              </tbody>
+            </table>
+          </div>
           <div class="d-flex justify-content-between">
             Data Pendukung :
           </div>
@@ -65,6 +131,7 @@
           </div>
         </div>
         @endforeach
+
         @endforeach
     </main>
   </div>

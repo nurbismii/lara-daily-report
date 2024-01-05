@@ -18,4 +18,9 @@ class KegiatanHarian extends Model
   {
     return $this->hasMany(BerkasPendukung::class);
   }
+
+  public function pelayanan()
+  {
+    return $this->hasMany(Pelayanan::class);
+  }
 }

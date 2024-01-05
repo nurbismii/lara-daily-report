@@ -32,9 +32,9 @@
                   <div class="flex-shrink-0 me-3">
                     <div class="avatar avatar-online">
                       @if($data->foto != '1.png')
-                      <img src="{{  asset('foto-profil/' . $data->nik . '/' . $data->foto ) }}" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="{{  asset('foto-profil/' . $data->nik . '/' . $data->foto ) }}" alt class="w-px-40 h-px-35 rounded-circle" />
                       @else
-                      <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                      <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-px-35 rounded-circle" />
                       @endif
                     </div>
                   </div>

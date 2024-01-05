@@ -27,7 +27,7 @@
                   <input type="file" id="upload" name="foto" class="account-file-input" accept="image/png, image/jpeg">
                   <button type="submit" class="btn btn-primary">Simpan foto</button>
                 </label>
-                <p class="text-muted mb-0 mt-2">Allowed JPG, GIF or PNG. Max size of 10MB</p>
+                <p class="text-muted mb-0 mt-2">Allowed JPG or PNG. Max size of 10MB</p>
               </div>
             </form>
           </div>

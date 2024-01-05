@@ -195,6 +195,10 @@
                                     <p>Status akhir</p>
                                     <p>{{ ucfirst($row->status_akhir) }}</p>
                                 </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Kuantitas</p>
+                                    <p>{{ $row->kuantitas ?? '-' }}</p>
+                                </div>
 
                                 @foreach($row->dataPendukung as $berkas)
                                 <small><a class="text-sm" href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->getAnggota->nik]) }}"><u> {{ $berkas->nama_file }}</u></a> <br></small>

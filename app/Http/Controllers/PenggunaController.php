@@ -64,7 +64,7 @@ class PenggunaController extends Controller
             return back()->with('success', 'Pengguna berhasil diperbarui');
         }
         if ($request->kata_sandi != '') {
-            if ($request->kata_sandi == $request->konfirmasi_sandi) {
+            if ($request->kata_sandi == $request->konfirmasi_kata_sandi) {
                 User::where('id', $id)->update([
                     'nik' => $request->nik,
                     'name' => strtoupper($request->name),

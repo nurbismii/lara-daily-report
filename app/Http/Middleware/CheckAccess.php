@@ -21,6 +21,6 @@ class CheckAccess
         if (Auth::user()->jabatan == 'ASMEN' || Auth::user()->jabatan == 'ADMIN' || Auth::user()->jabatan == 'SPV') {
             return $next($request);
         }
-        return redirect('dashboard');
+        return redirect('home');
     }
 }

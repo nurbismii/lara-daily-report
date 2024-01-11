@@ -56,6 +56,9 @@ Route::group(['middleware' => 'auth'], function () {
         route::patch('/update/{id}', [KegiatanHarianController::class, 'update'])->name('update.kegiatanharian');
         route::delete('/destroy/{id}', [KegiatanHarianController::class, 'destroy'])->name('delete.absensi-kegiatan');
 
+        route::get('/tambah-kegiatan/{id}', [KegiatanHarianController::class, 'tambahKegiatan'])->name('tambah-kegiatan.harian');
+        route::post('/tambah-kegiatan/store', [KegiatanHarianController::class, 'storeTambahKegiatan'])->name('store.tambah-kegiatan.harian');
+
         route::get('/destroy-by-get/{id}', [KegiatanHarianController::class, 'destroy'])->name('delete.absensi-kegiatan-delete');
         route::post('/store/{id}', [KegiatanHarianController::class, 'storeTambahKegiatan'])->name('store.tambah.kegiatanharian');
         route::patch('/update/kegiatan/{id}', [KegiatanHarianController::class, 'updateKegiatan'])->name('update.ubah.kegiatanharian');

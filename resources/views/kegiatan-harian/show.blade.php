@@ -148,7 +148,7 @@
 								@foreach($data->kegiatanHarian as $key => $row)
 								<li>
 									<div class="d-flex justify-content-between">
-										<p class="fw-bold mb-2">{{ getJenisKegiatanById($row->jenis_kegiatan_id) }}</p>
+										<p class="text-primary fw-bold mb-2">{{++$key}}. {{ getJenisKegiatanById($row->jenis_kegiatan_id) }}</p>
 										<p class="fw-bold mb-2">{{ substr($row->mulai, 0, 5) }} - {{ substr($row->selesai, 0, 5) }}</p>
 									</div>
 									<div class="d-flex justify-content-between">
@@ -187,6 +187,12 @@
 									<div class="d-flex justify-content-between">
 										<p>Status akhir</p>
 										<p>{{ ucfirst($row->status_akhir) }}</p>
+									</div>
+									<div class="d-flex justify-content-between">
+										<p>Pelayanan</p>
+										@foreach($row->pelayanan as $key => $pel)
+										{{ ++$key }}. {{ $pel->nama_karyawan }} ({{getNamaKategoriPelayanan($pel->kategori_pelayanan_id)}})<br>
+										@endforeach
 									</div>
 									@foreach($row->dataPendukung as $key => $berkas)
 									<div class="d-flex justify-content-between">

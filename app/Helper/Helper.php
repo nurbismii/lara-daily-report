@@ -2,8 +2,15 @@
 
 use App\Models\KategoriKegiatan;
 use App\Models\Kegiatan;
+use App\Models\MasterKategoriPelayanan;
 use App\Models\PIC;
 use App\Models\User;
+
+function getNamaKategoriPelayanan($id)
+{
+	$nama = MasterKategoriPelayanan::where('id', $id)->pluck("kategori_pelayanan")->first();
+	return $nama;
+}
 
 function getNamaPic($id)
 {

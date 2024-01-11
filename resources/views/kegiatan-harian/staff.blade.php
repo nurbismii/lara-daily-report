@@ -1,6 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
+<!-- Select2 -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<style>
+    span.select2.select2-container.select2-container--classic {
+        width: 100% !important;
+    }
+</style>
+
 <div class="container-xxl flex-grow-1 container-p-y">
     <form action="{{route('staff.store')}}" enctype="multipart/form-data" method="post">
         @csrf
@@ -67,13 +75,13 @@
                         <div class="row">
                             <div class="col mb-2">
                                 <label for="kata-sandi">Kegiatan</label>
-                                <textarea name="kegiatan[]" class="form-control" id="" cols="30" rows="5" required></textarea>
+                                <textarea name="kegiatan" class="form-control" id="" cols="30" rows="5" required></textarea>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col mb-2">
                                 <label for="email">Jenis Kegiatan</label>
-                                <select name="jenis_kegiatan_id[]" class="form-select" required>
+                                <select name="jenis_kegiatan_id" class="form-select" required>
                                     <option value="" disabled selected>-- Pilih jenis kegiatan --</option>
                                     @foreach($jenis_kegiatan as $row)
                                     <option value="{{$row->id}}">{{$row->jenis_kegiatan}}</option>
@@ -84,7 +92,7 @@
                         <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="kata-sandi">Kategori kegiatan</label>
-                                <select name="kategori_kegiatan_id[]" class="form-select" id="" required>
+                                <select name="kategori_kegiatan_id" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
                                     @foreach($kategori_kegiatan as $row)
                                     <option value="{{$row->id}}">{{$row->kategori_kegiatan}}</option>
@@ -93,7 +101,7 @@
                             </div>
                             <div class="col mb-2">
                                 <label for="email">PIC</label>
-                                <select name="pic_id[]" class="form-select" id="" required>
+                                <select name="pic_id" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih PIC --</option>
                                     @foreach($pic as $row)
                                     <option value="{{$row->id}}">{{$row->pic}}</option>
@@ -104,23 +112,23 @@
                         <div class="row">
                             <div class="col mb-2">
                                 <label for="kendala">Kendala/Masalah</label>
-                                <textarea name="kendala[]" class="form-control" id="" cols="30" rows="5 "></textarea>
+                                <textarea name="kendala" class="form-control" id="" cols="30" rows="5 "></textarea>
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="nama">Mulai mengerjakan</label>
-                                <input type="text" id="mulaiMengerjakan" maxlength="5" name="mulai[]" class="form-control" required>
+                                <input type="text" id="mulaiMengerjakan" maxlength="5" name="mulai" class="form-control" required>
                             </div>
                             <div class="col mb-2">
                                 <label for="email">Selesai mengerjakan</label>
-                                <input type="text" id="selesaiMengerjakan" maxlength="5" name="selesai[]" class="form-control" required>
+                                <input type="text" id="selesaiMengerjakan" maxlength="5" name="selesai" class="form-control" required>
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="nama">Status Kegiatan</label>
-                                <select name="status_kegiatan[]" class="form-select" id="" required>
+                                <select name="status_kegiatan" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih status kegiatan --</option>
                                     <option value="selesai">Selesai</option>
                                     <option value="tidak selesai">Tidak selesai</option>
@@ -128,28 +136,104 @@
                             </div>
                             <div class="col mb-2">
                                 <label for="email">Deadline penyelesaian</label>
-                                <input type="date" name="deadline[]" class="form-control" required>
+                                <input type="date" name="deadline" class="form-control" required>
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
                                 <label for="status-akhir">Status akhir</label>
-                                <select name="status_akhir[]" class="form-select" id="" required>
+                                <select name="status_akhir" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih status akhir --</option>
                                     <option value="sesuai">Sesuai</option>
                                     <option value="tidak sesuai">Tidak sesuai</option>
                                 </select>
                             </div>
-                            <div class="col mb-2">
-                                <label for="kuantitas">Kuantitas</label>
-                                <input type="number" name="kuantitas[]" class="form-control">
+                        </div>
+                        <div class="row g-2">
+                            <div class="col mb-2 ">
+                                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check pelayanan" name="pelayanan" id="pelayanan_off" value="0" checked="" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="pelayanan_off">Tanpa pelayanan</label>
+                                    <input type="radio" class="btn-check pelayanan" name="pelayanan" id="pelayanan_on" value="1" autocomplete="off">
+                                    <label class="btn btn-outline-primary" for="pelayanan_on">Pelayanan</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-pelayanan">
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="search">Daftar karyawan</label>
+                                    <select name="search" class="form-select search" id="nik"></select>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-2">
+                                    <label for="nama">Nama</label>
+                                    <input type="text" id="nama_karyawan" name="nama_karyawan" class="form-control" required readonly>
+                                </div>
+                                <div class="col mb-2">
+                                    <label for="nik">NIK</label>
+                                    <input type="text" name="nik_karyawan" class="form-control nik_karyawan" required readonly>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-2">
+                                    <label for="departemen">Departemen</label>
+                                    <input type="text" id="departemen" name="departemen" class="form-control" required readonly>
+                                </div>
+                                <div class="col mb-2">
+                                    <label for="divisi">Divisi</label>
+                                    <input type="text" id="divisi" name="divisi" class="form-control nik_karyawan" required readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="posisi">Posisi</label>
+                                    <input type="text" id="posisi" name="posisi" class="form-control" required readonly>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="pelayanan">Pelayanan</label>
+                                    <select name="pelayanan_id" class="form-select" id="pelayanan-dropdown">
+                                        <option value="" disabled selected>- Pilih pelayanan -</option>
+                                        @foreach($pelayanan as $row)
+                                        <option value="{{ $row->id }}">{{ $row->nama_layanan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="kategori-pelayanan">Kategori pelayanan</label>
+                                    <select name="kategori_pelayanan_id" class="form-select" id="kategori-dropdown"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="pelayanan">Sub Kategori pelayanan</label>
+                                    <select name="sub_kategori_pelayanan_id" class="form-select" id="sub-kategori-dropdown"></select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="keperluan">Keperluan</label>
+                                    <textarea name="keperluan" cols="30" rows="5" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col mb-2">
+                                    <label for="pic">Person in Charge</label>
+                                    <input type="text" value="{{ Auth::user()->name }}" class="form-control" required readonly>
+                                    <input type="hidden" name="nik_pic" value="{{ Auth::user()->nik }}" class="form-control" required readonly>
+                                </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary float-end">Simpan</button>
-                        <a type="button" href="#form-kegiatan" class="btn btn-success float-end mx-2 add-more">
+                        <!-- <a type="button" href="#form-kegiatan" class="btn btn-success float-end mx-2 add-more">
                             <span class="tf-icons bx bx-plus"></span>
                             Tambah kegiatan
-                        </a>
+                        </a> -->
                     </div>
                 </div>
             </div>
@@ -243,6 +327,83 @@
                 <input type="number" name="kuantitas[]" class="form-control">
             </div>
         </div>
+        <div class="row g-2">
+            <div class="col mb-2 ">
+                <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check pelayanan" name="pelayanan" id="pelayanan_off" value="0" checked="" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="pelayanan_off">Tanpa pelayanan</label>
+                    <input type="radio" class="btn-check pelayanan" name="pelayanan" id="pelayanan_on" value="1" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="pelayanan_on">Pelayanan</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-pelayanan">
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="search">Daftar karyawan</label>
+                    <select name="search" class="form-select search" id="nik"></select>
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col mb-2">
+                    <label for="nama">Nama</label>
+                    <input type="text" id="nama_karyawan" name="nama_karyawan" class="form-control" required readonly>
+                </div>
+                <div class="col mb-2">
+                    <label for="nik">NIK</label>
+                    <input type="text" name="nik_karyawan" class="form-control nik_karyawan" required readonly>
+                </div>
+            </div>
+            <div class="row g-2">
+                <div class="col mb-2">
+                    <label for="departemen">Departemen</label>
+                    <input type="text" id="departemen" name="departemen" class="form-control" required readonly>
+                </div>
+                <div class="col mb-2">
+                    <label for="divisi">Divisi</label>
+                    <input type="text" id="divisi" name="divisi" class="form-control nik_karyawan" required readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="posisi">Posisi</label>
+                    <input type="text" id="posisi" name="posisi" class="form-control" required readonly>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="pelayanan">Pelayanan</label>
+                    <select name="pelayanan_id" class="form-select" id="pelayanan-dropdown">
+                        <option value="" disabled selected>- Pilih pelayanan -</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="kategori-pelayanan">Kategori pelayanan</label>
+                    <select name="kategori_pelayanan_id" class="form-select" id="kategori-dropdown"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="pelayanan">Sub Kategori pelayanan</label>
+                    <select name="sub_kategori_pelayanan_id" class="form-select" id="sub-kategori-dropdown"></select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="keperluan">Keperluan</label>
+                    <textarea name="keperluan" cols="30" rows="5" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-2">
+                    <label for="pic">Person in Charge</label>
+                    <input type="text" value="{{ Auth::user()->name }}" class="form-control" required readonly>
+                    <input type="hidden" name="nik_pic" value="{{ Auth::user()->nik }}" class="form-control" required readonly>
+                </div>
+            </div>
+        </div>
         <button type="button" class="btn btn-danger remove btn-sm">
             <span class="tf-icons bx bx-trash"></span>
             Hapus form kegiatan
@@ -250,23 +411,127 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+        /*------------------------------------------
+        --------------------------------------------
+        Country Dropdown Change Event
+        --------------------------------------------
+        --------------------------------------------*/
+        $('#pelayanan-dropdown').on('change', function() {
+            var idPelayanan = this.value;
+            $("#kategori-dropdown").html('');
+            $.ajax({
+                url: "{{url('fetch/kategori-pelayanan')}}",
+                type: "POST",
+                data: {
+                    pelayanan_id: idPelayanan,
+                    _token: '{{csrf_token()}}'
+                },
+                dataType: 'json',
+                success: function(result) {
+                    $('#kategori-dropdown').html('<option value="">-- Pilih kategori --</option>');
+                    $.each(result.kategori, function(key, value) {
+                        $("#kategori-dropdown").append('<option value="' + value
+                            .id + '">' + value.kategori_pelayanan + '</option>');
+                    });
+                    $('#sub-kategori-dropdown').html('<option value="">-- Pilih sub kategori --</option>');
+                }
+            });
+        });
+
+        /*------------------------------------------
+        --------------------------------------------
+        State Dropdown Change Event
+        --------------------------------------------
+        --------------------------------------------*/
+        $('#kategori-dropdown').on('change', function() {
+            var kategori_id = this.value;
+            $("#sub-kategori-dropdown").html('');
+            $.ajax({
+                url: "{{url('fetch/sub-kategori-pelayanan')}}",
+                type: "POST",
+                data: {
+                    sub_kategori_id: kategori_id,
+                    _token: '{{csrf_token()}}'
+                },
+                dataType: 'json',
+                success: function(res) {
+                    $('#sub-kategori-dropdown').html('<option value="">-- Pilih sub kategori --</option>');
+                    $.each(res.sub_kategori, function(key, value) {
+                        $("#sub-kategori-dropdown").append('<option value="' + value
+                            .id + '">' + value.sub_kategori_pelayanan + '</option>');
+                    });
+                }
+            });
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $('.search').select2({
+        width: 'resolve',
+        theme: 'default',
+        placeholder: 'Cari karyawan...',
+        ajax: {
+            url: '/pelayanan/cari-karyawan',
+            dataType: 'json',
+            delay: 250,
+            processResults: function(data) {
+                return {
+                    results: $.map(data, function(item) {
+                        return {
+                            text: item.nik + ' - ' + item.nama_karyawan,
+                            id: item.nik
+                        }
+                    })
+                };
+            },
+            cache: true
+        }
+    });
+
+    $('#nik').on('change', function() {
+        var id = $(this).val();
+        if (id) {
+            $.ajax({
+                url: '/pelayanan/detail/' + id,
+                type: "GET",
+                data: {
+                    "_token": "{{ csrf_token() }}"
+                },
+                dataType: "json",
+                success: function(data) {
+                    if (data) {
+                        $('.nik_karyawan').val(data.nik);
+                        $('#nama_karyawan').val(data.nama_karyawan);
+                        $('#departemen').val(data.departemen);
+                        $('#divisi').val(data.nama_divisi);
+                        $('#posisi').val(data.posisi);
+                        $('#jabatan').val(data.jabatan);
+                        $('#sisa_cuti').val(data.sisa_cuti);
+                    }
+                }
+            });
+        }
+    });
+</script>
+
 <script type="text/javascript">
     $(document).ready(function() {
 
-        $('.timepicker').timepicker({
-            minuteStep: 60,
-            showMeridian: false,
-            format: 'hh:mm',
-            defaultTime: '00:00',
-            use24hours: true
-        });
+        $(".form-pelayanan").css("display", "none");
 
-        $('.timepicker2').timepicker({
-            minuteStep: 60,
-            showMeridian: false,
-            format: 'hh:mm',
-            defaultTime: '00:00',
-            use24hours: true
+        $('.pelayanan').change(function() {
+            if ($(this).val() === "1") {
+                $(".form-pelayanan").slideDown("fast"); //Efek Slide Down (Menampilkan Form Input)
+            } else {
+                $(".form-pelayanan").slideUp("fast");
+            }
         });
 
         $(".add-more").click(function() {
@@ -279,6 +544,7 @@
         $("body").on("click", ".remove", function() {
             $(this).parents(".control-group").remove();
         });
+
     });
 
     const jamMasuk = document.getElementById("jamMasuk");

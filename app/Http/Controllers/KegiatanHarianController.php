@@ -8,6 +8,8 @@ use App\Models\BerkasPendukung;
 use App\Models\KategoriKegiatan;
 use App\Models\Kegiatan;
 use App\Models\KegiatanHarian;
+use App\Models\MasterPelayanan;
+use App\Models\Pelayanan;
 use App\Models\PenilaianKerja;
 use App\Models\PIC;
 use App\Models\Tim;
@@ -104,15 +106,16 @@ class KegiatanHarianController extends Controller
         $jenis_kegiatan = Kegiatan::all();
         $kategori_kegiatan = KategoriKegiatan::all();
         $pic = PIC::all();
+        $pelayanan = Pelayanan::all();
         $data_kegiatan = Absensi::with(['kegiatanHarian' => function ($q) {
-            $q->orderBy('mulai', 'asc');
+            $q->with('pelayanan')->orderBy('mulai', 'asc');
         }], 'agendaEsok')
             ->join('users', 'users.id', '=', 'absensi.user_id')
             ->where('users.nik', Auth::user()->nik)->orderBy('tanggal', 'desc')
             ->select('absensi.*')
             ->paginate(10);
-
-        return view('kegiatan-harian.create', compact('data_kegiatan', 'jenis_kegiatan', 'kategori_kegiatan', 'pic'))->with('no');
+            
+        return view('kegiatan-harian.create', compact('pelayanan', 'data_kegiatan', 'jenis_kegiatan', 'kategori_kegiatan', 'pic'))->with('no');
     }
 
     public function createKegiatan()
@@ -120,7 +123,8 @@ class KegiatanHarianController extends Controller
         $jenis_kegiatan = Kegiatan::all();
         $kategori_kegiatan = KategoriKegiatan::all();
         $pic = PIC::all();
-        return view('kegiatan-harian.staff', compact('jenis_kegiatan', 'kategori_kegiatan', 'pic'));
+        $pelayanan = MasterPelayanan::all();
+        return view('kegiatan-harian.staff', compact('jenis_kegiatan', 'kategori_kegiatan', 'pic', 'pelayanan'));
     }
 
     public function show($id)
@@ -129,7 +133,7 @@ class KegiatanHarianController extends Controller
 
         $data_penilaian = PenilaianKerja::where('absensi_id', $id)->get();
 
-        $data_kegiatan = KegiatanHarian::with('dataPendukung')->where('absensi_id', $data->id)->get();
+        $data_kegiatan = KegiatanHarian::with('dataPendukung', 'pelayanan')->where('absensi_id', $data->id)->get();
 
         return view('kegiatan-harian.show', compact('data', 'data_kegiatan', 'data_penilaian'))->with('no');
     }
@@ -161,47 +165,40 @@ class KegiatanHarianController extends Controller
                 'status_spv' => $status_spv != '' ? $status_spv : NULL,
             ]);
 
-            $kegiatan = $request['kegiatan'];
-            $jenis_kegiatan_id = $request['jenis_kegiatan_id'];
-            $kategori_kegiatan_id = $request['kategori_kegiatan_id'];
-            $pic_id = $request['pic_id'];
-            $kendala = $request['kendala'];
-            $mulai = $request['mulai'];
-            $selesai = $request['selesai'];
-            $status_kegiatan = $request['status_kegiatan'];
-            $deadline = $request['deadline'];
-            $status_akhir = $request['status_akhir'];
-            $kuantitas = $request['kuantitas'];
+            $kegiatan_harian = KegiatanHarian::create([
+                'nik' => Auth::user()->nik,
+                'absensi_id' => $data_absensi->id,
+                'kegiatan' => $request->kegiatan,
+                'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
+                'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
+                'pic_id' => $request->pic_id,
+                'kendala' => $request->kendala,
+                'mulai' => $request->mulai,
+                'selesai' => $request->selesai,
+                'status_kegiatan' => $request->status_kegiatan,
+                'deadline' => $request->deadline,
+                'status_akhir' => $request->status_akhir,
+                'kuantitas' => $request->kuantitas,
+            ]);
 
-            $jumlah_kegiatan = count($kegiatan);
-
-            for ($i = 0; $i < $jumlah_kegiatan; $i++) {
-
-                KegiatanHarian::where('kegiatan', $kegiatan[$i])->where('nik', Auth::user()->id)->update([
-                    'status_duplikat' => '1'
+            if ($request->pelayanan == '1') {
+                Pelayanan::create([
+                    'kegiatan__harian_id' => $kegiatan_harian->id,
+                    'nik_pic' => $request->nik_pic,
+                    'nama_karyawan' => $request->nama_karyawan,
+                    'nik_karyawan' => $request->nik_karyawan,
+                    'departemen' => $request->departemen,
+                    'divisi' => $request->divisi,
+                    'posisi' => $request->posisi,
+                    'pelayanan_id' => $request->pelayanan_id,
+                    'kategori_pelayanan_id' => $request->kategori_pelayanan_id,
+                    'sub_kategori_pelayanan_id' => $request->sub_kategori_pelayanan_id,
+                    'keperluan' => $request->keperluan,
+                    'tanggal' => date('Y-m-d', strtotime(Carbon::now())),
                 ]);
-
-                $data_kegiatan_harian[] = [
-                    'nik' => Auth::user()->nik,
-                    'absensi_id' => $data_absensi->id,
-                    'kegiatan' => $kegiatan[$i],
-                    'jenis_kegiatan_id' => $jenis_kegiatan_id[$i],
-                    'kategori_kegiatan_id' => $kategori_kegiatan_id[$i],
-                    'pic_id' => $pic_id[$i],
-                    'kendala' => $kendala[$i],
-                    'mulai' => $mulai[$i],
-                    'selesai' => $selesai[$i],
-                    'status_kegiatan' => $status_kegiatan[$i],
-                    'deadline' => $deadline[$i],
-                    'status_akhir' => $status_akhir[$i],
-                    'kuantitas' => $kuantitas[$i],
-                ];
             }
 
-            KegiatanHarian::insert($data_kegiatan_harian);
-
             DB::commit();
-
             return redirect('/kegiatan-harian/create')->with('success', 'Yuhuuu, Kegiatan harian berhasil ditambahkan');
         } catch (\Throwable $e) {
             return back()->with('error', 'Opps, terjadi kesalahan sistem');
@@ -238,28 +235,55 @@ class KegiatanHarianController extends Controller
         return back()->with('success', 'Oh yeah, Kehadiran & kegiatan harian berhasil dihapus');
     }
 
-    public function storeTambahKegiatan(Request $request, $id)
+    public function storeTambahKegiatan(Request $request)
     {
-        KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->update([
-            'status_duplikat' => '1'
-        ]);
+        try {
+            DB::beginTransaction();
 
-        KegiatanHarian::create([
-            'absensi_id' => $id,
-            'nik' => Auth::user()->nik,
-            'kegiatan' => $request->kegiatan,
-            'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
-            'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
-            'pic_id' => $request->pic_id,
-            'kendala' => $request->kendala,
-            'mulai' => $request->mulai,
-            'selesai' => $request->selesai,
-            'status_kegiatan' => $request->status_kegiatan,
-            'deadline' => $request->deadline,
-            'status_akhir' => $request->status_akhir,
-            'kuantitas' => $request->kuantitas,
-        ]);
-        return back()->with('success', 'Yuhuuu, Kegiatan harian baru berhasil ditambahkan');
+            KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->update([
+                'status_duplikat' => '1'
+            ]);
+
+            $kegiatan_harian = KegiatanHarian::create([
+                'nik' => Auth::user()->nik,
+                'absensi_id' => $request->absensi_id,
+                'kegiatan' => $request->kegiatan,
+                'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
+                'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
+                'pic_id' => $request->pic_id,
+                'kendala' => $request->kendala,
+                'mulai' => $request->mulai,
+                'selesai' => $request->selesai,
+                'status_kegiatan' => $request->status_kegiatan,
+                'deadline' => $request->deadline,
+                'status_akhir' => $request->status_akhir,
+                'kuantitas' => $request->kuantitas,
+            ]);
+
+            if ($request->pelayanan == '1') {
+
+                Pelayanan::create([
+                    'kegiatan_harian_id' => $kegiatan_harian->id,
+                    'nik_pic' => $request->nik_pic,
+                    'nama_karyawan' => $request->nama_karyawan,
+                    'nik_karyawan' => $request->nik_karyawan,
+                    'departemen' => $request->departemen,
+                    'divisi' => $request->divisi,
+                    'posisi' => $request->posisi,
+                    'pelayanan_id' => $request->pelayanan_id,
+                    'kategori_pelayanan_id' => $request->kategori_pelayanan_id,
+                    'sub_kategori_pelayanan_id' => $request->sub_kategori_pelayanan_id,
+                    'keperluan' => $request->keperluan,
+                    'tanggal' => date('Y-m-d', strtotime(Carbon::now())),
+                ]);
+            }
+
+            DB::commit();
+            return back()->with('success', 'Yuhuuu, Kegiatan harian baru berhasil ditambahkan');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Opps, Terjadi kesalahan');
+        }
     }
 
     public function updateKegiatan(Request $request, $id)
@@ -473,5 +497,17 @@ class KegiatanHarianController extends Controller
         PenilaianKerja::insert($input);
 
         return back()->with('success', 'Berhasil melakukan penilaian kerja harian');
+    }
+
+    public function tambahKegiatan(Request $request, $id)
+    {
+        $jenis_kegiatan = Kegiatan::all();
+        $kategori_kegiatan = KategoriKegiatan::all();
+        $pic = PIC::all();
+        $pelayanan = MasterPelayanan::all();
+
+        $data_absensi = Absensi::where('id', $id)->first();
+
+        return view('kegiatan-harian.tambah-kegiatan', compact('data_absensi', 'jenis_kegiatan', 'kategori_kegiatan', 'pic', 'pelayanan'));
     }
 }

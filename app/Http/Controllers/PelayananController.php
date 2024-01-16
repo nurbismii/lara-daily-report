@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\KegiatanHarian;
 use App\Models\MasterKategoriPelayanan;
 use App\Models\MasterPelayanan;
 use App\Models\MasterSubKategoriPelayanan;
@@ -19,12 +20,13 @@ class PelayananController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
         //
         $pelayanan = MasterPelayanan::all();
+        $kegiatan = KegiatanHarian::where('id', $id)->first();
 
-        return view('pelayanan.index', compact('pelayanan'));
+        return view('pelayanan.index', compact('pelayanan', 'kegiatan'));
     }
 
     public function hr(Request $request)
@@ -67,16 +69,6 @@ class PelayananController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -87,6 +79,7 @@ class PelayananController extends Controller
         //
         Pelayanan::create([
             'nik_pic' => $request->nik_pic,
+            'kegiatan_harian_id' => $request->kegiatan_harian_id,
             'nama_karyawan' => $request->nama_karyawan,
             'nik_karyawan' => $request->nik_karyawan,
             'departemen' => $request->departemen,

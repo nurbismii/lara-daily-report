@@ -25,7 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['prefix' => 'pelayanan'], function () {
-        route::get('/', [PelayananController::class, 'index']);
+        route::get('/kegiatan/{id}', [PelayananController::class, 'index'])->name('pelayanan.create');
         route::get('/hr', [PelayananController::class, 'hr']);
         route::post('/store', [PelayananController::class, 'store'])->name('pelayanan.store');
         route::get('/edit/{id}', [PelayananController::class, 'edit'])->name('pelayanan.edit');

@@ -147,7 +147,7 @@
         <div class="modal-content">
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-8 offset-md-1">
+                    <div class="col-md-9 offset-md-1">
                         <h5>Timeline kegiatan</h5>
                         <ul class="timeline">
                             @foreach($data->kegiatanHarian as $key => $row)
@@ -155,11 +155,12 @@
                                 <div class="d-flex justify-content-between">
                                     <a href="javascript:void(0)" class="lead mb-2">{{++$key}}. {{ getJenisKegiatanById($row->jenis_kegiatan_id) }}</a>
                                     <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow text-end" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-horizontal-rounded"></i>
+                                        <button type="button" class="btn btn-sm rounded-pill btn-outline-primary p-0 dropdown-toggle hide-arrow text-end" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-unggah-berkas{{$row->id}}"><i class="bx bx-plus me-1"></i> Data pendukung </a>
+                                            <a class="dropdown-item" href="{{ route('pelayanan.create', $row->id) }}"><i class="bx bx-plus me-1"></i> Pelayanan </a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-edit-kegiatan{{$row->id}}"><i class="bx bx-edit-alt me-1"></i> Edit kegiatan</a>
                                             <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#modal-hapus-kegiatan{{$row->id}}"><i class="bx bx-trash me-1"></i> Hapus kegiatan</a>
                                         </div>
@@ -210,7 +211,7 @@
                                 <div class="d-flex justify-content-between">
                                     <p>Pelayanan</p>
                                     @foreach($row->pelayanan as $key => $pel)
-                                    {{ ++$key }}. {{ $pel->nama_karyawan }} ({{getNamaKategoriPelayanan($pel->kategori_pelayanan_id)}})<br>
+                                    {{ ++$key }}. {{ $pel->nama_karyawan }} - {{getNamaKategoriPelayanan($pel->kategori_pelayanan_id)}}<br>
                                     @endforeach
                                 </div>
 
@@ -255,7 +256,7 @@
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nik">Kegiatan</label>
-                            <input class="form-control" name="kegiatan[]" required>
+                            <input type="text" class="form-control" name="kegiatan[]" required>
                         </div>
                     </div>
                     <div class="row">
@@ -267,7 +268,7 @@
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nik">Persentase penyelesaian</label>
-                            <input class="form-control" name="persentase_penyelesaian[]" required>
+                            <input type="number" max="100" maxlength="3" class="form-control" name="persentase_penyelesaian[]" required>
                         </div>
                     </div>
                 </div>
@@ -306,7 +307,7 @@
                 <div class="row">
                     <div class="col mb-3">
                         <label for="nik">Persentase penyelesaian</label>
-                        <input class="form-control" name="persentase_penyelesaian[]" required>
+                        <input type="number" max="100" maxlength="3" class="form-control" name="persentase_penyelesaian[]" required>
                     </div>
                 </div>
                 <button type="button" class="btn btn-danger remove btn-sm">
@@ -338,8 +339,19 @@
                     <div class="col-sm-3">
                         <h6 class="mb-0">Agenda</h6>
                     </div>
-                    <div class="col-sm-9 text-secondary">
+                    <div class="col-sm-8 text-secondary">
                         {{$val->kegiatan}}
+                    </div>
+                    <div class="col-sm-1 text-secondary">
+                        <div class="dropdown">
+                            <button type="button" class="btn rounded-pill btn-outline-primary p-0 dropdown-toggle hide-arrow text-end" data-bs-toggle="dropdown">
+                                <i class="bx bx-dots-vertical-rounded"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#"><i class="bx bx-edit-alt me-1"></i> Edit </a>
+                                <a class="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#"><i class="bx bx-trash me-1"></i> Hapus </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -357,11 +369,10 @@
                         <h6 class="mb-0">Persentase</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        {{$val->persentase}}%
+                        {{ $val->persentase }}%
                     </div>
                 </div>
                 <hr>
-
                 @endforeach
             </div>
             <div class="modal-footer">
@@ -838,11 +849,7 @@
 <script>
     $(document).ready(function() {
 
-        /*------------------------------------------
-        --------------------------------------------
-        Country Dropdown Change Event
-        --------------------------------------------
-        --------------------------------------------*/
+
         $('#pelayanan-dropdown').on('change', function() {
             var idPelayanan = this.value;
             $("#kategori-dropdown").html('');
@@ -865,11 +872,6 @@
             });
         });
 
-        /*------------------------------------------
-        --------------------------------------------
-        State Dropdown Change Event
-        --------------------------------------------
-        --------------------------------------------*/
         $('#kategori-dropdown').on('change', function() {
             var kategori_id = this.value;
             $("#sub-kategori-dropdown").html('');
@@ -1032,7 +1034,4 @@
         }
     });
 </script>
-
-
-
 @endsection

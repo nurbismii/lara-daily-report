@@ -114,7 +114,7 @@ class KegiatanHarianController extends Controller
             ->where('users.nik', Auth::user()->nik)->orderBy('tanggal', 'desc')
             ->select('absensi.*')
             ->paginate(10);
-            
+
         return view('kegiatan-harian.create', compact('pelayanan', 'data_kegiatan', 'jenis_kegiatan', 'kategori_kegiatan', 'pic'))->with('no');
     }
 
@@ -223,13 +223,21 @@ class KegiatanHarianController extends Controller
         $data_kegiatan = KegiatanHarian::where('absensi_id', $data->id)->get();
 
         foreach ($data_kegiatan as $val) {
+
             $berkas = BerkasPendukung::where('kegiatan_harian_id', $val->id)->first();
             if (isset($berkas->nama_file)) {
                 File::delete($berkas->nama_file);
                 $berkas->delete();
             }
+
+            $pelayanan = Pelayanan::where('kegiatan_harian_id', $val->id)->get();
+            foreach ($pelayanan as $pel) {
+                Pelayanan::where('id', $pel->id)->delete();
+            }
+
             $val->delete();
         }
+
         $data->delete();
 
         return back()->with('success', 'Oh yeah, Kehadiran & kegiatan harian berhasil dihapus');
@@ -307,7 +315,20 @@ class KegiatanHarianController extends Controller
     public function destroyKegiatan($id)
     {
         $data = KegiatanHarian::where('id', $id)->first();
-        $data->delete();
+
+        $berkas_pendukung = BerkasPendukung::where('kegiatan_harian_id', $data->id)->get();
+        foreach ($berkas_pendukung as $berkas) {
+            if (isset($berkas->nama_file)) {
+                File::delete($berkas->nama_file);
+                $berkas->delete();
+            }
+        }
+
+        $pelayanan = Pelayanan::where('kegiatan_harian_id', $data->id)->get();
+        foreach ($pelayanan as $pel) {
+            Pelayanan::where('id', $pel->id)->delete();
+        }
+
         return back()->with('success', 'Oh yeah, Kegiatan harian berhasil dihapus');
     }
 

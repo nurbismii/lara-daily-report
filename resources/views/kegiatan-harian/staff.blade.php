@@ -152,9 +152,9 @@
                         <div class="row g-2">
                             <div class="col mb-2 ">
                                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                    <input type="radio" class="btn-check pelayanan" name="pelayanan" id="pelayanan_off" value="0" checked="" autocomplete="off">
+                                    <input type="radio" class="btn-check pelayanan btn-sm" name="pelayanan" id="pelayanan_off" value="0" checked="" autocomplete="off">
                                     <label class="btn btn-outline-primary" for="pelayanan_off">Tanpa pelayanan</label>
-                                    <input type="radio" class="btn-check pelayanan" name="pelayanan" id="pelayanan_on" value="1" autocomplete="off">
+                                    <input type="radio" class="btn-check pelayanan btn-sm" name="pelayanan" id="pelayanan_on" value="1" autocomplete="off">
                                     <label class="btn btn-outline-primary" for="pelayanan_on">Pelayanan</label>
                                 </div>
                             </div>

@@ -11,7 +11,11 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
   <div class="row">
-    <h4 class="fw-bold py-2 mb-2">Form pelayanan</h4>
+    <h4 class="fw-bold py-2 mb-2">Form pelayanan
+      <a href="/kegiatan-harian/create" class="text-white btn btn-danger btn-sm float-end">
+        <span class="tf-icons bx bx-back"></span>&nbsp; Kembali
+      </a>
+    </h4>
     <!-- Basic Bootstrap Table -->
     <div class="col-lg-12">
       @include('message')
@@ -30,27 +34,29 @@
             <div class="row g-2">
               <div class="col mb-2">
                 <label for="nama">Nama</label>
-                <input type="text" id="nama_karyawan" name="nama_karyawan" class="form-control" required readonly>
+                <input type="text" id="nama_karyawan" name="nama_karyawan" class="form-control" required >
+                <input type="hidden" name="kegiatan_harian_id" value="{{ $kegiatan->id }}" class="form-control" required readonly>
+
               </div>
               <div class="col mb-2">
                 <label for="nik">NIK</label>
-                <input type="text" name="nik_karyawan" class="form-control nik_karyawan" required readonly>
+                <input type="text" name="nik_karyawan" class="form-control nik_karyawan" required >
               </div>
             </div>
             <div class="row g-2">
               <div class="col mb-2">
                 <label for="departemen">Departemen</label>
-                <input type="text" id="departemen" name="departemen" class="form-control" required readonly>
+                <input type="text" id="departemen" name="departemen" class="form-control" required >
               </div>
               <div class="col mb-2">
                 <label for="divisi">Divisi</label>
-                <input type="text" id="divisi" name="divisi" class="form-control nik_karyawan" required readonly>
+                <input type="text" id="divisi" name="divisi" class="form-control nik_karyawan" required >
               </div>
             </div>
             <div class="row">
               <div class="col mb-2">
                 <label for="posisi">Posisi</label>
-                <input type="text" id="posisi" name="posisi" class="form-control" required readonly>
+                <input type="text" id="posisi" name="posisi" class="form-control" required >
               </div>
             </div>
             <div class="row">

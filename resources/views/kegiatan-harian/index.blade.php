@@ -58,7 +58,7 @@
     });
 
     $('input[name="daterange"]').daterangepicker({
-      startDate: moment().subtract(1, 'M'),
+      startDate: moment().subtract(1, 'D'),
       endDate: moment()
     });
 

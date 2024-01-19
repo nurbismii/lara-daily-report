@@ -206,9 +206,8 @@ class KegiatanMingguanController extends Controller
 
     public function cetakPdf($tgl_awal, $tgl_akhir, $tipe)
     {
-        $data_pelayanan = array();
-
-        $datas = KegiatanHarian::with('dataPendukung')->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
+        $datas = KegiatanHarian::with('dataPendukung', 'pelayanan')
+            ->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
             ->where('tipe', $tipe)
             ->where('status_duplikat', null)
             ->where('absensi.user_id', Auth::user()->id)
@@ -218,16 +217,8 @@ class KegiatanMingguanController extends Controller
                 return $data->jenis_kegiatan_id;
             });
 
-        foreach ($datas as $data) {
-
-            foreach ($data as $d) {
-
-                $data_pelayanan = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->where('nik_pic', $d->nik)->where('tanggal', $d->tanggal)->get();
-            }
-            
-            $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas, 'pelayanan' => $data_pelayanan]);
-            return $pdf->stream();
-        }
+        $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas]);
+        return $pdf->stream();
     }
 
     public function laporan(Request $request)

@@ -30,39 +30,39 @@
                                 <input type="text" name="nama" value="{{ Auth::user()->name }}" class="form-control" required readonly>
                             </div>
                             <div class="col mb-2">
-                                <label for="email">NIK</label>
+                                <label for="nik">NIK</label>
                                 <input type="text" name="nik" value="{{ Auth::user()->nik }}" class="form-control" required readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col mb-2">
-                                <label for="kendala">Posisi</label>
+                                <label for="posisi">Posisi</label>
                                 <input type="text" name="posisi" value="{{ Auth::user()->posisi }}" class="form-control" required readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col mb-2">
-                                <label for="kendala">Tanggal</label>
+                                <label for="tanggal">Tanggal</label>
                                 <input type="date" name="tanggal" class="form-control" required>
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
-                                <label for="nama">Jam masuk kerja</label>
+                                <label for="jam-masuk-kerja">Jam masuk kerja</label>
                                 <input type="text" id="jamMasuk" maxlength="5" name="jam_masuk_kerja" class="form-control" required>
                             </div>
                             <div class="col mb-2">
-                                <label for="email">Jam istirahat</label>
+                                <label for="jam-istirahat">Jam istirahat</label>
                                 <input type="text" id="jamIstirahat" maxlength="5" name="jam_istirahat" class="form-control">
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
-                                <label for="kata-sandi">Jam kembali istirahat</label>
+                                <label for="jam-kembali-istirahat">Jam kembali istirahat</label>
                                 <input type="text" id="jamKembaliIstirahat" maxlength="5" name="jam_kembali_istirahat" class="form-control">
                             </div>
                             <div class="col mb-2">
-                                <label for="email">Jam pulang kerja</label>
+                                <label for="jam-pulang-kerja">Jam pulang kerja</label>
                                 <input type="text" id="jamPulang" maxlength="5" name="jam_pulang_kerja" class="form-control">
                             </div>
                         </div>
@@ -74,13 +74,13 @@
                     <div class="card-body control-group after-add-more">
                         <div class="row">
                             <div class="col mb-2">
-                                <label for="kata-sandi">Kegiatan</label>
-                                <textarea name="kegiatan" class="form-control" id="" cols="30" rows="5" required></textarea>
+                                <label for="kegiatan">Kegiatan</label>
+                                <input name="kegiatan" class="form-control" required></input>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col mb-2">
-                                <label for="email">Jenis Kegiatan</label>
+                                <label for="jenis-kegiatan">Jenis Kegiatan</label>
                                 <select name="jenis_kegiatan_id" class="form-select" required>
                                     <option value="" disabled selected>-- Pilih jenis kegiatan --</option>
                                     @foreach($jenis_kegiatan as $row)
@@ -91,7 +91,7 @@
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
-                                <label for="kata-sandi">Kategori kegiatan</label>
+                                <label for="kategori-kegiatan">Kategori kegiatan</label>
                                 <select name="kategori_kegiatan_id" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
                                     @foreach($kategori_kegiatan as $row)
@@ -100,7 +100,7 @@
                                 </select>
                             </div>
                             <div class="col mb-2">
-                                <label for="email">PIC</label>
+                                <label for="pic">PIC</label>
                                 <select name="pic_id" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih PIC --</option>
                                     @foreach($pic as $row)
@@ -112,22 +112,22 @@
                         <div class="row">
                             <div class="col mb-2">
                                 <label for="kendala">Kendala/Masalah</label>
-                                <textarea name="kendala" class="form-control" id="" cols="30" rows="5 "></textarea>
+                                <textarea name="kendala" class="form-control" id="" cols="30" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
-                                <label for="nama">Mulai mengerjakan</label>
+                                <label for="mulai-mengerjakan">Mulai mengerjakan</label>
                                 <input type="text" id="mulaiMengerjakan" maxlength="5" name="mulai" class="form-control" required>
                             </div>
                             <div class="col mb-2">
-                                <label for="email">Selesai mengerjakan</label>
+                                <label for="selesai-mengerjakan">Selesai mengerjakan</label>
                                 <input type="text" id="selesaiMengerjakan" maxlength="5" name="selesai" class="form-control" required>
                             </div>
                         </div>
                         <div class="row g-2">
                             <div class="col mb-2">
-                                <label for="nama">Status Kegiatan</label>
+                                <label for="status_kegiatan">Status Kegiatan</label>
                                 <select name="status_kegiatan" class="form-select" id="" required>
                                     <option value="" disabled selected>-- Pilih status kegiatan --</option>
                                     <option value="selesai">Selesai</option>
@@ -135,7 +135,7 @@
                                 </select>
                             </div>
                             <div class="col mb-2">
-                                <label for="email">Deadline penyelesaian</label>
+                                <label for="deadline">Deadline penyelesaian</label>
                                 <input type="date" name="deadline" class="form-control" required>
                             </div>
                         </div>
@@ -147,6 +147,10 @@
                                     <option value="sesuai">Sesuai</option>
                                     <option value="tidak sesuai">Tidak sesuai</option>
                                 </select>
+                            </div>
+                            <div class="col mb-2">
+                                <label for="kuantitas">Kuantitas</label>
+                                <input type="number" name="kuantitas" class="form-control">
                             </div>
                         </div>
                         <div class="row g-2">
@@ -416,11 +420,6 @@
 <script>
     $(document).ready(function() {
 
-        /*------------------------------------------
-        --------------------------------------------
-        Country Dropdown Change Event
-        --------------------------------------------
-        --------------------------------------------*/
         $('#pelayanan-dropdown').on('change', function() {
             var idPelayanan = this.value;
             $("#kategori-dropdown").html('');
@@ -443,11 +442,6 @@
             });
         });
 
-        /*------------------------------------------
-        --------------------------------------------
-        State Dropdown Change Event
-        --------------------------------------------
-        --------------------------------------------*/
         $('#kategori-dropdown').on('change', function() {
             var kategori_id = this.value;
             $("#sub-kategori-dropdown").html('');

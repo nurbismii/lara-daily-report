@@ -31,13 +31,13 @@
             </div>
             <div class="row">
               <div class="col mb-2">
-                <label for="kata-sandi">Kegiatan</label>
-                <textarea name="kegiatan" class="form-control" id="" cols="30" rows="5" required></textarea>
+                <label for="kegiatan">Kegiatan</label>
+                <input name="kegiatan" class="form-control" style="height: 30;" required></input>
               </div>
             </div>
             <div class="row">
               <div class="col mb-2">
-                <label for="email">Jenis Kegiatan</label>
+                <label for="jenis-kegiatan">Jenis Kegiatan</label>
                 <select name="jenis_kegiatan_id" class="form-select" required>
                   <option value="" disabled selected>-- Pilih jenis kegiatan --</option>
                   @foreach($jenis_kegiatan as $row)
@@ -48,7 +48,7 @@
             </div>
             <div class="row g-2">
               <div class="col mb-2">
-                <label for="kata-sandi">Kategori kegiatan</label>
+                <label for="kategori-kegiatan">Kategori kegiatan</label>
                 <select name="kategori_kegiatan_id" class="form-select" id="" required>
                   <option value="" disabled selected>-- Pilih kategori kegiatan --</option>
                   @foreach($kategori_kegiatan as $row)
@@ -57,7 +57,7 @@
                 </select>
               </div>
               <div class="col mb-2">
-                <label for="email">PIC</label>
+                <label for="pic">PIC</label>
                 <select name="pic_id" class="form-select" id="" required>
                   <option value="" disabled selected>-- Pilih PIC --</option>
                   @foreach($pic as $row)
@@ -74,17 +74,17 @@
             </div>
             <div class="row g-2">
               <div class="col mb-2">
-                <label for="nama">Mulai mengerjakan</label>
+                <label for="mulai">Mulai mengerjakan</label>
                 <input type="text" id="mulaiMengerjakan" maxlength="5" name="mulai" class="form-control" required>
               </div>
               <div class="col mb-2">
-                <label for="email">Selesai mengerjakan</label>
+                <label for="selesai">Selesai mengerjakan</label>
                 <input type="text" id="selesaiMengerjakan" maxlength="5" name="selesai" class="form-control" required>
               </div>
             </div>
             <div class="row g-2">
               <div class="col mb-2">
-                <label for="nama">Status Kegiatan</label>
+                <label for="status-kegiatan">Status Kegiatan</label>
                 <select name="status_kegiatan" class="form-select" id="" required>
                   <option value="" disabled selected>-- Pilih status kegiatan --</option>
                   <option value="selesai">Selesai</option>
@@ -92,7 +92,7 @@
                 </select>
               </div>
               <div class="col mb-2">
-                <label for="email">Deadline penyelesaian</label>
+                <label for="deadline">Deadline penyelesaian</label>
                 <input type="date" name="deadline" class="form-control" required>
               </div>
             </div>
@@ -104,6 +104,10 @@
                   <option value="sesuai">Sesuai</option>
                   <option value="tidak sesuai">Tidak sesuai</option>
                 </select>
+              </div>
+              <div class="col mb-2">
+                <label for="kuantitas">Kuantitas</label>
+                <input type="number" name="kuantitas" class="form-control">
               </div>
             </div>
             <div class="row g-2">
@@ -200,11 +204,6 @@
 <script>
   $(document).ready(function() {
 
-    /*------------------------------------------
-    --------------------------------------------
-    Country Dropdown Change Event
-    --------------------------------------------
-    --------------------------------------------*/
     $('#pelayanan-dropdown').on('change', function() {
       var idPelayanan = this.value;
       $("#kategori-dropdown").html('');
@@ -227,11 +226,6 @@
       });
     });
 
-    /*------------------------------------------
-    --------------------------------------------
-    State Dropdown Change Event
-    --------------------------------------------
-    --------------------------------------------*/
     $('#kategori-dropdown').on('change', function() {
       var kategori_id = this.value;
       $("#sub-kategori-dropdown").html('');

@@ -46,10 +46,6 @@
     <main>
       <!-- Main page content-->
       <div class="container-xl px-1">
-        <div class="text-center">
-          <h2 class="fw-bold">LAPORAN BULANAN</h2>
-        </div>
-
         @php
 
         $no = 1;
@@ -72,7 +68,7 @@
             Kendala :
           </div>
           <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
-            {{ $d->kendala }}
+            {{ $d->kendala ?? 'Tidak ada kendala' }}
           </div>
           <div class="d-flex justify-content-between mb-3">
             Persentase penyelesaian : {{ $d->persen == NULL ? 0 : $d->persen }}%
@@ -83,11 +79,11 @@
           $no_layanan = 1;
 
           @endphp
-
-          <div class="d-flex justify-content-between">
-            Daftar Pelayanan tanggal {{ getTanggalIndo($d->tanggal) }} :
+          @if(count($d->pelayanan) > 0)
+          <div class="d-flex justify-content-between mb-3">
+            Data pelayanan :
           </div>
-          <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
+          <div class="d-flex justify-content-between mb-3">
             <table class="table-line">
               <thead>
                 <tr>
@@ -100,35 +96,31 @@
                 </tr>
               </thead>
               <tbody>
-                @foreach($pelayanan as $val)
-                  @if($val->tanggal == $d->tanggal)
-                  <tr>
-                    <td>{{$no_layanan++}}</td>
-                    <td>{{$val->MasterPelayanan->nama_layanan ?? '-'}}</td>
-                    <td>{{$val->MasterKategoriPelayanan->kategori_pelayanan ?? '-'}}</td>
-                    <td>{{$val->MasterSubKategoriPelayanan->sub_kategori_pelayanan ?? '-'}}</td>
-                    <td>{{getNamaPic($val->nik_pic)}}</td>
-                    <td>{{$val->keperluan ?? '-'}}</td>
-                  </tr>
-                  @endif
-                  @if($val->tanggal != $d->tanggal)
-                    <tr>
-                       <td colspan="6" style="text-align: center;">Tidak ada layanan</td>
-                    </tr>
-                    @break
-                  @endif
+                @foreach($d->pelayanan as $val)
+                <tr>
+                  <td>{{$no_layanan++}}</td>
+                  <td>{{$val->MasterPelayanan->nama_layanan ?? '-'}}</td>
+                  <td>{{$val->MasterKategoriPelayanan->kategori_pelayanan ?? '-'}}</td>
+                  <td>{{$val->MasterSubKategoriPelayanan->sub_kategori_pelayanan ?? '-'}}</td>
+                  <td>{{getNamaPic($val->nik_pic)}}</td>
+                  <td>{{$val->keperluan ?? '-'}}</td>
+                </tr>
                 @endforeach
               </tbody>
             </table>
           </div>
-          <div class="d-flex justify-content-between">
+          @endif
+
+          @if(count($d->dataPendukung) > 0)
+          <div class="d-flex justify-content-between mb-3">
             Data Pendukung :
           </div>
           <div class="d-flex justify-content-between mb-3">
             @foreach($d->dataPendukung as $value)
-            <img src="{{ asset('data-pendukung/' . $d->nik . '/' . $d->kegiatan . '/' . $value->nama_file) }}" alt="Data Pendukung" width="300" height="300">
+            <img src="{{ asset('data-pendukung/' . $d->nik . '/' . $d->kegiatan . '/' . $value->nama_file) }}" width="300" height="300">
             @endforeach
           </div>
+          @endif
         </div>
         @endforeach
 

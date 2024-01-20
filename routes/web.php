@@ -73,6 +73,7 @@ Route::group(['middleware' => 'auth'], function () {
         route::get('/create', [KegiatanMingguanController::class, 'create']);
         route::get('/show/{id}', [KegiatanMingguanController::class, 'show'])->name('show.kegiatanMingguan');
         route::post('/update/{id}', [KegiatanMingguanController::class, 'update'])->name('update.kegiatanMingguan');
+        route::get('/duplikat/{id}', [KegiatanMingguanController::class, 'updateDuplikat'])->name('update.duplikat');
 
         route::get('/laporan-bulanan', [KegiatanMingguanController::class, 'laporan']);
         route::get('/cetak-laporan/{tgl_awal}/{tgl_akhir}/{tipe}', [KegiatanMingguanController::class, 'cetakPdf'])->name('cetakPdf');

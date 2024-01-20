@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\BerkasPendukung;
 use App\Models\KegiatanHarian;
-use App\Models\Pelayanan;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -95,17 +93,6 @@ class KegiatanMingguanController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -131,16 +118,6 @@ class KegiatanMingguanController extends Controller
         return view('kegiatan-mingguan.show', compact('data', 'lampiran'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -193,17 +170,6 @@ class KegiatanMingguanController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function cetakPdf($tgl_awal, $tgl_akhir, $tipe)
     {
         $datas = KegiatanHarian::with('dataPendukung', 'pelayanan')
@@ -244,5 +210,14 @@ class KegiatanMingguanController extends Controller
         }
 
         return view('laporan.index', compact('datas', 'tgl_awal', 'tgl_akhir', 'LAPORAN_MINGGUAN'));
+    }
+
+    public function updateDuplikat($id)
+    {
+        KegiatanHarian::where('id', $id)->update([
+            'status_duplikat' => '1',
+        ]);
+
+        return back()->with('success', 'Kegiatan harian berhasil dihapus dari kegiatan mingguan');
     }
 }

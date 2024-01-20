@@ -71,12 +71,12 @@
         </div>
         @endif
 
-        @foreach($datas as $data)
+        @foreach($datas as $no => $data)
         <div class="accordion mt-2" id="accordionExample">
           <div class="card accordion-item">
             <h2 class="accordion-header" id="heading-{{$data->id}}">
               <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-{{$data->id}}" aria-expanded="false" aria-controls="accordion-{{$data->id}}">
-                {{ $data->kegiatan }}
+                {{ ++$no }}. {{ $data->kegiatan }}
               </button>
             </h2>
             <div id="accordion-{{$data->id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" style="">
@@ -131,6 +131,11 @@
                     </div>
                   </div>
                   <button type="submit" class="btn btn-primary float-end mt-1 mb-3">Kirim</button>
+                  <a href="{{ route('update.duplikat', $data->id) }}" class="btn btn-secondary float-end mt-1 mx-2 mb-3" onclick="confirm('Kamu yakin ingin menghapus kegiatan harian ini ?'); document.getElementById('update-form').submit();">Hapus</a>
+                </form>
+
+                <form id="update-form" action="{{ route('update.duplikat', $data->id) }}" method="POST">
+                  @csrf
                 </form>
               </div>
             </div>

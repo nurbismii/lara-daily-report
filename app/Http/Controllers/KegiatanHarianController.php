@@ -52,8 +52,8 @@ class KegiatanHarianController extends Controller
             foreach ($datas as $val) {
 
                 $data_spv[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
-                    ->join('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
-                    ->join('tim', 'tim.id', '=', 'anggota_tim.tim_id')
+                    ->leftjoin('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
+                    ->leftjoin('tim', 'tim.id', '=', 'anggota_tim.tim_id')
                     ->where('absensi.id', $val->id)
                     ->select('users.name', 'tim.nama_tim', 'users.nik', 'absensi.*')->first();
             }
@@ -70,6 +70,8 @@ class KegiatanHarianController extends Controller
                     ->select('users.name', 'tim.nama_tim', 'users.nik', 'absensi.*')->first();
             }
         }
+
+
 
         $merge = array_merge($data_spv, $data_absensi);
 

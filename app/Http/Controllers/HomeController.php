@@ -45,8 +45,9 @@ class HomeController extends Controller
         $total_kegiatan_harian = totalKegiatanHarian($kategori_kegiatan_terpopuler);
         $daftar_kegiatan_harian = daftarNamaKategoriKegiatan($kategori_kegiatan_terpopuler);
 
-        $pelayanan = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->orderBy('tanggal', 'desc')->limit(7)->get();
+        $pelayanan = Pelayanan::with('MasterPelayanan', 'MasterKategoriPelayanan', 'MasterSubKategoriPelayanan')->orderBy('tanggal', 'desc')->limit(5)->get();
+        $pelayanan_count = Pelayanan::count();
 
-        return view('home', compact('pelayanan', 'jumlah_kegiatan_harian', 'jumlah_tim', 'jumlah_pengguna', 'kegiatan_harian', 'total_kegiatan_harian', 'daftar_kegiatan_harian', 'total_jenis_kegiatan', 'daftar_nama_jenis_kegiatan'));
+        return view('home', compact('pelayanan', 'pelayanan_count', 'jumlah_kegiatan_harian', 'jumlah_tim', 'jumlah_pengguna', 'kegiatan_harian', 'total_kegiatan_harian', 'daftar_kegiatan_harian', 'total_jenis_kegiatan', 'daftar_nama_jenis_kegiatan'));
     }
 }

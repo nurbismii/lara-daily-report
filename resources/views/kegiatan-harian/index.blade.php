@@ -12,11 +12,19 @@
       <div class="card mb-3">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <input type="text" class="form-control" name="daterange" value="" />
             </div>
-            <div class="col-md-6">
+            <div class="col-md-2">
               <button class="btn btn-success filter">Filter</button>
+            </div>
+            <div class="col-md-6">
+              <select name="nama_tim" id="nama_tim" class="form-select">
+                <option value="" selected>Default</option>
+                @foreach($list_tim as $lt)
+                <option value="{{ $lt->id }}">{{ $lt->nama_tim }}</option>
+                @endforeach
+              </select>
             </div>
           </div>
         </div>
@@ -30,6 +38,7 @@
             <thead>
               <tr>
                 <th>Nama</th>
+                <th>Tim</th>
                 <th>Tanggal</th>
                 <th>Masuk</th>
                 <th>istirahat</th>
@@ -58,7 +67,7 @@
     });
 
     $('input[name="daterange"]').daterangepicker({
-      startDate: moment().subtract(1, 'D'),
+      startDate: moment().subtract(1, 'M'),
       endDate: moment()
     });
 
@@ -70,7 +79,8 @@
       ajax: {
         url: "/kegiatan-harian",
         data: function(d) {
-          d.search = $('input[type="search"]').val()
+          d.search = $('input[type="search"]').val();
+          d.nama_tim = $('#nama_tim').val();
           d.from_date = $('input[name="daterange"]').data('daterangepicker').startDate.format('YYYY-MM-DD');
           d.to_date = $('input[name="daterange"]').data('daterangepicker').endDate.format('YYYY-MM-DD');
         }
@@ -78,6 +88,10 @@
       columns: [{
           data: 'name',
           name: 'name'
+        },
+        {
+          data: 'nama_tim',
+          name: 'nama_tim'
         },
         {
           data: 'tanggal',
@@ -143,6 +157,10 @@
     });
 
     $(".filter").click(function() {
+      table.draw();
+    });
+
+    $('#nama_tim').change(function() {
       table.draw();
     });
 

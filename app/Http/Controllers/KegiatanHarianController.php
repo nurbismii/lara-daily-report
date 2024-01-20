@@ -52,8 +52,10 @@ class KegiatanHarianController extends Controller
             foreach ($datas as $val) {
 
                 $data_spv[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
+                    ->join('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
+                    ->join('tim', 'tim.id', '=', 'anggota_tim.tim_id')
                     ->where('absensi.id', $val->id)
-                    ->select('users.name', 'users.nik', 'absensi.*')->first();
+                    ->select('users.name', 'tim.nama_tim', 'users.nik', 'absensi.*')->first();
             }
         }
 
@@ -62,8 +64,10 @@ class KegiatanHarianController extends Controller
             foreach ($datas as $val) {
 
                 $data_absensi[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
+                    ->join('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
+                    ->join('tim', 'tim.id', '=', 'anggota_tim.tim_id')
                     ->where('absensi.id', $val->id)->whereIn('absensi.user_id', $tim_id)
-                    ->select('users.name', 'users.nik', 'absensi.*')->first();
+                    ->select('users.name', 'tim.nama_tim', 'users.nik', 'absensi.*')->first();
             }
         }
 
@@ -88,6 +92,9 @@ class KegiatanHarianController extends Controller
                         'url_hapus' => route('delete.absensi-kegiatan-delete', $data->id)
                     ]);
                 })->filter(function ($instance) use ($request) {
+                    if ($request->get('nama_tim') != '') {
+                        $instance->where('nama_tim', $request->get('nama_tim'));
+                    }
                     if (!empty($request->get('search'))) {
                         $instance->where(function ($w) use ($request) {
                             $search = $request->get('search');
@@ -98,7 +105,9 @@ class KegiatanHarianController extends Controller
                 ->rawColumns(['aksi'])
                 ->make(true);
         }
-        return view('kegiatan-harian.index');
+        $list_tim = Tim::all();
+
+        return view('kegiatan-harian.index', compact('list_tim'));
     }
 
     public function create()

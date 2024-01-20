@@ -99,7 +99,7 @@
                 <div class="card-header d-flex align-items-center justify-content-between pb-0">
                     <div class="card-title mb-0">
                         <h5 class="m-0 me-2">Pelayanan terbaru</h5>
-                        <small class="text-muted">{{ $pelayanan->count() }} Total pelayanan</small>
+                        <small class="text-muted">{{ $pelayanan_count }} Total pelayanan</small>
                     </div>
                 </div>
                 <div class="card-body">

@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <meta http-equiv="refresh" content="60">
   <!-- PWA  -->
   <meta name="theme-color" content="#6777ef" />
   <link rel="apple-touch-icon" href="{{ asset('logo.PNG') }}">
@@ -13,7 +14,7 @@
   <meta name="description" content="" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="{{asset('assets/img/favicon/favicon.ico')}}" />
+  <link rel="icon" type="image/x-icon" href="{{ asset('logo-hrd.png') }}" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />

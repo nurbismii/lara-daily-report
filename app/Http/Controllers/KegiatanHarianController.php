@@ -83,6 +83,14 @@ class KegiatanHarianController extends Controller
                 $data = $data->whereBetween('tanggal', [$request->from_date, $request->to_date]);
             }
 
+            if ($request->nama_tim != '') {
+                $data = $data->where('nama_tim', $request->nama_tim);
+            }
+
+            if (!empty($request->get('search'))) {
+                $data = $data->where('name', 'LIKE', "%search%");
+            }
+
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($data) {
@@ -91,18 +99,7 @@ class KegiatanHarianController extends Controller
                         'url_detil_kegiatan' => route('kegiatan-harian.show', $data->id),
                         'url_hapus' => route('delete.absensi-kegiatan-delete', $data->id)
                     ]);
-                })->filter(function ($instance) use ($request) {
-                    if ($request->get('nama_tim') != '') {
-                        $instance->where('nama_tim', $request->get('nama_tim'));
-                    }
-                    if (!empty($request->get('search'))) {
-                        $instance->where(function ($w) use ($request) {
-                            $search = $request->get('search');
-                            $w->where('name', 'LIKE', "%$search%");
-                        });
-                    }
-                })
-                ->rawColumns(['aksi'])
+                })->rawColumns(['aksi'])
                 ->make(true);
         }
         $list_tim = Tim::all();

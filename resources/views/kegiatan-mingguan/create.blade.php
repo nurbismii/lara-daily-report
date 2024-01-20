@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-md-6 mb-2">
                       <label for="persentase">Persentase penyelesaian pekerjaan</label>
-                      <input type="number" name="persen" max="100" maxlength="3" class="form-control" required>
+                      <input type="number" name="persen" max="100" maxlength="3" value="{{ $data->persen }}" class="form-control" required>
                     </div>
                   </div>
                   <div class="row">

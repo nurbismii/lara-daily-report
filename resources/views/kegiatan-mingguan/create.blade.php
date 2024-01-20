@@ -21,7 +21,7 @@
                 <input type="date" name="tgl_akhir" value="{{ $tgl_akhir ?? '' }}" class="form-control" required>
               </div>
             </div>
-            <div class="row">
+            <div class="row g-2 mb-2">
               <label for="html5-text-input" class="col-md-4 col-form-label">Tipe laporan</label>
               <div class="col-md-8 mb-2">
                 <select name="tipe" class="form-select" required>
@@ -38,11 +38,13 @@
                   <option value="1">Harian</option>
                   @endif
                 </select>
+                <small><i><sup style="color: red;">* </sup>Tipe laporan : Harian = Membuat laporan mingguan</i></small> </br>
+                <small><i><sup style="color: red;">* </sup>Tipe laporan : Mingguan = Memperbarui/update isi data laporan mingguan</i></small>
               </div>
             </div>
             <button type="submit" class="btn btn-sm btn-primary float-end  mx-2">Cari kegiatan</button>
             @if($tipe != '' && $tipe == '2')
-            <a href="{{ route('cetakPdf', ['tgl_awal' => $tgl_awal, 'tgl_akhir' => $tgl_akhir, 'tipe' => $tipe]) }}" class="btn btn-sm btn-primary float-end  mx-2">Cetak</a>
+            <a target="_blank" href="{{ route('cetakPdf', ['tgl_awal' => $tgl_awal, 'tgl_akhir' => $tgl_akhir, 'tipe' => $tipe]) }}" class="btn btn-sm btn-primary float-end  mx-2">Cetak</a>
             @endif
             <a href="/kegiatan-mingguan/create" class="btn btn-sm btn-danger float-end">Hapus filter</a>
           </form>
@@ -70,60 +72,67 @@
         @endif
 
         @foreach($datas as $data)
-        <div class="col-md-3 col-lg-12">
-          <div class="card mb-3">
-            <div class="card-body">
-              <form action="{{ route('update.kegiatanMingguan', $data->id) }}" enctype="multipart/form-data" method="post">
-                @csrf
-                <div class="row">
-                  <div class="col-md-12 mb-2">
-                    <label for="uraian_kegiatan">Kegiatan</label>
-                    <textarea name="kegiatan" class="form-control" cols="30" rows="3">{{ $data->kegiatan }}</textarea>
+        <div class="accordion mt-2" id="accordionExample">
+          <div class="card accordion-item">
+            <h2 class="accordion-header" id="heading-{{$data->id}}">
+              <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordion-{{$data->id}}" aria-expanded="false" aria-controls="accordion-{{$data->id}}">
+                {{ $data->kegiatan }}
+              </button>
+            </h2>
+            <div id="accordion-{{$data->id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample" style="">
+              <div class="accordion-body">
+                <form action="{{ route('update.kegiatanMingguan', $data->id) }}" enctype="multipart/form-data" method="post">
+                  @csrf
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <label for="uraian_kegiatan">Kegiatan</label>
+                      <textarea name="kegiatan" class="form-control" cols="30" rows="3">{{ $data->kegiatan }}</textarea>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-2">
-                    <label for="uraian_kegiatan">Jenis kegiatan</label>
-                    <input name="jenis_kegiatan_id" class="form-control" value="{{ getJenisKegiatanById($data->jenis_kegiatan_id) }}" readonly>
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <label for="uraian_kegiatan">Jenis kegiatan</label>
+                      <input name="jenis_kegiatan_id" class="form-control" value="{{ getJenisKegiatanById($data->jenis_kegiatan_id) }}" readonly>
+                    </div>
                   </div>
-                </div>
-                <div class="row g-2">
-                  <div class="col-md-6 mb-2">
-                    <label for="kategori_kegiatan">Kategori Kegiatan</label>
-                    <input type="text" value="{{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}" class="form-control" readonly>
+                  <div class="row g-2">
+                    <div class="col-md-6 mb-2">
+                      <label for="kategori_kegiatan">Kategori Kegiatan</label>
+                      <input type="text" value="{{ getKategoriKegiatanById($data->kategori_kegiatan_id) }}" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <label for="persentase">Persentase penyelesaian pekerjaan</label>
+                      <input type="number" name="persen" max="100" maxlength="3" class="form-control" required>
+                    </div>
                   </div>
-                  <div class="col-md-6 mb-2">
-                    <label for="persentase">Persentase penyelesaian pekerjaan</label>
-                    <input type="number" name="persen" class="form-control">
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <label for="uraian_kegiatan">Uraian kegiatan</label>
+                      <textarea name="uraian_kegiatan" class="form-control" cols="30" rows="3">{{ $data->uraian_kegiatan }}</textarea>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-2">
-                    <label for="uraian_kegiatan">Uraian kegiatan</label>
-                    <textarea name="uraian_kegiatan" class="form-control" cols="30" rows="3">{{ $data->uraian_kegiatan }}</textarea>
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <label for="kendala_kerja">Kendala kerja</label>
+                      <textarea name="kendala" class="form-control" cols="30" rows="3">{{ $data->kendala }}</textarea>
+                    </div>
                   </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 mb-2">
-                    <label for="kendala_kerja">Kendala kerja</label>
-                    <textarea name="kendala" class="form-control" cols="30" rows="3">{{ $data->kendala }}</textarea>
+                  <div class="row g-2">
+                    <div class="col-md-6 mb-2">
+                      <label for="deadline">Deadline penyelesaian</label>
+                      <input type="date" value="{{ $data->deadline }}" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <label for="lampiran">Lampiran</label>
+                      <input type="file" name="lampiran" class="form-control">
+                      @foreach($data->dataPendukung as $berkas)
+                      <small><a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->nik]) }}"> {{ $berkas->nama_file }}</a> <br></small>
+                      @endforeach
+                    </div>
                   </div>
-                </div>
-                <div class="row g-2">
-                  <div class="col-md-6 mb-2">
-                    <label for="deadline">Deadline penyelesaian</label>
-                    <input type="date" value="{{ $data->deadline }}" class="form-control" readonly>
-                  </div>
-                  <div class="col-md-6 mb-2">
-                    <label for="lampiran">Lampiran</label>
-                    <input type="file" name="lampiran" class="form-control">
-                    @foreach($data->dataPendukung as $berkas)
-                    <small><a href="{{ route('get.unduhBerkas', ['id' => $berkas->id, 'nik' => $data->nik]) }}"> {{ $berkas->nama_file }}</a> <br></small>
-                    @endforeach
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary float-end mt-1">Kirim</button>
-              </form>
+                  <button type="submit" class="btn btn-primary float-end mt-1 mb-3">Kirim</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>

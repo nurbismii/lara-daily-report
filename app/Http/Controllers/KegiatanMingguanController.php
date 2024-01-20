@@ -213,6 +213,7 @@ class KegiatanMingguanController extends Controller
             ->where('absensi.user_id', Auth::user()->id)
             ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
             ->select('kegiatan_harian.*', 'absensi.tanggal')
+            ->orderBy('kegiatan_harian.id', 'asc')
             ->get()->groupBy(function ($data) {
                 return $data->jenis_kegiatan_id;
             });

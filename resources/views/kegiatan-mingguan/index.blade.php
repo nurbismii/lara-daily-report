@@ -35,7 +35,6 @@
               <tr>
                 <th>Nama</th>
                 <th>Tanggal</th>
-                <th>Kegiatan</th>
                 <th>Jenis kegiatan</th>
                 <th>Kategori kegiatan</th>
                 <th>Persentase</th>
@@ -84,10 +83,6 @@
         {
           data: 'tanggal',
           name: 'tanggal'
-        },
-        {
-          data: 'kegiatan',
-          name: 'kegiatan'
         },
         {
           data: 'jenis_kegiatan',

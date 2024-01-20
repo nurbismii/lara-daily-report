@@ -31,7 +31,7 @@ class KegiatanMingguanController extends Controller
                 ->join('kategori_kegiatan', 'kategori_kegiatan.id', '=', 'kegiatan_harian.kategori_kegiatan_id')
                 ->where('users.nik', Auth::user()->nik)
                 ->where('kegiatan_harian.tipe', $kategori_mingguan)
-                ->orderBy('tanggal', 'asc')
+                ->orderBy('tanggal', 'desc')
                 ->select('kegiatan_harian.*', 'absensi.tanggal', 'users.name', 'kegiatan.jenis_kegiatan', 'kategori_kegiatan.kategori_kegiatan');
 
             if ($request->filled('from_date') && $request->filled('to_date')) {

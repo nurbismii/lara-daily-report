@@ -101,7 +101,7 @@
             </div>
             <div class="col mb-2">
               <label for="posisi">Posisi</label>
-              <input type="email" name="posisi" class="form-control" required>
+              <input type="text" name="posisi" class="form-control" required>
             </div>
           </div>
           <div class="row mb-3 g-2">

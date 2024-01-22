@@ -174,7 +174,7 @@ class KegiatanHarianController extends Controller
             $kegiatan_harian = KegiatanHarian::create([
                 'nik' => Auth::user()->nik,
                 'absensi_id' => $data_absensi->id,
-                'kegiatan' => $request->kegiatan,
+                'kegiatan' => strtoupper($request->kegiatan),
                 'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
                 'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
                 'pic_id' => $request->pic_id,
@@ -254,14 +254,14 @@ class KegiatanHarianController extends Controller
         try {
             DB::beginTransaction();
 
-            KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->update([
+            KegiatanHarian::where('kegiatan', strtoupper($request->kegiatan))->where('nik', Auth::user()->nik)->update([
                 'status_duplikat' => '1'
             ]);
 
             $kegiatan_harian = KegiatanHarian::create([
                 'nik' => Auth::user()->nik,
                 'absensi_id' => $request->absensi_id,
-                'kegiatan' => $request->kegiatan,
+                'kegiatan' => strtoupper($request->kegiatan),
                 'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
                 'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
                 'pic_id' => $request->pic_id,
@@ -303,7 +303,7 @@ class KegiatanHarianController extends Controller
     public function updateKegiatan(Request $request, $id)
     {
         KegiatanHarian::where('id', $id)->update([
-            'kegiatan' => $request->kegiatan,
+            'kegiatan' => strtoupper($request->kegiatan),
             'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
             'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
             'pic_id' => $request->pic_id,
@@ -321,7 +321,7 @@ class KegiatanHarianController extends Controller
     public function destroyKegiatan($id)
     {
         $data = KegiatanHarian::where('id', $id)->first();
-        
+
         $data->delete();
 
         $berkas_pendukung = BerkasPendukung::where('kegiatan_harian_id', $id)->get();

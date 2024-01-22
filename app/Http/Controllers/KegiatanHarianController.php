@@ -321,8 +321,10 @@ class KegiatanHarianController extends Controller
     public function destroyKegiatan($id)
     {
         $data = KegiatanHarian::where('id', $id)->first();
+        
+        $data->delete();
 
-        $berkas_pendukung = BerkasPendukung::where('kegiatan_harian_id', $data->id)->get();
+        $berkas_pendukung = BerkasPendukung::where('kegiatan_harian_id', $id)->get();
         foreach ($berkas_pendukung as $berkas) {
             if (isset($berkas->nama_file)) {
                 File::delete($berkas->nama_file);
@@ -330,12 +332,12 @@ class KegiatanHarianController extends Controller
             }
         }
 
-        $pelayanan = Pelayanan::where('kegiatan_harian_id', $data->id)->get();
+        $pelayanan = Pelayanan::where('kegiatan_harian_id', $id)->get();
         foreach ($pelayanan as $pel) {
             Pelayanan::where('id', $pel->id)->delete();
         }
 
-        $data->delete();
+
 
         return back()->with('success', 'Oh yeah, Kegiatan harian berhasil dihapus');
     }

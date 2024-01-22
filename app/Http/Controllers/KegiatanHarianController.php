@@ -51,9 +51,9 @@ class KegiatanHarianController extends Controller
 
             foreach ($datas as $val) {
 
-                $data_spv[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
+                $data_spv[] = User::leftjoin('absensi', 'absensi.user_id', '=', 'users.id')
+                    ->leftjoin('tim', 'tim.id', '=', 'users.tim_id')
                     ->leftjoin('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
-                    ->leftjoin('tim', 'tim.id', '=', 'anggota_tim.tim_id')
                     ->where('absensi.id', $val->id)
                     ->select('users.name', 'tim.nama_tim', 'users.nik', 'absensi.*')->first();
             }
@@ -63,15 +63,13 @@ class KegiatanHarianController extends Controller
 
             foreach ($datas as $val) {
 
-                $data_absensi[] = User::join('absensi', 'absensi.user_id', '=', 'users.id')
-                    ->join('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
-                    ->join('tim', 'tim.id', '=', 'anggota_tim.tim_id')
+                $data_absensi[] = User::leftjoin('absensi', 'absensi.user_id', '=', 'users.id')
+                    ->leftjoin('tim', 'tim.id', '=', 'anggota_tim.tim_id')
+                    ->leftjoin('anggota_tim', 'anggota_tim.user_id', '=', 'users.id')
                     ->where('absensi.id', $val->id)->whereIn('absensi.user_id', $tim_id)
                     ->select('users.name', 'tim.nama_tim', 'users.nik', 'absensi.*')->first();
             }
         }
-
-
 
         $merge = array_merge($data_spv, $data_absensi);
 

@@ -33,34 +33,17 @@ class OrganisirTimController extends Controller
     public function store(Request $request)
     {
         //
-        Tim::create([
+        $data = Tim::create([
             'nama_tim' => $request->nama_tim,
             'ketua_tim_id' => $request->ketua_tim_id,
             'supervisor_id' => $request->supervisor_id
         ]);
+
+        User::where('id', $data->supervisor_id)->update([
+            'tim_id' => $data->id
+        ]);
+
         return back()->with('success', 'Tim baru telah berhasil dibentuk, silahkan kelola lebih lanjut di menu aksi');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -105,10 +88,16 @@ class OrganisirTimController extends Controller
         if ($cek_anggota) {
             return back()->with('warning', 'Opss, anggota sudah terdaftar di tim ini, silahkan pilih yang lain');
         }
-        AnggotaTim::create([
+
+        $data = AnggotaTim::create([
             'tim_id' => $request->tim_id,
             'user_id' => $request->user_id,
         ]);
+
+        User::where('id', $data->user_id)->update([
+            'tim_id' => $data->tim_id
+        ]);
+
         return back()->with('success', 'Yeai, anggota tim berhasil ditambahkan');
     }
 
@@ -131,6 +120,11 @@ class OrganisirTimController extends Controller
         $anggota->update([
             'user_id' => $request->user_id,
         ]);
+
+        User::where('id', $request->user_id)->update([
+            'tim_id' => $anggota->tim_id
+        ]);
+
         return back()->with('success', 'Yeai, anggota tim berhasil ditambahkan');
     }
 

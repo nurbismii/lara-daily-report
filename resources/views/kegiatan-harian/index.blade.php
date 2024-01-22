@@ -92,7 +92,7 @@
         },
         {
           data: 'nama_tim',
-          name: 'nama_tim'
+          name: 'nama_tim',
         },
         {
           data: 'tanggal',

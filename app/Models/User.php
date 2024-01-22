@@ -45,7 +45,7 @@ class User extends Authenticatable
 
     public function tim()
     {
-        return $this->hasOne(Tim::class, 'supervisor_id', 'id');
+        return $this->hasOne(Tim::class, 'supervisor_id', 'user_id');
     }
 
     public function anggotaTim()

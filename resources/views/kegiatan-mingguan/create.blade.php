@@ -120,7 +120,7 @@
                   <div class="row g-2">
                     <div class="col-md-6 mb-2">
                       <label for="deadline">Deadline penyelesaian</label>
-                      <input type="date" value="{{ $data->deadline }}" class="form-control" readonly>
+                      <input type="text" value="{{ getTanggalIndo($data->deadline) }}" class="form-control" readonly>
                     </div>
                     <div class="col-md-6 mb-2">
                       <label for="lampiran">Lampiran</label>

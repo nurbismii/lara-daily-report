@@ -64,6 +64,11 @@
           <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
             {{ $d->uraian_kegiatan }}
           </div>
+          @if($d->kuantitas > 0)
+          <div class="d-flex justify-content-between mb-3">
+            Kuantitas : {{ $d->kuantitas }}
+          </div>
+          @endif
           <div class="d-flex justify-content-between">
             Kendala :
           </div>
@@ -73,43 +78,6 @@
           <div class="d-flex justify-content-between mb-3">
             Persentase penyelesaian : {{ $d->persen == NULL ? 0 : $d->persen }}%
           </div>
-
-          @php
-
-          $no_layanan = 1;
-
-          @endphp
-          @if(count($d->pelayanan) > 0)
-          <div class="d-flex justify-content-between mb-3">
-            Data pelayanan :
-          </div>
-          <div class="d-flex justify-content-between mb-3">
-            <table class="table-line">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Layanan</th>
-                  <th>Kategori Layanan</th>
-                  <th>Sub Kategori</th>
-                  <th>Nama Karyawan</th>
-                  <th>Keperluan</th>
-                </tr>
-              </thead>
-              <tbody>
-                @foreach($d->pelayanan as $val)
-                <tr>
-                  <td>{{$no_layanan++}}</td>
-                  <td>{{$val->MasterPelayanan->nama_layanan ?? '-'}}</td>
-                  <td>{{$val->MasterKategoriPelayanan->kategori_pelayanan ?? '-'}}</td>
-                  <td>{{$val->MasterSubKategoriPelayanan->sub_kategori_pelayanan ?? '-'}}</td>
-                  <td>{{getNamaPic($val->nik_pic)}}</td>
-                  <td>{{$val->keperluan ?? '-'}}</td>
-                </tr>
-                @endforeach
-              </tbody>
-            </table>
-          </div>
-          @endif
 
           @if(count($d->dataPendukung) > 0)
           <div class="d-flex justify-content-between mb-3">

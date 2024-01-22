@@ -12,7 +12,7 @@
       <div class="card mb-3">
         <div class="card-body">
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
               <select name="nama_tim" id="nama_tim" class="form-select">
                 <option value="" selected>-- Filter Tim --</option>
                 @foreach($list_tim as $lt)
@@ -20,13 +20,11 @@
                 @endforeach
               </select>
             </div>
-            <div class="col-md-5">
-              <input type="text" class="form-control" name="daterange" value="" />
+            <div class="col-md-6">
+              <div class="input-group">
+                <input type="text" name="daterange" class="form-control filter">
+              </div>
             </div>
-            <div class="col-md-1">
-              <button class="btn btn-success filter">Filter</button>
-            </div>
-
           </div>
         </div>
       </div>
@@ -157,7 +155,7 @@
       ]
     });
 
-    $(".filter").click(function() {
+    $(".filter").change(function() {
       table.draw();
     });
 

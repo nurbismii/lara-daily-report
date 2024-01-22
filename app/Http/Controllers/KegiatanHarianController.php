@@ -335,6 +335,8 @@ class KegiatanHarianController extends Controller
             Pelayanan::where('id', $pel->id)->delete();
         }
 
+        $data->delete();
+
         return back()->with('success', 'Oh yeah, Kegiatan harian berhasil dihapus');
     }
 

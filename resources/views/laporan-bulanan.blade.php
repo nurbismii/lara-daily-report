@@ -59,10 +59,10 @@
         @foreach($data as $key => $d)
         <div class="px-4">
           <div class="d-flex justify-content-between">
-            {{ $sub_no }}.{{ ++$key }} {{ $d->kegiatan }}
+            {{ $sub_no }}.{{ ++$key }} {{ ucfirst($d->kegiatan) }}
           </div>
           <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
-            {{ $d->uraian_kegiatan }}
+            {{ ucfirst($d->uraian_kegiatan) }}
           </div>
           @if($d->kuantitas > 0)
           <div class="d-flex justify-content-between mb-3">

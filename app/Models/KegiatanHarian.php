@@ -23,4 +23,9 @@ class KegiatanHarian extends Model
   {
     return $this->hasMany(Pelayanan::class);
   }
+
+  public function pelayananMingguan()
+  {
+    return $this->hasMany(Pelayanan::class, 'kegiatan_mingguan_id', 'id');
+  }
 }

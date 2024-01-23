@@ -12,31 +12,32 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <style>
-    /* Thick red border */
-    hr.new4 {
-      border: 0.2px solid black;
-    }
-
-    .justify {
-      text-align: justify;
-    }
-
-    .table-line {
-      width: 100%;
+    #customers {
+      font-family: Arial, Helvetica, sans-serif;
       border-collapse: collapse;
+      width: 100%;
     }
 
-    .table-line th {
-      background: #85CB90;
-      color: #FFFFFF;
-      padding: 0.3em;
+    #customers td,
+    #customers th {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    #customers tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #customers tr:hover {
+      background-color: #ddd;
+    }
+
+    #customers th {
+      padding-top: 12px;
+      padding-bottom: 12px;
       text-align: left;
-    }
-
-    .table-line td {
-      border-bottom: 1px solid #DDDDDD;
-      color: #666666;
-      padding: 0.5em;
+      background-color: #04AA6D;
+      color: white;
     }
   </style>
 </head>
@@ -47,48 +48,74 @@
       <!-- Main page content-->
       <div class="container-xl px-1">
         @php
-
         $no = 1;
-
+        $no_pelayanan = 1;
         @endphp
 
         @foreach($datas as $jenis_kegiatan => $data)
         <div class="d-flex justify-content-between">
           <h6>{{ $sub_no = $no++ }}. {{ getJenisKegiatanById($jenis_kegiatan) }}</h6>
         </div>
+
         @foreach($data as $key => $d)
+
         <div class="px-4">
           <div class="d-flex justify-content-between">
-            {{ $sub_no }}.{{ ++$key }} {{ ucfirst(strtolower($d->kegiatan)) }}
+            {{ $sub_no }}.{{ ++$key }} {{ ucfirst(strtolower($d['kegiatan'])) }}
           </div>
           <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
-            {{ ucfirst($d->uraian_kegiatan) }}
+            {{ ucfirst($d['uraian_kegiatan']) }}
           </div>
-          @if($d->kuantitas > 0)
+          @if(count($d['data_pelayanan']) > 0)
           <div class="d-flex justify-content-between mb-3">
-            Kuantitas : {{ $d->kuantitas }}
+            Data pelayanan :
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+
+            <table id="customers">
+              <tr>
+                <th>No</th>
+                <th>Pelayanan</th>
+                <th>Total</th>
+              </tr>
+              @foreach($d['data_pelayanan'] as $value)
+              <tr>
+                <td>{{ $no_pelayanan++ }}</td>
+                <td>{{ $value['kategori_pelayanan'] ?? '' }}</td>
+                <td>{{ $value['total_pelayanan'] ?? '' }}</td>
+              </tr>
+              @endforeach
+            </table>
           </div>
           @endif
+
+          @if($d['kuantitas'] > 0)
+          <div class="d-flex justify-content-between mb-3">
+            Kuantitas : {{ $d['kuantitas'] }}
+          </div>
+          @endif
+
           <div class="d-flex justify-content-between">
             Kendala :
           </div>
           <div class="d-flex justify-content-between mb-3" style="text-indent: 32px;">
-            {{ $d->kendala ?? 'Tidak ada kendala' }}
+            {{ $d['kendala'] ?? 'Tidak ada kendala' }}
           </div>
           <div class="d-flex justify-content-between mb-3">
-            Persentase penyelesaian : {{ $d->persen == NULL ? 0 : $d->persen }}%
+            Persentase penyelesaian : {{ $d['persen'] == NULL ? 0 : $d['persen'] }}%
           </div>
 
-          @if(count($d->dataPendukung) > 0)
+          @if(count($d['data_pendukung']) > 0)
           <div class="d-flex justify-content-between mb-3">
             Data Pendukung :
           </div>
           <div class="d-flex justify-content-between mb-3">
-            @foreach($d->dataPendukung as $value)
-            <img src="{{ asset('data-pendukung/' . $d->nik . '/' . $d->kegiatan . '/' . $value->nama_file) }}" width="650" height="400">
+            @foreach($d['data_pendukung'] as $value)
+            <img src="{{ public_path('data-pendukung/' . $d['nik'] . '/' . $d['kegiatan'] . '/' . $value['nama_file']) }}" width="650" height="400">
             @endforeach
           </div>
           @endif
+
         </div>
         @endforeach
 

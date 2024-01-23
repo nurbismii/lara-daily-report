@@ -131,10 +131,19 @@
                     </div>
                   </div>
                   <button type="submit" class="btn btn-primary float-end mt-1 mb-3">Kirim</button>
+                  @if($tipe == '1')
                   <a href="{{ route('update.duplikat', $data->id) }}" class="btn btn-secondary float-end mt-1 mx-2 mb-3" onclick="confirm('Kamu yakin ingin menghapus kegiatan harian ini ?'); document.getElementById('update-form').submit();">Hapus</a>
+                  @endif
+                  @if($tipe == '2')
+                  <a href="{{ route('update.hapus.duplikat', $data->id) }}" class="btn btn-danger float-end mt-1 mx-2 mb-3" onclick="confirm('Kamu yakin ingin mengembalikan kegiatan mingguan ini ?'); document.getElementById('kembali-harian').submit();">Kembali ke harian</a>
+                  @endif
                 </form>
 
                 <form id="update-form" action="{{ route('update.duplikat', $data->id) }}" method="POST">
+                  @csrf
+                </form>
+
+                <form id="kembali-harian" action="{{ route('update.hapus.duplikat', $data->id) }}" method="POST">
                   @csrf
                 </form>
               </div>

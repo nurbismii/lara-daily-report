@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensi;
 use App\Models\BerkasPendukung;
 use App\Models\KegiatanHarian;
+use App\Models\Pelayanan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -134,8 +135,6 @@ class KegiatanMingguanController extends Controller
 
             $kegiatan = $request->kegiatan;
 
-            $total_kuantitas = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->sum('kuantitas');
-
             $file = $request->file('lampiran');
 
             if ($file) {
@@ -152,6 +151,20 @@ class KegiatanMingguanController extends Controller
                 BerkasPendukung::create([
                     'kegiatan_harian_id' => $id,
                     'nama_file' => $nama_file,
+                ]);
+            }
+
+            $total_kuantitas = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->sum('kuantitas');
+
+            $data_kegiatan =  KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->get();
+
+            KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->where('id', '!=', $id)->update([
+                'status_duplikat' => '1'
+            ]);
+
+            foreach ($data_kegiatan as $row) {
+                Pelayanan::where('kegiatan_harian_id', $row->id)->update([
+                    'kegiatan_mingguan_id' => $id,
                 ]);
             }
 
@@ -175,7 +188,9 @@ class KegiatanMingguanController extends Controller
 
     public function cetakPdf($tgl_awal, $tgl_akhir, $tipe)
     {
-        $datas = KegiatanHarian::with('dataPendukung', 'pelayanan')
+        $datas_final = array();
+
+        $datas = KegiatanHarian::with('dataPendukung')
             ->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')
             ->where('tipe', $tipe)
             ->where('status_duplikat', null)
@@ -183,11 +198,64 @@ class KegiatanMingguanController extends Controller
             ->whereBetween('tanggal', [$tgl_awal, $tgl_akhir])
             ->select('kegiatan_harian.*', 'absensi.tanggal')
             ->orderBy('kegiatan_harian.id', 'asc')
-            ->get()->groupBy(function ($data) {
+            ->get()
+            ->groupBy(function ($data) {
                 return $data->jenis_kegiatan_id;
             });
 
-        $pdf = PDF::loadview('laporan-bulanan', ['datas' => $datas]);
+        foreach ($datas as $data) {
+
+            foreach ($data as $val) {
+
+                $pelayanan = Pelayanan::select('kategori_pelayanan_id', DB::raw('count(*) as total'))
+                    ->where('kegiatan_mingguan_id', $val->id)
+                    ->groupBy('kategori_pelayanan_id')
+                    ->pluck('total', 'kategori_pelayanan_id')
+                    ->toArray();
+
+                $id = null;
+
+                foreach ($pelayanan as $key => $pel) {
+
+                    $data_pelayanan[] = [
+                        'id_pelayanan' => $val->id,
+                        'kategori_pelayanan' => getNamaKategoriPelayanan($key),
+                        'total_pelayanan' => $pel
+                    ];
+                }
+
+                foreach ($data_pelayanan as $row) {
+
+                    if ($id != $val->id) {
+                        $datas_final[] = [
+                            'id' => $val->id,
+                            'nik' => $val->nik,
+                            'jenis_kegiatan_id' => $val->jenis_kegiatan_id,
+                            'kegiatan' => $val->kegiatan,
+                            'uraian_kegiatan' => $val->uraian_kegiatan,
+                            'kendala' => $val->kendala,
+                            'persen' => $val->persen,
+                            'kuantitas' => $val->kuatitas,
+                            'data_pelayanan' => $val->id == $row['id_pelayanan'] ? $data_pelayanan : [],
+                            'data_pendukung' => $val->dataPendukung,
+                        ];
+                        $id = $val->id;
+                    }
+                }
+            }
+        }
+
+
+
+        $res = array();
+
+        foreach ($datas_final as $element) {
+            $res[$element['jenis_kegiatan_id']][] = $element;
+        }
+
+        return $res;
+
+        $pdf = PDF::loadview('laporan-bulanan', ['datas' => $res]);
         return $pdf->stream();
     }
 
@@ -219,6 +287,16 @@ class KegiatanMingguanController extends Controller
     {
         KegiatanHarian::where('id', $id)->update([
             'status_duplikat' => '1',
+        ]);
+
+        return back()->with('success', 'Kegiatan harian berhasil dihapus dari kegiatan mingguan');
+    }
+
+    public function updateHapusDuplikat($id)
+    {
+        KegiatanHarian::where('id', $id)->update([
+            'tipe' => NULL,
+            'status_duplikat' => NULL,
         ]);
 
         return back()->with('success', 'Kegiatan harian berhasil dihapus dari kegiatan mingguan');

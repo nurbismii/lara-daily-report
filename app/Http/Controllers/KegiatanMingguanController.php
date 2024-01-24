@@ -154,7 +154,7 @@ class KegiatanMingguanController extends Controller
                 ]);
             }
 
-            $total_kuantitas = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->sum('kuantitas');
+            $total_kuantitas = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->where('status_duplikat', NULL)->sum('kuantitas');
 
             $data_kegiatan =  KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->get();
 

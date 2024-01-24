@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
-    <a href="/dashboard" class="app-brand-link">
+    <a href="/home" class="app-brand-link">
       <img src="{{ asset('logo-hrd.png') }}" style="width: 45px; height:45px;" alt="">
       <span class="menu-text fw-bolder ms-2 text-xl">LAPORAN HARIAN</span>
     </a>

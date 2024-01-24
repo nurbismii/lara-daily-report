@@ -190,6 +190,7 @@ class KegiatanMingguanController extends Controller
     {
         $datas_final = array();
         $data_kegiatan_wo_pel = array();
+        $data_pelayanan = array();
 
         $datas = KegiatanHarian::with('dataPendukung')
             ->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')

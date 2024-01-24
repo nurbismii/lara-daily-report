@@ -189,6 +189,7 @@ class KegiatanMingguanController extends Controller
     public function cetakPdf($tgl_awal, $tgl_akhir, $tipe)
     {
         $datas_final = array();
+        $data_kegiatan_wo_pel = array();
 
         $datas = KegiatanHarian::with('dataPendukung')
             ->join('absensi', 'absensi.id', '=', 'kegiatan_harian.absensi_id')

@@ -213,8 +213,6 @@ class KegiatanMingguanController extends Controller
                     ->pluck('total', 'kategori_pelayanan_id')
                     ->toArray();
 
-                $id = null;
-
                 foreach ($pelayanan as $key => $pel) {
 
                     $data_pelayanan[] = [
@@ -224,36 +222,61 @@ class KegiatanMingguanController extends Controller
                     ];
                 }
 
-                foreach ($data_pelayanan as $row) {
+                if (count($pelayanan) == 0) {
+                    $data_kegiatan_wo_pel[] = [
+                        'id' => $val->id,
+                        'nik' => $val->nik,
+                        'jenis_kegiatan_id' => $val->jenis_kegiatan_id,
+                        'kegiatan' => $val->kegiatan,
+                        'uraian_kegiatan' => $val->uraian_kegiatan,
+                        'kendala' => $val->kendala,
+                        'persen' => $val->persen,
+                        'kuantitas' => $val->kuantitas,
+                        'data_pelayanan' => [],
+                        'data_pendukung' => $val->dataPendukung,
+                    ];
+                    $id = $val->id;
+                }
+            }
+        }
 
-                    if ($id != $val->id) {
-                        $datas_final[] = [
-                            'id' => $val->id,
-                            'nik' => $val->nik,
-                            'jenis_kegiatan_id' => $val->jenis_kegiatan_id,
-                            'kegiatan' => $val->kegiatan,
-                            'uraian_kegiatan' => $val->uraian_kegiatan,
-                            'kendala' => $val->kendala,
-                            'persen' => $val->persen,
-                            'kuantitas' => $val->kuatitas,
-                            'data_pelayanan' => $val->id == $row['id_pelayanan'] ? $data_pelayanan : [],
-                            'data_pendukung' => $val->dataPendukung,
-                        ];
-                        $id = $val->id;
+        $id = null;
+
+        foreach ($data_pelayanan as $row) {
+
+            foreach ($datas as $data) {
+
+                foreach ($data as $val) {
+
+                    if ($val->id == $row['id_pelayanan']) {
+
+                        if ($id != $val->id) {
+
+                            $datas_final[] = [
+                                'id' => $val->id,
+                                'nik' => $val->nik,
+                                'jenis_kegiatan_id' => $val->jenis_kegiatan_id,
+                                'kegiatan' => $val->kegiatan,
+                                'uraian_kegiatan' => $val->uraian_kegiatan,
+                                'kendala' => $val->kendala,
+                                'persen' => $val->persen,
+                                'kuantitas' => $val->kuantitas,
+                                'data_pelayanan' => $val->id == $row['id_pelayanan'] ? $data_pelayanan : [],
+                                'data_pendukung' => $val->dataPendukung,
+                            ];
+                            $id = $val->id;
+                        }
                     }
                 }
             }
         }
 
-
-
+        $datas_final = array_merge($datas_final, $data_kegiatan_wo_pel);
         $res = array();
 
         foreach ($datas_final as $element) {
             $res[$element['jenis_kegiatan_id']][] = $element;
         }
-
-        return $res;
 
         $pdf = PDF::loadview('laporan-bulanan', ['datas' => $res]);
         return $pdf->stream();

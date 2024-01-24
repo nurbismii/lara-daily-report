@@ -21,7 +21,7 @@
     #customers td,
     #customers th {
       border: 1px solid #ddd;
-      padding: 8px;
+      padding: 5px;
     }
 
     #customers tr:nth-child(even) {
@@ -33,8 +33,8 @@
     }
 
     #customers th {
-      padding-top: 12px;
-      padding-bottom: 12px;
+      padding-top: 8px;
+      padding-bottom: 8px;
       text-align: left;
       background-color: #04AA6D;
       color: white;
@@ -71,7 +71,6 @@
             Data pelayanan :
           </div>
           <div class="d-flex justify-content-between mb-3">
-
             <table id="customers">
               <tr>
                 <th>No</th>
@@ -79,11 +78,13 @@
                 <th>Total</th>
               </tr>
               @foreach($d['data_pelayanan'] as $value)
+              @if( $value['id_pelayanan'] == $d['id'])
               <tr>
                 <td>{{ $no_pelayanan++ }}</td>
                 <td>{{ $value['kategori_pelayanan'] ?? '' }}</td>
                 <td>{{ $value['total_pelayanan'] ?? '' }}</td>
               </tr>
+              @endif
               @endforeach
             </table>
           </div>

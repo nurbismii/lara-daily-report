@@ -12,29 +12,57 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <style>
-    #customers {
+    #pelayanan {
       font-family: Arial, Helvetica, sans-serif;
       border-collapse: collapse;
       width: 100%;
     }
 
-    #customers td,
-    #customers th {
+    #pelayanan td,
+    #pelayanan th {
       border: 1px solid #ddd;
-      padding: 5px;
+      padding: 3px;
     }
 
-    #customers tr:nth-child(even) {
+    #pelayanan tr:nth-child(even) {
       background-color: #f2f2f2;
     }
 
-    #customers tr:hover {
+    #pelayanan tr:hover {
       background-color: #ddd;
     }
 
-    #customers th {
-      padding-top: 8px;
-      padding-bottom: 8px;
+    #pelayanan th {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      text-align: left;
+      background-color: #252866;
+      color: white;
+    }
+
+    #kuantitas {
+      font-family: Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    #kuantitas td,
+    #kuantitas th {
+      border: 1px solid #ddd;
+      padding: 3px;
+    }
+
+    #kuantitas tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    #kuantitas tr:hover {
+      background-color: #ddd;
+    }
+
+    #kuantitas th {
+      padding-top: 5px;
+      padding-bottom: 5px;
       text-align: left;
       background-color: #04AA6D;
       color: white;
@@ -68,10 +96,10 @@
           </div>
           @if(count($d['data_pelayanan']) > 0)
           <div class="d-flex justify-content-between mb-3">
-            Data pelayanan :
-          </div>
-          <div class="d-flex justify-content-between mb-3">
-            <table id="customers">
+            <table id="pelayanan">
+              <tr>
+                <th style="text-align: center;" colspan="3">DATA PELAYANAN</th>
+              </tr>
               <tr>
                 <th>No</th>
                 <th>Pelayanan</th>
@@ -92,7 +120,21 @@
 
           @if($d['kuantitas'] > 0)
           <div class="d-flex justify-content-between mb-3">
-            Kuantitas : {{ $d['kuantitas'] }}
+            <table id="kuantitas">
+              <tr>
+                <th style="text-align: center;" colspan="3">TOTAL KUANTITAS KEGIATAN</th>
+              </tr>
+              <tr>
+                <th>Kegiatan</th>
+                <th>Total</th>
+                <th>Satuan</th>
+              </tr>
+              <tr>
+                <td>{{ ucfirst(strtolower($d['kegiatan'])) }}</td>
+                <td>{{ $d['kuantitas'] }}</td>
+                <td>-</td>
+              </tr>
+            </table>
           </div>
           @endif
 

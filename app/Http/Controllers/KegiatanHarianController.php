@@ -251,51 +251,52 @@ class KegiatanHarianController extends Controller
 
     public function storeTambahKegiatan(Request $request)
     {
-        try {
-            DB::beginTransaction();
+        $data_kegiatan = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->latest()->first();
 
-            $data_kegiatan = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->latest()->first();
-
+        if ($data_kegiatan) {
             $data_kegiatan->update([
                 'status_duplikat' => '1'
             ]);
+        }
 
-            $kegiatan_harian = KegiatanHarian::create([
-                'nik' => Auth::user()->nik,
-                'absensi_id' => $request->absensi_id,
-                'kegiatan' => strtoupper($request->kegiatan),
-                'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
-                'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
-                'pic_id' => $request->pic_id,
-                'kendala' => $request->kendala,
-                'mulai' => $request->mulai,
-                'selesai' => $request->selesai,
-                'status_kegiatan' => $request->status_kegiatan,
-                'deadline' => $request->deadline,
-                'status_akhir' => $request->status_akhir,
-                'kuantitas' => $request->kuantitas,
+        $kegiatan_harian = KegiatanHarian::create([
+            'nik' => Auth::user()->nik,
+            'absensi_id' => $request->absensi_id,
+            'kegiatan' => strtoupper($request->kegiatan),
+            'jenis_kegiatan_id' => $request->jenis_kegiatan_id,
+            'kategori_kegiatan_id' => $request->kategori_kegiatan_id,
+            'pic_id' => $request->pic_id,
+            'kendala' => $request->kendala,
+            'mulai' => $request->mulai,
+            'selesai' => $request->selesai,
+            'status_kegiatan' => $request->status_kegiatan,
+            'deadline' => $request->deadline,
+            'status_akhir' => $request->status_akhir,
+            'kuantitas' => $request->kuantitas,
+        ]);
+
+        if ($request->pelayanan == '1') {
+
+            Pelayanan::create([
+                'kegiatan_harian_id' => $kegiatan_harian->id,
+                'nik_pic' => $request->nik_pic,
+                'nama_karyawan' => $request->nama_karyawan,
+                'nik_karyawan' => $request->nik_karyawan,
+                'departemen' => $request->departemen,
+                'divisi' => $request->divisi,
+                'posisi' => $request->posisi,
+                'pelayanan_id' => $request->pelayanan_id,
+                'kategori_pelayanan_id' => $request->kategori_pelayanan_id,
+                'sub_kategori_pelayanan_id' => $request->sub_kategori_pelayanan_id,
+                'keperluan' => $request->keperluan,
+                'tanggal' => date('Y-m-d', strtotime(Carbon::now())),
             ]);
+        }
 
-            if ($request->pelayanan == '1') {
-
-                Pelayanan::create([
-                    'kegiatan_harian_id' => $kegiatan_harian->id,
-                    'nik_pic' => $request->nik_pic,
-                    'nama_karyawan' => $request->nama_karyawan,
-                    'nik_karyawan' => $request->nik_karyawan,
-                    'departemen' => $request->departemen,
-                    'divisi' => $request->divisi,
-                    'posisi' => $request->posisi,
-                    'pelayanan_id' => $request->pelayanan_id,
-                    'kategori_pelayanan_id' => $request->kategori_pelayanan_id,
-                    'sub_kategori_pelayanan_id' => $request->sub_kategori_pelayanan_id,
-                    'keperluan' => $request->keperluan,
-                    'tanggal' => date('Y-m-d', strtotime(Carbon::now())),
-                ]);
-            }
-
-            DB::commit();
-            return back()->with('success', 'Yuhuuu, Kegiatan harian baru berhasil ditambahkan');
+        DB::commit();
+        return back()->with('success', 'Yuhuuu, Kegiatan harian baru berhasil ditambahkan');
+        try {
+            DB::beginTransaction();
         } catch (\Throwable $e) {
             DB::rollBack();
             return back()->with('error', 'Opps, Terjadi kesalahan');

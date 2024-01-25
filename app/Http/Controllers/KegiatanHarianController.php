@@ -307,9 +307,11 @@ class KegiatanHarianController extends Controller
     {
         $data_kegiatan = KegiatanHarian::where('kegiatan', $request->kegiatan)->where('nik', Auth::user()->nik)->latest()->first();
 
-        $data_kegiatan->update([
-            'status_duplikat' => '1'
-        ]);
+        if ($data_kegiatan) {
+            $data_kegiatan->update([
+                'status_duplikat' => '1'
+            ]);
+        }
 
         KegiatanHarian::where('id', $id)->update([
             'kegiatan' => strtoupper($request->kegiatan),

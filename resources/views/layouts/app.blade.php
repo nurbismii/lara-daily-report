@@ -54,6 +54,21 @@
 
   <!-- Timepicker -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-timepicker/0.5.2/css/bootstrap-timepicker.min.css">
+
+  <style>
+    #loader {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      background-image: none;
+      background: rgba(0, 0, 0, 0.75) url("{{ asset('assets/img/loader/loader-horizontal-unscreen.gif') }}") no-repeat center center;
+      z-index: 99999;
+    }
+  </style>
 </head>
 
 <body>
@@ -144,6 +159,19 @@
     } else {
       console.error("Service workers are not supported.");
     }
+  </script>
+
+  <script>
+    $(document).ready(function() {
+
+      $("form").submit(function() {
+        $('#loader').show();
+        setTimeout(function() {
+          $("#loader").hide();
+          form.submit();
+        }, 3000); // in milliseconds
+      });
+    })
   </script>
 
 </body>

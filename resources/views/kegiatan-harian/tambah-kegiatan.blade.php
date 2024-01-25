@@ -107,7 +107,7 @@
               </div>
               <div class="col mb-2">
                 <label for="kuantitas">Kuantitas</label>
-                <input type="number" name="kuantitas" class="form-control">
+                <input type="number" name="kuantitas" class="form-control" max="100" maxlength="3">
               </div>
             </div>
             <div class="row g-2">
@@ -196,6 +196,7 @@
       </div>
     </div>
   </form>
+  <div id='loader'></div>
 </div>
 
 

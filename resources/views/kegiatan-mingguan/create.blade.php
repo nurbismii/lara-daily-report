@@ -148,6 +148,7 @@
                 <form id="kembali-harian" action="{{ route('update.hapus.duplikat', $data->id) }}" method="POST">
                   @csrf
                 </form>
+                <div id='loader'></div>
               </div>
             </div>
           </div>

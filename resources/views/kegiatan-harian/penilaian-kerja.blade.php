@@ -1165,6 +1165,7 @@
           <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
       </form>
+      <div class="loader"></div>
     </div>
   </div>
 </div>

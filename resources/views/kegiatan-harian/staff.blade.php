@@ -7,6 +7,19 @@
     span.select2.select2-container.select2-container--classic {
         width: 100% !important;
     }
+
+    #loader {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        background-image: none;
+        background: rgba(0, 0, 0, 0.75) url("{{ asset('assets/img/loader/loader-horizontal-unscreen.gif') }}") no-repeat center center;
+        z-index: 99999;
+    }
 </style>
 
 <div class="container-xxl flex-grow-1 container-p-y">
@@ -150,7 +163,7 @@
                             </div>
                             <div class="col mb-2">
                                 <label for="kuantitas">Kuantitas</label>
-                                <input type="number" name="kuantitas" class="form-control">
+                                <input type="number" name="kuantitas" class="form-control" max="100" maxlength="3">
                             </div>
                         </div>
                         <div class="row g-2">
@@ -243,6 +256,7 @@
             </div>
         </div>
     </form>
+    <div id='loader'></div>
 </div>
 
 <div class="copy" style="display: none;">

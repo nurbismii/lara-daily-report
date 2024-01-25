@@ -283,6 +283,7 @@
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
+            <div id='loader'></div>
         </div>
 
         <div class="copy invisible">
@@ -573,6 +574,7 @@
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
+            <div id='loader'></div>
         </div>
     </div>
 </div>
@@ -596,7 +598,7 @@
                     <div class="row">
                         <div class="col mb-3">
                             <label for="nik">Kegiatan</label>
-                            <textarea class="form-control" name="kegiatan" cols="30" rows="5" required>{{$harian->kegiatan}}</textarea>
+                            <input class="form-control" name="kegiatan" value="{{$harian->kegiatan}}" required>
                         </div>
                     </div>
                     <div class="row">
@@ -671,7 +673,7 @@
                         </div>
                         <div class="col mb-2">
                             <label for="kuantitas">Kuantitas</label>
-                            <input type="number" name="kuantitas" value="{{$harian->kuantitas}}" class="form-control">
+                            <input type="number" name="kuantitas" max="100" maxlength="3" value="{{$harian->kuantitas}}" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -682,6 +684,7 @@
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
+            <div id='loader'></div>
         </div>
     </div>
 </div>
@@ -752,6 +755,7 @@
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
+            <div id='loader'></div>
         </div>
     </div>
 </div>
@@ -778,6 +782,7 @@
                 <button type="submit" class="btn btn-primary">Hapus</button>
             </div>
         </form>
+        <div id='loader'></div>
     </div>
 </div>
 @endforeach
@@ -803,6 +808,7 @@
                 <button type="submit" class="btn btn-primary">Hapus</button>
             </div>
         </form>
+        <div id='loader'></div>
     </div>
 </div>
 @endforeach
@@ -839,6 +845,7 @@
                 <button type="submit" class="btn btn-primary">Unggah</button>
             </div>
         </form>
+        <div id='loader'></div>
     </div>
 </div>
 @endforeach

@@ -673,7 +673,7 @@
                         </div>
                         <div class="col mb-2">
                             <label for="kuantitas">Kuantitas</label>
-                            <input type="number" name="kuantitas" max="100" maxlength="3" value="{{$harian->kuantitas}}" class="form-control">
+                            <input type="number" name="kuantitas" value="{{$harian->kuantitas}}" class="form-control">
                         </div>
                     </div>
                 </div>

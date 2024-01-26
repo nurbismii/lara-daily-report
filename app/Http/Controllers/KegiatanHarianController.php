@@ -146,6 +146,7 @@ class KegiatanHarianController extends Controller
 
     public function store(Request $request)
     {
+        
         $cek_absen = Absensi::where('user_id', Auth::user()->id)->where('tanggal', $request->tanggal)->first();
 
         $status_spv = NULL;
@@ -189,7 +190,7 @@ class KegiatanHarianController extends Controller
 
             if ($request->pelayanan == '1') {
                 Pelayanan::create([
-                    'kegiatan__harian_id' => $kegiatan_harian->id,
+                    'kegiatan_harian_id' => $kegiatan_harian->id,
                     'nik_pic' => $request->nik_pic,
                     'nama_karyawan' => $request->nama_karyawan,
                     'nik_karyawan' => $request->nik_karyawan,

@@ -117,6 +117,12 @@
                       <textarea name="kendala" class="form-control" cols="30" rows="3">{{ $data->kendala }}</textarea>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col-md-12 mb-2">
+                      <label for="Kuantitas">Kuantitas</label>
+                      <input type="number" name="kuantitas" class="form-control" value="{{ $data->kuantitas }}"></input>
+                    </div>
+                  </div>
                   <div class="row g-2">
                     <div class="col-md-6 mb-2">
                       <label for="deadline">Deadline penyelesaian</label>

@@ -140,7 +140,7 @@ class KegiatanMingguanController extends Controller
             if ($file) {
                 $nama_file = Auth::user()->name . ' (' . strtoupper($kegiatan) . ') ' . ' - ' . $file->getClientOriginalName();
 
-                $path = public_path('/data-pendukung/' . Auth::user()->nik . '/' . $kegiatan . '/');
+                $path = public_path('/data-pendukung/' . Auth::user()->nik . '/' . strtoupper($kegiatan) . '/');
 
                 if (file_exists($path . $nama_file)) {
                     unlink($path . $nama_file);
@@ -169,11 +169,12 @@ class KegiatanMingguanController extends Controller
             }
 
             $data = [
+                'kegiatan' => strtoupper($request->kegiatan),
                 'uraian_kegiatan' => $request->uraian_kegiatan,
                 'kendala' => $request->kendala,
                 'persen' => $request->persen,
                 'tipe' => '2',
-                'kuantitas' => $total_kuantitas
+                'kuantitas' => $total_kuantitas == '0' ? $request->kuantitas : '0',
             ];
 
             KegiatanHarian::where('id', $id)->update($data);

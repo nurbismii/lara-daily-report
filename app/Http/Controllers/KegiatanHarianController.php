@@ -146,7 +146,7 @@ class KegiatanHarianController extends Controller
 
     public function store(Request $request)
     {
-        
+
         $cek_absen = Absensi::where('user_id', Auth::user()->id)->where('tanggal', $request->tanggal)->first();
 
         $status_spv = NULL;
@@ -453,7 +453,7 @@ class KegiatanHarianController extends Controller
 
         $nama_file = Auth::user()->name . ' (' . strtoupper($jenis_kegiatan) . ') ' . ' - ' . $file->getClientOriginalName();
 
-        $path = public_path('/data-pendukung/' . Auth::user()->nik . '/' . $jenis_kegiatan . '/');
+        $path = public_path('/data-pendukung/' . Auth::user()->nik . '/' .  strtoupper($jenis_kegiatan) . '/');
 
         if (file_exists($path . $nama_file)) {
             unlink($path . $nama_file);

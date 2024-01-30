@@ -154,7 +154,7 @@
           </div>
           <div class="d-flex justify-content-between mb-3">
             @foreach($d['data_pendukung'] as $value)
-            <img src="{{ public_path('data-pendukung/' . $d['nik'] . '/' . $d['kegiatan'] . '/' . $value['nama_file']) }}" width="650" height="400">
+            <img src="{{ asset('data-pendukung/' . $d['nik'] . '/' . $d['kegiatan'] . '/' . $value['nama_file']) }}" width="650" height="400">
             @endforeach
           </div>
           @endif

@@ -174,7 +174,7 @@ class KegiatanMingguanController extends Controller
                 'kendala' => $request->kendala,
                 'persen' => $request->persen,
                 'tipe' => '2',
-                'kuantitas' => $total_kuantitas == '0' ? $request->kuantitas : '0',
+                'kuantitas' => $total_kuantitas == '0' ? $request->kuantitas : $total_kuantitas,
             ];
 
             KegiatanHarian::where('id', $id)->update($data);
